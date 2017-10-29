@@ -112,12 +112,6 @@
             <column name="user_anwser" type="json"/>
         </createTable>
         <createIndex catalogName="e_learning"
-                     indexName="idx_lession_question_code"
-                     schemaName="e_learning"
-                     tableName="system_result">
-            <column name="system_result_question_code" type="VARCHAR(100)"/>
-        </createIndex>
-        <createIndex catalogName="e_learning"
                      indexName="idx_lession_code"
                      schemaName="e_learning"
                      tableName="lession">

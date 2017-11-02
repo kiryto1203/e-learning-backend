@@ -93,7 +93,7 @@
             <column name="lession_code" type="VARCHAR(100)"/>
             <column name="creation_date" type="datetime"/>
             <column name="last_update_date" type="datetime"/>
-            <column name="user_anwser" type="json"/>
+            <column name="user_answer" type="json"/>
         </createTable>
         <createIndex catalogName="e_learning"
                      indexName="idx_lession_code"
@@ -115,5 +115,28 @@
             <column name="creation_date" type="datetime"/>
             <column name="last_update_date" type="datetime"/>
         </createTable>
+    </changeSet>
+    <changeSet id="update_data_type_json" author="longdh">
+        <modifyDataType catalogName="e_learning"
+            columnName="system_result_correct_id"
+            newDataType="nvarchar(100)"
+            schemaName="e_learning"
+            tableName="system_result"/>
+        <modifyDataType catalogName="e_learning"
+            columnName="system_result_incorrect_id"
+            newDataType="nvarchar(100)"
+            schemaName="e_learning"
+            tableName="system_result"/>
+    </changeSet>
+    <changeSet id="update_data_type_json_user_answer" author="longdh">
+        <modifyDataType catalogName="e_learning"
+            columnName="user_answer"
+            newDataType="nvarchar(100)"
+            schemaName="e_learning"
+            tableName="lession"/>
+    </changeSet>
+    <changeSet id="update_data_type_json_user_pk" author="longdh">
+        <dropColumn tableName="user" schemaName="e_learning" columnName="user_id"/>
+        <addPrimaryKey tableName="user" columnNames="username" schemaName="e_learning" constraintName="user_pkey"/>
     </changeSet>
 </databaseChangeLog>

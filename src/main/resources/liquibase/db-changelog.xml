@@ -111,7 +111,6 @@
             <column name="user_result_username" type="VARCHAR(50)">
                 <constraints nullable="false" foreignKeyName="user_resultusername_fkey" references="user(username)"/>
             </column>
-            <column name="point" type="FLOAT(6,2) UNSIGNED"/>
             <column name="creation_date" type="datetime"/>
             <column name="last_update_date" type="datetime"/>
         </createTable>
@@ -139,4 +138,20 @@
         <dropColumn tableName="user" schemaName="e_learning" columnName="user_id"/>
         <addPrimaryKey tableName="user" columnNames="username" schemaName="e_learning" constraintName="user_pkey"/>
     </changeSet>
+    <changeSet id="add_table_lession_question" author="longdh">
+        <dropTable tableName="user_result" schemaName="e_learning"/>
+        <dropTable tableName="lession" schemaName="e_learning"/>
+        <createTable tableName="lession" schemaName="e_learning">
+            <column name="lession_code" type="VARCHAR(100)">
+                <constraints primaryKey="true" primaryKeyName="lession_pkey"/>
+            </column>
+            <column name="lession_username" type="VARCHAR(50)">
+                <constraints nullable="false" foreignKeyName="lession_user_fkey" references="user(username)"/>
+            </column>
+            <column name="user_answer" type="text"/>
+            <column name="point" type="FLOAT(6,2) UNSIGNED"/>
+            <column name="creation_date" type="datetime"/>
+            <column name="last_update_date" type="datetime"/>
+        </createTable>
+    </changeSet>    
 </databaseChangeLog>

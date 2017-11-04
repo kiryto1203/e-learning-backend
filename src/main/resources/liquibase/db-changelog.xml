@@ -148,10 +148,20 @@
             <column name="lession_username" type="VARCHAR(50)">
                 <constraints nullable="false" foreignKeyName="lession_user_fkey" references="user(username)"/>
             </column>
-            <column name="user_answer" type="text"/>
-            <column name="point" type="FLOAT(6,2) UNSIGNED"/>
             <column name="creation_date" type="datetime"/>
             <column name="last_update_date" type="datetime"/>
         </createTable>
+        <createTable tableName="question_lession" schemaName="e_learning">
+            <column name="question_lession_lession_code" type="VARCHAR(100)">
+                <constraints foreignKeyName="question_lession_lession_code_fkey" references="lession(lession_code)"/>
+            </column>
+            <column name="question_lession_question_code" type="VARCHAR(100)">
+                <constraints foreignKeyName="question_lession_question_code_fkey" references="question_bank(question_code)"/>
+            </column>
+            <column name="user_answer" type="text"/>
+            <column name="point" type="FLOAT(6,2) UNSIGNED"/>
+        </createTable>
+        <addPrimaryKey columnNames="question_lession_lession_code, question_lession_question_code" 
+            tableName="question_lession" constraintName="question_lession_pkey"/>
     </changeSet>    
 </databaseChangeLog>

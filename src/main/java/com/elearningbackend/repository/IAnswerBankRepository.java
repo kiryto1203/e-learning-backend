@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
 @Component
-public interface AnswerBankRepository extends CrudRepository<AnswerBank, Integer>{
+public interface IAnswerBankRepository extends CrudRepository<AnswerBank, Integer>{
 }

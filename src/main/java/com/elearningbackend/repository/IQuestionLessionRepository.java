@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
 @Component
-public interface QuestionLessionRepository extends CrudRepository<QuestionLession, QuestionLessionId> {
+public interface IQuestionLessionRepository extends CrudRepository<QuestionLession, QuestionLessionId> {
 }

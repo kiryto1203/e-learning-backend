@@ -12,7 +12,7 @@ public class QuestionBank implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String questionCode;
-	private Byte questionType;
+	private int questionType;
 	private String questionContent;
 	private String questionParentCode;
 	private Date creationDate;
@@ -25,24 +25,8 @@ public class QuestionBank implements java.io.Serializable {
 	public QuestionBank() {
 	}
 
-	public QuestionBank(String questionCode, String creatorUsername) {
-		this.questionCode = questionCode;
-		this.creatorUsername = creatorUsername;
-	}
-
-	public QuestionBank(String questionCode, Byte questionType, String questionContent, String questionParentCode,
-			Date creationDate, Date lastUpdateDate, String creatorUsername, String lastUpdaterUsername,
-			SystemResult systemResult, Set<QuestionLession> questionLessions) {
-		this.questionCode = questionCode;
-		this.questionType = questionType;
-		this.questionContent = questionContent;
-		this.questionParentCode = questionParentCode;
-		this.creationDate = creationDate;
-		this.lastUpdateDate = lastUpdateDate;
-		this.creatorUsername = creatorUsername;
-		this.lastUpdaterUsername = lastUpdaterUsername;
-		this.systemResult = systemResult;
-		this.questionLessions = questionLessions;
+	public QuestionBank(String questionCode) {
+            this.questionCode = questionCode;
 	}
 
 	@Id
@@ -56,11 +40,11 @@ public class QuestionBank implements java.io.Serializable {
 	}
 
 	@Column(name = "question_type")
-	public Byte getQuestionType() {
-		return this.questionType;
+	public int getQuestionType() {
+            return this.questionType;
 	}
 
-	public void setQuestionType(Byte questionType) {
+	public void setQuestionType(int questionType) {
 		this.questionType = questionType;
 	}
 

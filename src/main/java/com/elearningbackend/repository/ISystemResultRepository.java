@@ -2,8 +2,8 @@ package com.elearningbackend.repository;
 
 import com.elearningbackend.entity.SystemResult;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
+@Repository
 public interface ISystemResultRepository extends CrudRepository<SystemResult, Integer> {
 }

@@ -9,6 +9,7 @@ import com.elearningbackend.dto.Pager;
 import com.elearningbackend.dto.QuestionBankDto;
 import com.elearningbackend.entity.QuestionBank;
 import com.elearningbackend.repository.IQuestionBankRepository;
+import com.elearningbackend.utility.Constants;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -53,18 +55,18 @@ public class QuestionBankService implements IQuestionBankService {
     @Override
     public QuestionBankDto addNewQuestion(QuestionBankDto question) throws Exception {
         try {
-            questionBankRepository.save(mapper.map(question, QuestionBank.class));
+            saveQuestion(question);
+            return question;
         } catch (Exception e){
-            throw new Exception("Cannot add new question");
+            throw new Exception("Cannot add new question", e);
         }
-        return question;
     }
 
     @Override
     public QuestionBankDto editQuestion(QuestionBankDto question) throws Exception {
         QuestionBankDto questionByCode = getQuestionByCode(question.getQuestionCode());
         if (questionByCode != null) {
-            questionBankRepository.save(mapper.map(question, QuestionBank.class));
+            saveQuestion(question);
             return question;
         }
         // sang controller try catch -> throw http 200 + message
@@ -83,15 +85,31 @@ public class QuestionBankService implements IQuestionBankService {
     }
 
     Pager<QuestionBankDto> paginate(int currentPage, Page<QuestionBank> pager, int noOfRowInPage) {
+        noOfRowInPage = validateNoOfRowInPage(noOfRowInPage);
+        currentPage = validateCurrentPage(currentPage);
         Pager<QuestionBankDto> result = new Pager<>();
         result.setCurrentPage(currentPage);
         result.setTotalRow(pager.getTotalElements());
         result.setNoOfRowInPage(noOfRowInPage);
         result.setTotalPage(pager.getTotalElements() / noOfRowInPage);
-        List<QuestionBankDto> resultList = pager.getContent().stream().map(
+        List<QuestionBankDto> resultList = pager.getContent().stream().filter(Objects::nonNull).map(
             a -> mapper.map(a, QuestionBankDto.class)).collect(Collectors.toList()
         );
         result.setResults(resultList);
         return result;
+    }
+
+    private int validateCurrentPage(int currentPage) {
+        return currentPage <= Constants.ZERO ? currentPage = Constants.CURRENT_PAGE_DEFAULT_VALUE
+                : currentPage;
+    }
+
+    private int validateNoOfRowInPage(int noOfRowInPage) {
+        return noOfRowInPage <= Constants.ZERO ? noOfRowInPage = Constants.NO_OF_ROWS_DEFAULT_VALUE
+                : noOfRowInPage;
+    }
+
+    private void saveQuestion(QuestionBankDto question) {
+        questionBankRepository.save(mapper.map(question, QuestionBank.class));
     }
 }

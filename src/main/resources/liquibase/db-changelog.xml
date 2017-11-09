@@ -163,5 +163,8 @@
         </createTable>
         <addPrimaryKey columnNames="question_lession_lession_code, question_lession_question_code" 
             tableName="question_lession" constraintName="question_lession_pkey"/>
-    </changeSet>    
+    </changeSet>
+    <changeSet id="insert-sample-question-data" author="longdh">
+
+    </changeSet>
 </databaseChangeLog>

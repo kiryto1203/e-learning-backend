@@ -4,7 +4,11 @@ import com.elearningbackend.dto.Pager;
 import com.elearningbackend.dto.QuestionBankDto;
 import com.elearningbackend.entity.QuestionBank;
 import com.elearningbackend.repository.IQuestionBankRepository;
-import mockit.*;
+import com.elearningbackend.utility.Paginator;
+import mockit.Expectations;
+import mockit.Injectable;
+import mockit.Mocked;
+import mockit.Tested;
 import mockit.integration.junit4.JMockit;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +20,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(JMockit.class)
@@ -27,11 +31,17 @@ public class QuestionBankServiceTest {
     @Injectable
     private IQuestionBankRepository iQuestionBankRepository;
 
-    private final ModelMapper mapper = new ModelMapper();
+    @Injectable
+    private Paginator<QuestionBank, QuestionBankDto> paginator;
+
+    @Injectable
+    private ModelMapper mapper;
 
     @Test
-    public void returnQuestionBankDtoPagerOnPaginateWhenParamsAreValid(@Mocked Page<QuestionBank> pager,
-                     @Mocked QuestionBankDto question1, @Mocked QuestionBankDto question2) throws Exception {
+    public void returnQuestionBankDtoPagerOnPaginateWhenParamsAreValid(
+            @Mocked Page<QuestionBank> pager,
+            @Mocked QuestionBankDto question1,
+            @Mocked QuestionBankDto question2) throws Exception {
         Pager<QuestionBankDto> result = new Pager<>();
         List<QuestionBankDto> questionBankDtos = new ArrayList<>();
         questionBankDtos.add(question1);
@@ -46,14 +56,15 @@ public class QuestionBankServiceTest {
             pager.getTotalElements(); result = 30;
             pager.getContent(); result = questionBanks;
         }};
-        assertThat(questionBankService.paginate(3, pager, 10).getCurrentPage(), is(3));
-        assertThat(questionBankService.paginate(3, pager, 10).getNoOfRowInPage(), is(10));
-        assertThat(questionBankService.paginate(3, pager, 10).getTotalPage(), is(3L));
-        assertThat(questionBankService.paginate(3, pager, 10).getTotalRow(), is(30L));
+        assertThat(questionBankService.loadAll(3, 10).getCurrentPage(), is(3));
+        assertThat(questionBankService.loadAll(3, 10).getNoOfRowInPage(), is(10));
+        assertThat(questionBankService.loadAll(3, 10).getTotalPage(), is(3L));
+        assertThat(questionBankService.loadAll(3, 10).getTotalRow(), is(30L));
     }
 
     @Test
-    public void returnQuestionBankDtoPagerWithNoQuestionOnPaginateWhenParamsHaveNullValue(@Mocked Page<QuestionBank> pager) throws Exception {
+    public void returnQuestionBankDtoPagerWithNoQuestionOnPaginateWhenParamsHaveNullValue(
+            @Mocked Page<QuestionBank> pager) throws Exception {
         Pager<QuestionBankDto> result = new Pager<>();
         List<QuestionBankDto> questionBankDtos = new ArrayList<>();
         questionBankDtos.add(null);
@@ -68,35 +79,15 @@ public class QuestionBankServiceTest {
             pager.getTotalElements(); result = 30;
             pager.getContent(); result = questionBanks;
         }};
-        questionBankService.paginate(3, pager, 10).getResults().getClass().getName();
-        assertThat(questionBankService.paginate(3, pager, 10).getCurrentPage(), is(3));
-        assertThat(questionBankService.paginate(3, pager, 10).getNoOfRowInPage(), is(10));
-        assertThat(questionBankService.paginate(3, pager, 10).getTotalPage(), is(3L));
-        assertThat(questionBankService.paginate(3, pager, 10).getTotalRow(), is(30L));
-        assertThat(questionBankService.paginate(3, pager, 10).getResults().size(), is(0));
+        assertThat(questionBankService.loadAll(3, 10).getCurrentPage(), is(3));
+        assertThat(questionBankService.loadAll(3, 10).getNoOfRowInPage(), is(10));
+        assertThat(questionBankService.loadAll(3, 10).getTotalPage(), is(3L));
+        assertThat(questionBankService.loadAll(3, 10).getTotalRow(), is(30L));
+        assertThat(questionBankService.loadAll(3, 10).getResults().size(), is(0));
     }
 
-    @Test
-    public void returnDefaultQuestionBankDtoPagerOnPaginateWhenIntParamsAreZero(
-            @Mocked Page<QuestionBank> pager,
-            @Mocked QuestionBankDto question1,
-            @Mocked QuestionBankDto question2) throws Exception {
-        Pager<QuestionBankDto> result = new Pager<>();
-        List<QuestionBankDto> questionBankDtos = new ArrayList<>();
-        questionBankDtos.add(question1);
-        questionBankDtos.add(question2);
-        List<QuestionBank> questionBanks = questionBankDtos.stream().filter(Objects::nonNull).map(a -> mapper.map(a, QuestionBank.class)).collect(Collectors.toList());
-        result.setCurrentPage(1);
-        result.setTotalRow(30);
-        result.setNoOfRowInPage(5);
-        result.setTotalPage(6);
-        result.setResults(questionBankDtos);
-        new Expectations(){{
-            pager.getTotalElements(); result = 30;
-            pager.getContent(); result = questionBanks;
-        }};
-        questionBankService.paginate(0, pager, 0).getResults().getClass().getName();
-        assertThat(questionBankService.paginate(0, pager, 0).getCurrentPage(), is(1));
-        assertThat(questionBankService.paginate(0, pager, 0).getNoOfRowInPage(), is(5));
+    @Test(expected = IllegalArgumentException.class)
+    public void returnDefaultQuestionBankDtoPagerOnPaginateWhenIntParamsAreZero() throws Exception {
+        questionBankService.loadAll(0, 0);
     }
 }

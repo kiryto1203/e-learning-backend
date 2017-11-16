@@ -164,7 +164,19 @@
         <addPrimaryKey columnNames="question_lession_lession_code, question_lession_question_code" 
             tableName="question_lession" constraintName="question_lession_pkey"/>
     </changeSet>
-    <changeSet id="insert-sample-question-data" author="longdh">
-
+    <changeSet author="longdh" id="alter-answer-bank-key">
+        <dropTable tableName="answer_bank" schemaName="e_learning"/>
+        <createTable tableName="answer_bank">
+            <column name="answer_code" type="varchar(100)">
+                <constraints primaryKey="true" primaryKeyName="answer_bank_pkey"/>
+            </column>
+            <column name="answer_content" type="text"/>
+            <column name="creation_date" type="datetime"/>
+            <column name="last_update_date" type="datetime"/>
+            <column name="creator_username" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_updater_username" type="VARCHAR(255)"/>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

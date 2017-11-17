@@ -5,49 +5,78 @@ import com.elearningbackend.dto.Pager;
 import com.elearningbackend.entity.AnswerBank;
 import com.elearningbackend.repository.IAnswerBankRepository;
 import com.elearningbackend.utility.Paginator;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
-public class AnswerBankService implements IAnswerBankService{
+import javax.transaction.Transactional;
+
+@Service
+@Transactional
+public class AnswerBankService extends AbstractService<AnswerBankDto, String, AnswerBank>{
 
     @Autowired
-    private IAnswerBankRepository iAnswerBankRepository;
-
-    private ModelMapper modelMapper = new ModelMapper();
-    private final Paginator<AnswerBank, AnswerBankDto> paginator = new Paginator<>(AnswerBankDto.class);
-
-    @Override
-    public Pager<AnswerBankDto> loadAllAnswers(int currentPage, int noOfRowInPage) {
-        Page<AnswerBank> pager = iAnswerBankRepository.findAll(new PageRequest(currentPage, noOfRowInPage));
-        return paginator.paginate(currentPage, pager, noOfRowInPage, modelMapper);
+    public AnswerBankService(IAnswerBankRepository repository) {
+        super(repository, new Paginator<>(AnswerBankDto.class));
     }
 
     @Override
-    public AnswerBankDto getAnswerByCode(String answerCode) {
-        AnswerBank answerBank = iAnswerBankRepository.findOne(answerCode);
-        return answerBank == null ? null : modelMapper.map(answerBank, AnswerBankDto.class);
+    public Pager<AnswerBankDto> loadAll(int currentPage, int noOfRowInPage) {
+        Page<AnswerBank> pager = getAnswerRepository().findAll(new PageRequest(currentPage, noOfRowInPage));
+        return paginator.paginate(currentPage, pager, noOfRowInPage, mapper);
     }
 
     @Override
-    public Pager<AnswerBankDto> getAnswerByCreator(String creatorUsername, int currentPage, int noOfRowInPage) {
-        //Pager<AnswerBankDto> pager = iAnswerBankRepository.
-        return null;
+    public AnswerBankDto getOneByKey(String key) {
+        AnswerBank answer = getAnswerRepository().findOne(key);
+        return answer == null ? null : mapper.map(answer, AnswerBankDto.class);
     }
 
     @Override
-    public AnswerBankDto addNewAnswer(AnswerBankDto answer) throws Exception {
-        return null;
+    public Pager<AnswerBankDto> getByCreator(String creatorUsername, int currentPage, int noOfRowInPage) {
+        Page<AnswerBank> pager = getAnswerRepository().fetchAnswerByCreator(
+            creatorUsername, new PageRequest(currentPage, noOfRowInPage));
+        return paginator.paginate(currentPage, pager, noOfRowInPage, mapper);
     }
 
     @Override
-    public AnswerBankDto editAnswer(AnswerBankDto answer) throws Exception {
-        return null;
+    public AnswerBankDto add(AnswerBankDto answer) throws Exception {
+        try {
+            saveAnswer(answer);
+            return answer;
+        } catch (Exception e){
+            throw new Exception("Cannot add new answer", e);
+        }
     }
 
     @Override
-    public AnswerBankDto deleteAnswer(String answerCode) throws Exception {
-        return null;
+    public AnswerBankDto edit(AnswerBankDto answer) throws Exception {
+        AnswerBankDto answerByCode = getOneByKey(answer.getAnswerCode());
+        if (answerByCode != null) {
+            saveAnswer(answer);
+            return answer;
+        }
+        // sang controller try catch -> throw http 200 + message
+        throw new Exception("Cannot edit answer");
+    }
+
+    @Override
+    public AnswerBankDto delete(String key) throws Exception {
+        AnswerBankDto answerByCode = getOneByKey(key);
+        if (answerByCode != null) {
+            getAnswerRepository().delete(mapper.map(answerByCode, AnswerBank.class));
+            return answerByCode;
+        }
+        // sang controller try catch -> throw http 200 + message
+        throw new Exception("Cannot delete answer");
+    }
+
+    private IAnswerBankRepository getAnswerRepository() {
+        return (IAnswerBankRepository) getRepository();
+    }
+
+    private void saveAnswer(AnswerBankDto answer) {
+        getAnswerRepository().save(mapper.map(answer, AnswerBank.class));
     }
 }

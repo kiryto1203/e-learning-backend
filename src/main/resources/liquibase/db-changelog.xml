@@ -164,6 +164,33 @@
         <addPrimaryKey columnNames="question_lession_lession_code, question_lession_question_code" 
             tableName="question_lession" constraintName="question_lession_pkey"/>
     </changeSet>
+    <changeSet id="add_category_and_subcategory modify_question_bank" author="thaidq">
+        <createTable tableName="category">
+            <column name="category_code" type="VARCHAR(50)">
+                <constraints primaryKey="true" primaryKeyName="category_pkey"/>
+            </column>
+            <column name="category_intro" type="text"/>
+            <column name="creation_date" type="datetime"/>
+            <column name="last_update_date" type="datetime"/>
+        </createTable>
+        <createTable tableName="subcategory">
+            <column name="subcategory_code" type="VARCHAR(50)">
+                <constraints primaryKey="true" primaryKeyName="subcategory_pkey"/>
+            </column>
+            <column name="category_code" type="VARCHAR(50)">
+                <constraints nullable="false" foreignKeyName="category_code_fkey" references="category(category_code)"/>
+            </column>
+            <column name="subcategory_intro" type="text"/>
+            <column name="creation_date" type="datetime"/>
+            <column name="last_update_date" type="datetime"/>
+        </createTable>
+        <addColumn tableName="question_bank" catalogName="e_learning">
+            <column name="subcategory_code" type="VARCHAR(50)">
+                <constraints nullable="false" foreignKeyName="subcategory_code_fkey" references="subcategory(subcategory_code)"/>
+            </column>
+            <column name="point" type="FLOAT(6,2) UNSIGNED" />
+        </addColumn>
+    </changeSet>
     <changeSet id="insert-sample-question-data" author="longdh">
 
     </changeSet>

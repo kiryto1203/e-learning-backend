@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class QuestionBankService extends AbstractService<QuestionBankDto, String, QuestionBank> {
+public class QuestionBankService extends AbstractCustomService<QuestionBankDto, String, QuestionBank> {
 
     @Autowired
     public QuestionBankService(IQuestionBankRepository repository) {

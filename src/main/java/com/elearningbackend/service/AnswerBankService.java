@@ -14,7 +14,7 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class AnswerBankService extends AbstractService<AnswerBankDto, String, AnswerBank>{
+public class AnswerBankService extends AbstractCustomService<AnswerBankDto, String, AnswerBank>{
 
     @Autowired
     public AnswerBankService(IAnswerBankRepository repository) {

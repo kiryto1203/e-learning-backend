@@ -3,14 +3,12 @@ package com.elearningbackend.entity;
 import javax.persistence.*;
 import java.util.Date;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 @Entity
 @Table(name = "answer_bank", catalog = "e_learning")
 public class AnswerBank implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private Integer answerId;
+	private String answerCode;
 	private String answerContent;
 	private Date creationDate;
 	private Date lastUpdateDate;
@@ -24,24 +22,14 @@ public class AnswerBank implements java.io.Serializable {
 		this.creatorUsername = creatorUsername;
 	}
 
-	public AnswerBank(String answerContent, Date creationDate, Date lastUpdateDate, String creatorUsername,
-			String lastUpdaterUsername) {
-		this.answerContent = answerContent;
-		this.creationDate = creationDate;
-		this.lastUpdateDate = lastUpdateDate;
-		this.creatorUsername = creatorUsername;
-		this.lastUpdaterUsername = lastUpdaterUsername;
-	}
-
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "answer_id", unique = true, nullable = false)
-	public Integer getAnswerId() {
-		return this.answerId;
+	@Column(name = "answer_id", unique = true, nullable = false, length = 100)
+	public String getAnswerCode() {
+		return this.answerCode;
 	}
 
-	public void setAnswerId(Integer answerId) {
-		this.answerId = answerId;
+	public void setAnswerCode(String answerCode) {
+		this.answerCode = answerCode;
 	}
 
 	@Column(name = "answer_content", length = 65535)

@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 public class AnswerBankDto {
-    private Integer answerId;
+    private String answerCode;
     private String answerContent;
     private Date creationDate;
     private Date lastUpdateDate;

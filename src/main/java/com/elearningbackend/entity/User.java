@@ -1,6 +1,7 @@
 package com.elearningbackend.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,12 +15,12 @@ public class User implements java.io.Serializable {
 	private String passwordDigest;
 	private String activationDigest;
 	private Boolean activated;
-	private Date activatedAt;
+	private Timestamp activatedAt;
 	private String rememberDigest;
 	private String resetDigest;
-	private Date resetSentAt;
-	private Date createdAt;
-	private Date updatedAt;
+	private Timestamp resetSentAt;
+	private Timestamp createdAt;
+	private Timestamp updatedAt;
 	private String displayName;
 	private String email;
 	private String phone;
@@ -31,7 +32,7 @@ public class User implements java.io.Serializable {
 	public User() {
 	}
 
-	public User(String username, String passwordDigest, Date createdAt, Date updatedAt, String email) {
+	public User(String username, String passwordDigest, Timestamp createdAt, Timestamp updatedAt, String email) {
 		this.username = username;
 		this.passwordDigest = passwordDigest;
 		this.createdAt = createdAt;
@@ -39,8 +40,8 @@ public class User implements java.io.Serializable {
 		this.email = email;
 	}
 
-	public User(String username, String passwordDigest, String activationDigest, Boolean activated, Date activatedAt,
-			String rememberDigest, String resetDigest, Date resetSentAt, Date createdAt, Date updatedAt,
+	public User(String username, String passwordDigest, String activationDigest, Boolean activated, Timestamp activatedAt,
+			String rememberDigest, String resetDigest, Timestamp resetSentAt, Timestamp createdAt, Timestamp updatedAt,
 			String displayName, String email, String phone, String address, String avatar, String role,
 			Set<Lession> lessions) {
 		this.username = username;
@@ -99,13 +100,12 @@ public class User implements java.io.Serializable {
 		this.activated = activated;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "activated_at", length = 19)
-	public Date getActivatedAt() {
+	@Column(name = "activated_at")
+	public Timestamp getActivatedAt() {
 		return this.activatedAt;
 	}
 
-	public void setActivatedAt(Date activatedAt) {
+	public void setActivatedAt(Timestamp activatedAt) {
 		this.activatedAt = activatedAt;
 	}
 
@@ -127,33 +127,30 @@ public class User implements java.io.Serializable {
 		this.resetDigest = resetDigest;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "reset_sent_at", length = 19)
-	public Date getResetSentAt() {
+	@Column(name = "reset_sent_at")
+	public Timestamp getResetSentAt() {
 		return this.resetSentAt;
 	}
 
-	public void setResetSentAt(Date resetSentAt) {
+	public void setResetSentAt(Timestamp resetSentAt) {
 		this.resetSentAt = resetSentAt;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_at", nullable = false, length = 19)
-	public Date getCreatedAt() {
+	@Column(name = "created_at", nullable = false)
+	public Timestamp getCreatedAt() {
 		return this.createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
+	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "updated_at", nullable = false, length = 19)
+	@Column(name = "updated_at", nullable = false)
 	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Date updatedAt) {
+	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 

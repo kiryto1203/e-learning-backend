@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface IQuestionBankRepository extends JpaRepository<QuestionBank, String> {
     @Query("select a from QuestionBank a where a.creatorUsername like %?1%")
     Page<QuestionBank> fetchQuestionByCreator(String creatorUsername, Pageable pageable);
+    @Query("select a from QuestionBank a where a.subcategory.subcategoryCode = ?1")
+    Page<QuestionBank> fetchQuestionBySubcategoryCode(String subcategoryCode, Pageable pageable);
 }

@@ -80,6 +80,12 @@ public class QuestionBankService extends AbstractCustomService<QuestionBankDto, 
         throw new Exception("Cannot delete question");
     }
 
+    public Pager<QuestionBankDto> getBySubcategoryCode(String subcategoryCode, int currentPage, int noOfRowInPage) {
+        Page<QuestionBank> pager = getQuestionRepository().fetchQuestionBySubcategoryCode(
+            subcategoryCode, new PageRequest(currentPage, noOfRowInPage));
+        return paginator.paginate(currentPage, pager, noOfRowInPage, mapper);
+    }
+
     private void saveQuestion(QuestionBankDto question) {
         getQuestionRepository().save(mapper.map(question, QuestionBank.class));
     }

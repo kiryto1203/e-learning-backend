@@ -1,7 +1,7 @@
 package com.elearningbackend.entity;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,70 +9,73 @@ import java.util.Set;
 @Table(name = "lession", catalog = "e_learning")
 public class Lession implements java.io.Serializable {
 
-	private static final long serialVersionUID = 1L;
-	private String lessionCode;
-	private User user;
-	private Date creationDate;
-	private Date lastUpdateDate;
-	private Set<QuestionLession> questionLessions = new HashSet<QuestionLession>(0);
+    private static final long serialVersionUID = 1L;
+    private String lessionCode;
+    private User user;
+    private Timestamp creationDate;
+    private Timestamp lastUpdateDate;
+    private Set<QuestionLession> questionLessions = new HashSet<QuestionLession>(0);
 
-	public Lession() {
-	}
+    public Lession() {
+    }
 
-	public Lession(String lessionCode, User user) {
-		this.lessionCode = lessionCode;
-		this.user = user;
-	}
+    public Lession(String lessionCode, User user) {
+        this.lessionCode = lessionCode;
+        this.user = user;
+    }
 
-	public Lession(String lessionCode, User user, Date creationDate, Date lastUpdateDate,
-			Set<QuestionLession> questionLessions) {
-		this.lessionCode = lessionCode;
-		this.user = user;
-		this.creationDate = creationDate;
-		this.lastUpdateDate = lastUpdateDate;
-		this.questionLessions = questionLessions;
-	}
+    public Lession(String lessionCode, User user, Timestamp creationDate, Timestamp lastUpdateDate,
+            Set<QuestionLession> questionLessions) {
+        this.lessionCode = lessionCode;
+        this.user = user;
+        this.creationDate = creationDate;
+        this.lastUpdateDate = lastUpdateDate;
+        this.questionLessions = questionLessions;
+    }
 
-	@Id
-	@Column(name = "lession_code", unique = true, nullable = false, length = 100)
-	public String getLessionCode() {
-		return this.lessionCode;
-	}
+    @Id
+    @Column(name = "lession_code", unique = true, nullable = false, length = 100)
+    public String getLessionCode() {
+        return this.lessionCode;
+    }
 
-	public void setLessionCode(String lessionCode) {
-		this.lessionCode = lessionCode;
-	}
+    public void setLessionCode(String lessionCode) {
+        this.lessionCode = lessionCode;
+    }
 
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
-	}
+    @Column(name = "creation_date")
+    public Timestamp getCreationDate() {
+        return creationDate;
+    }
+    public void setCreationDate(Timestamp creationDate) {
+        this.creationDate = creationDate;
+    }
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "last_update_date", length = 19)
-	public Date getLastUpdateDate() {
-		return this.lastUpdateDate;
-	}
+    @Column(name = "last_update_date")
+    public Timestamp getLastUpdateDate() {
+        return this.lastUpdateDate;
+    }
 
-	public void setLastUpdateDate(Date lastUpdateDate) {
-		this.lastUpdateDate = lastUpdateDate;
-	}
+    public void setLastUpdateDate(Timestamp lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
 
-	@OneToMany(mappedBy = "lession", cascade= CascadeType.ALL)
-	public Set<QuestionLession> getQuestionLessions() {
-		return this.questionLessions;
-	}
+    @OneToMany(mappedBy = "lession", cascade= CascadeType.ALL)
+    public Set<QuestionLession> getQuestionLessions() {
+        return this.questionLessions;
+    }
 
-	public void setQuestionLessions(Set<QuestionLession> questionLessions) {
-		this.questionLessions = questionLessions;
-	}
+    public void setQuestionLessions(Set<QuestionLession> questionLessions) {
+        this.questionLessions = questionLessions;
+    }
 
-	@ManyToOne
-	@JoinColumn(name = "lession_username", nullable = false)
-	public User getUser() {
-		return this.user;
-	}
+    @ManyToOne
+    @JoinColumn(name = "lession_username", nullable = false)
+    public User getUser() {
+        return this.user;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

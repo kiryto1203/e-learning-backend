@@ -1,6 +1,7 @@
 package com.elearningbackend.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -14,8 +15,8 @@ public class SystemResult implements java.io.Serializable {
 	private QuestionBank questionBank;
 	private String systemResultCorrectId;
 	private String systemResultIncorrectId;
-	private Date creationDate;
-	private Date lastUpdateDate;
+	private Timestamp creationDate;
+	private Timestamp lastUpdateDate;
 	private String creatorUsername;
 	private String lastUpdaterUsername;
 
@@ -28,7 +29,7 @@ public class SystemResult implements java.io.Serializable {
 	}
 
 	public SystemResult(QuestionBank questionBank, String systemResultCorrectId, String systemResultIncorrectId,
-			Date creationDate, Date lastUpdateDate, String creatorUsername, String lastUpdaterUsername) {
+			Timestamp creationDate, Timestamp lastUpdateDate, String creatorUsername, String lastUpdaterUsername) {
 		this.questionBank = questionBank;
 		this.systemResultCorrectId = systemResultCorrectId;
 		this.systemResultIncorrectId = systemResultIncorrectId;
@@ -49,8 +50,6 @@ public class SystemResult implements java.io.Serializable {
 		this.systemResultId = systemResultId;
 	}
 
-
-
 	@Column(name = "system_result_correct_id", length = 100)
 	public String getSystemResultCorrectId() {
 		return this.systemResultCorrectId;
@@ -69,23 +68,21 @@ public class SystemResult implements java.io.Serializable {
 		this.systemResultIncorrectId = systemResultIncorrectId;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "creation_date", length = 19)
-	public Date getCreationDate() {
+	@Column(name = "creation_date")
+	public Timestamp getCreationDate() {
 		return this.creationDate;
 	}
 
-	public void setCreationDate(Date creationDate) {
+	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "last_update_date", length = 19)
+	@Column(name = "last_update_date")
 	public Date getLastUpdateDate() {
 		return this.lastUpdateDate;
 	}
 
-	public void setLastUpdateDate(Date lastUpdateDate) {
+	public void setLastUpdateDate(Timestamp lastUpdateDate) {
 		this.lastUpdateDate = lastUpdateDate;
 	}
 

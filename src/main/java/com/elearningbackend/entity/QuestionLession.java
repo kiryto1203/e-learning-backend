@@ -33,8 +33,8 @@ public class QuestionLession implements java.io.Serializable {
 
 	@EmbeddedId
 	@AttributeOverrides({
-			@AttributeOverride(name = "questionLessionLessionCode", column = @Column(name = "question_lession_lession_code", nullable = false, length = 100)),
-			@AttributeOverride(name = "questionLessionQuestionCode", column = @Column(name = "question_lession_question_code", nullable = false, length = 100)) })
+		@AttributeOverride(name = "questionLessionLessionCode", column = @Column(name = "question_lession_lession_code", nullable = false, length = 100)),
+		@AttributeOverride(name = "questionLessionQuestionCode", column = @Column(name = "question_lession_question_code", nullable = false, length = 100)) })
 	public QuestionLessionId getId() {
 		return this.id;
 	}
@@ -42,8 +42,6 @@ public class QuestionLession implements java.io.Serializable {
 	public void setId(QuestionLessionId id) {
 		this.id = id;
 	}
-
-
 
 	@Column(name = "user_answer", length = 65535)
 	public String getUserAnswer() {

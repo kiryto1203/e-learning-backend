@@ -1,125 +1,157 @@
 package com.elearningbackend.entity;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
+import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
-@Table(name = "question_bank", catalog = "e_learning")
-public class QuestionBank implements java.io.Serializable {
+@Table(name = "question_bank", schema = "e_learning")
+public class QuestionBank implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	private String questionCode;
-	private int questionType;
-	private String questionContent;
-	private String questionParentCode;
-	private Date creationDate;
-	private Date lastUpdateDate;
-	private String creatorUsername;
-	private String lastUpdaterUsername;
-	private SystemResult systemResult;
-	private Set<QuestionLession> questionLessions = new HashSet<QuestionLession>(0);
+    private static final long serialVersionUID = 1L;
+    private String questionCode;
+    private int questionType;
+    private String questionContent;
+    private String questionParentCode;
+    private Timestamp creationDate;
+    private Timestamp lastUpdateDate;
+    private String creatorUsername;
+    private String lastUpdaterUsername;
+    private SystemResult systemResult;
+    private Double point;
+    private Subcategory subcategory;
+    private Set<QuestionLession> questionLessions;
 
-	public QuestionBank() {
-	}
+    public QuestionBank() {
+    }
 
-	public QuestionBank(String questionCode) {
+    public QuestionBank(String questionCode) {
             this.questionCode = questionCode;
-	}
+    }
 
-	@Id
-	@Column(name = "question_code", unique = true, nullable = false, length = 100)
-	public String getQuestionCode() {
-		return this.questionCode;
-	}
+    @Id
+    @Column(name = "question_code", unique = true, nullable = false, length = 100)
+    public String getQuestionCode() {
+        return this.questionCode;
+    }
 
-	public void setQuestionCode(String questionCode) {
-		this.questionCode = questionCode;
-	}
+    public void setQuestionCode(String questionCode) {
+        this.questionCode = questionCode;
+    }
 
-	@Column(name = "question_type")
-	public int getQuestionType() {
+    @Column(name = "question_type")
+    public int getQuestionType() {
             return this.questionType;
-	}
+    }
 
-	public void setQuestionType(int questionType) {
-		this.questionType = questionType;
-	}
+    public void setQuestionType(int questionType) {
+        this.questionType = questionType;
+    }
 
-	@Column(name = "question_content", length = 65535)
-	public String getQuestionContent() {
-		return this.questionContent;
-	}
+    @Column(name = "question_content", length = 65535)
+    public String getQuestionContent() {
+        return this.questionContent;
+    }
 
-	public void setQuestionContent(String questionContent) {
-		this.questionContent = questionContent;
-	}
+    public void setQuestionContent(String questionContent) {
+        this.questionContent = questionContent;
+    }
 
-	@Column(name = "question_parent_code", length = 100)
-	public String getQuestionParentCode() {
-		return this.questionParentCode;
-	}
+    @Column(name = "question_parent_code", length = 100)
+    public String getQuestionParentCode() {
+        return this.questionParentCode;
+    }
 
-	public void setQuestionParentCode(String questionParentCode) {
-		this.questionParentCode = questionParentCode;
-	}
+    public void setQuestionParentCode(String questionParentCode) {
+        this.questionParentCode = questionParentCode;
+    }
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "creation_date", length = 19)
-	public Date getCreationDate() {
-		return this.creationDate;
-	}
+    @Column(name = "creation_date")
+    public Timestamp getCreationDate() {
+        return this.creationDate;
+    }
 
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
-	}
+    public void setCreationDate(Timestamp creationDate) {
+        this.creationDate = creationDate;
+    }
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "last_update_date", length = 19)
-	public Date getLastUpdateDate() {
-		return this.lastUpdateDate;
-	}
+    @Column(name = "last_update_date")
+    public Timestamp getLastUpdateDate() {
+        return this.lastUpdateDate;
+    }
 
-	public void setLastUpdateDate(Date lastUpdateDate) {
-		this.lastUpdateDate = lastUpdateDate;
-	}
+    public void setLastUpdateDate(Timestamp lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
 
-	@Column(name = "creator_username", nullable = false)
-	public String getCreatorUsername() {
-		return this.creatorUsername;
-	}
+    @Column(name = "creator_username", nullable = false)
+    public String getCreatorUsername() {
+        return this.creatorUsername;
+    }
 
-	public void setCreatorUsername(String creatorUsername) {
-		this.creatorUsername = creatorUsername;
-	}
+    public void setCreatorUsername(String creatorUsername) {
+        this.creatorUsername = creatorUsername;
+    }
 
-	@Column(name = "last_updater_username")
-	public String getLastUpdaterUsername() {
-		return this.lastUpdaterUsername;
-	}
+    @Column(name = "last_updater_username")
+    public String getLastUpdaterUsername() {
+        return this.lastUpdaterUsername;
+    }
 
-	public void setLastUpdaterUsername(String lastUpdaterUsername) {
-		this.lastUpdaterUsername = lastUpdaterUsername;
-	}
+    public void setLastUpdaterUsername(String lastUpdaterUsername) {
+        this.lastUpdaterUsername = lastUpdaterUsername;
+    }
 
-	@OneToOne(cascade= CascadeType.ALL)
-	@JoinColumn(name = "question_code")
-	public SystemResult getSystemResult() {
-		return this.systemResult;
-	}
+    @OneToOne(cascade= CascadeType.ALL)
+    @JoinColumn(name = "question_code")
+    public SystemResult getSystemResult() {
+        return this.systemResult;
+    }
 
-	public void setSystemResult(SystemResult systemResult) {
-		this.systemResult = systemResult;
-	}
+    public void setSystemResult(SystemResult systemResult) {
+        this.systemResult = systemResult;
+    }
 
-	@OneToMany(mappedBy = "questionBank", cascade = CascadeType.ALL)
-	public Set<QuestionLession> getQuestionLessions() {
-		return this.questionLessions;
-	}
+    @OneToMany(mappedBy = "questionBank", cascade = CascadeType.ALL)
+    public Set<QuestionLession> getQuestionLessions() {
+        return this.questionLessions;
+    }
 
-	public void setQuestionLessions(Set<QuestionLession> questionLessions) {
-		this.questionLessions = questionLessions;
-	}
+    public void setQuestionLessions(Set<QuestionLession> questionLessions) {
+        this.questionLessions = questionLessions;
+    }
 
+    @Column(name = "point")
+    public Double getPoint() {
+        return point;
+    }
+
+    public void setPoint(Double point) {
+        this.point = point;
+    }
+
+    @Override public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        QuestionBank that = (QuestionBank) o;
+
+        if (point != null ? !point.equals(that.point) : that.point != null)
+            return false;
+
+        return true;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "subcategory_code", nullable = false)
+    public Subcategory getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(Subcategory subcategory) {
+        this.subcategory = subcategory;
+    }
 }

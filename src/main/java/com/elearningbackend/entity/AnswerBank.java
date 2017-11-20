@@ -1,7 +1,7 @@
 package com.elearningbackend.entity;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "answer_bank", catalog = "e_learning")
@@ -10,8 +10,8 @@ public class AnswerBank implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private String answerCode;
 	private String answerContent;
-	private Date creationDate;
-	private Date lastUpdateDate;
+	private Timestamp creationDate;
+	private Timestamp lastUpdateDate;
 	private String creatorUsername;
 	private String lastUpdaterUsername;
 
@@ -41,23 +41,21 @@ public class AnswerBank implements java.io.Serializable {
 		this.answerContent = answerContent;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "creation_date", length = 19)
-	public Date getCreationDate() {
+	@Column(name = "creation_date")
+	public Timestamp getCreationDate() {
 		return this.creationDate;
 	}
 
-	public void setCreationDate(Date creationDate) {
+	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "last_update_date", length = 19)
-	public Date getLastUpdateDate() {
+	@Column(name = "last_update_date")
+	public Timestamp getLastUpdateDate() {
 		return this.lastUpdateDate;
 	}
 
-	public void setLastUpdateDate(Date lastUpdateDate) {
+	public void setLastUpdateDate(Timestamp lastUpdateDate) {
 		this.lastUpdateDate = lastUpdateDate;
 	}
 

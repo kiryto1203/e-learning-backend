@@ -15,4 +15,8 @@ public abstract class CodeGenerator {
     public static String generateQuestionCode(String categoryCode){
         return String.format("%sQ%s", categoryCode, new Timestamp(System.currentTimeMillis()).getTime());
     }
+
+    public static String generateAnswerCode(String answerCode){
+        return String.format("%sA%s",answerCode, new Timestamp(System.currentTimeMillis()).getTime());
+    }
 }

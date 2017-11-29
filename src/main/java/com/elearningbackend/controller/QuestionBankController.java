@@ -18,15 +18,17 @@ public class QuestionBankController {
     @GetMapping("/questions")
     public Pager<QuestionBankDto> loadAll(
             @RequestParam("page") int page,
-            @RequestParam("noOfRowInPage") int noOfRowInPage){
-        return null;
+            @RequestParam("limit") int noOfRowInPage){
+       return abstractService.loadAll(page, noOfRowInPage);
     }
 
+    //TODO
     @GetMapping("/questions/{key}")
     public QuestionBankDto getOne(@PathVariable("key") String key){
         return null;
     }
 
+    //TODO
     @GetMapping("/questions/{creatorUsername}")
     public Pager<QuestionBankDto> getByCreator(
             @PathVariable("creatorUsername") String creatorUsername,
@@ -36,16 +38,19 @@ public class QuestionBankController {
         return null;
     }
 
+    //TODO
     @PostMapping("/questions")
     public String add(@RequestBody QuestionBankDto questionBankDto){
         return null;
     }
 
+    //TODO
     @PutMapping("/questions/{key}")
     public String edit(@PathVariable String key, @RequestBody QuestionBankDto questionBankDto){
         return null;
     }
 
+    //TODO
     @DeleteMapping("/questions/{key}")
     public String delete(@PathVariable String key){
         return null;

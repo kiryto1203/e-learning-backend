@@ -61,6 +61,10 @@
             <artifactId>lombok</artifactId>
             <version>LATEST</version>
         </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

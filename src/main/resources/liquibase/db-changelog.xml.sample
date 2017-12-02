@@ -20,4 +20,5 @@
             insert into articles(article_id, title, category) values(3, 'Van dddhoc', 'Vanhoddddc');
         </sql>
     </changeSet>
+    <changeSet>
 </databaseChangeLog>

@@ -5,6 +5,7 @@ import com.elearningbackend.dto.QuestionBankDto;
 import com.elearningbackend.service.IAbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

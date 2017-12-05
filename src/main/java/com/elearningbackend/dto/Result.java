@@ -8,18 +8,16 @@ package com.elearningbackend.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
-public class Pager<T> {
-    private int currentPage;
-    private int noOfRowInPage;
-    private long totalRow;
-    private long totalPage;
-    private List<T> results;
+public class Result<T> {
+    private String code;
+    private String message;
+    private T data;
 
-    public int getCurrentPage() {
-        return currentPage + 1;
+    public Result(String code, String message, T data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
     }
 }

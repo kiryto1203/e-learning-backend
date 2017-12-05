@@ -209,4 +209,29 @@
             <column name="last_updater_username" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
+    <changeSet id="create-unique" author="ChipZero">
+        <addUniqueConstraint
+            catalogName="e_learning"
+            columnNames="email"
+            constraintName="const_email"
+            schemaName="e_learning"
+            tableName="user"
+            tablespace="A String"/>
+        <addUniqueConstraint
+            catalogName="e_learning"
+            columnNames="phone"
+            constraintName="const_phone"
+            schemaName="e_learning"
+            tableName="user"
+            tablespace="A String"/>
+    </changeSet>
+    <changeSet id="remove-unique-email-phone" author="LongDH">
+        <dropUniqueConstraint tableName="user" constraintName="const_email" schemaName="e_learning" uniqueColumns="email, phone"/>
+    </changeSet>
+    <changeSet id="remove-unique-email-phone-p2" author="LongDH">
+        <dropUniqueConstraint tableName="user" constraintName="const_phone" schemaName="e_learning" uniqueColumns="phone"/>
+    </changeSet>
+    <changeSet author="LongDH" id="add_some_sample_user">
+        <sqlFile path="./user.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 </databaseChangeLog>

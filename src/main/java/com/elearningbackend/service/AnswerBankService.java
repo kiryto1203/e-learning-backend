@@ -1,5 +1,7 @@
 package com.elearningbackend.service;
 
+import com.elearningbackend.customerrorcode.Errors;
+import com.elearningbackend.customexception.ElearningException;
 import com.elearningbackend.dto.AnswerBankDto;
 import com.elearningbackend.dto.Pager;
 import com.elearningbackend.entity.AnswerBank;
@@ -28,9 +30,12 @@ public class AnswerBankService extends AbstractCustomService<AnswerBankDto, Stri
     }
 
     @Override
-    public AnswerBankDto getOneByKey(String key) {
+    public AnswerBankDto getOneByKey(String key) throws ElearningException {
         AnswerBank answer = getAnswerRepository().findOne(key);
-        return answer == null ? null : mapper.map(answer, AnswerBankDto.class);
+        if (answer == null) {
+            throw new ElearningException(Errors.USER_NOT_FOUND.getId(), Errors.USER_NOT_FOUND.getMessage());
+        }
+        return mapper.map(answer, AnswerBankDto.class);
     }
 
     @Override
@@ -41,35 +46,36 @@ public class AnswerBankService extends AbstractCustomService<AnswerBankDto, Stri
     }
 
     @Override
-    public AnswerBankDto add(AnswerBankDto answer) throws Exception {
+    public AnswerBankDto add(AnswerBankDto answer) throws ElearningException {
         try {
             saveAnswer(answer);
             return answer;
         } catch (Exception e){
-            throw new Exception("Cannot add new answer", e);
+            //TODO
+            throw new ElearningException("Cannot add new answer");
         }
     }
 
     @Override
-    public AnswerBankDto edit(AnswerBankDto answer) throws Exception {
+    public AnswerBankDto edit(AnswerBankDto answer) throws ElearningException {
         AnswerBankDto answerByCode = getOneByKey(answer.getAnswerCode());
         if (answerByCode != null) {
             saveAnswer(answer);
             return answer;
         }
-        // sang controller try catch -> throw http 200 + message
-        throw new Exception("Cannot edit answer");
+        //TODO
+        throw new ElearningException("Cannot edit answer");
     }
 
     @Override
-    public AnswerBankDto delete(String key) throws Exception {
+    public AnswerBankDto delete(String key) throws ElearningException {
         AnswerBankDto answerByCode = getOneByKey(key);
         if (answerByCode != null) {
             getAnswerRepository().delete(mapper.map(answerByCode, AnswerBank.class));
             return answerByCode;
         }
-        // sang controller try catch -> throw http 200 + message
-        throw new Exception("Cannot delete answer");
+        //TODO
+        throw new ElearningException("Cannot delete answer");
     }
 
     private IAnswerBankRepository getAnswerRepository() {

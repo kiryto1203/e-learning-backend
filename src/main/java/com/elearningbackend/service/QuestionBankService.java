@@ -5,6 +5,8 @@
  */
 package com.elearningbackend.service;
 
+import com.elearningbackend.customerrorcode.Errors;
+import com.elearningbackend.customexception.ElearningException;
 import com.elearningbackend.dto.Pager;
 import com.elearningbackend.dto.QuestionBankDto;
 import com.elearningbackend.entity.QuestionBank;
@@ -36,9 +38,12 @@ public class QuestionBankService extends AbstractCustomService<QuestionBankDto, 
     }
 
     @Override
-    public QuestionBankDto getOneByKey(String questionCode) {
+    public QuestionBankDto getOneByKey(String questionCode) throws ElearningException {
         QuestionBank question = getQuestionRepository().findOne(questionCode);
-        return question == null ? null : mapper.map(question, QuestionBankDto.class);
+        if (question == null) {
+            throw new ElearningException(Errors.USER_NOT_FOUND.getId(), Errors.USER_NOT_FOUND.getMessage());
+        }
+        return mapper.map(question, QuestionBankDto.class);
     }
 
     @Override
@@ -49,35 +54,36 @@ public class QuestionBankService extends AbstractCustomService<QuestionBankDto, 
     }
 
     @Override
-    public QuestionBankDto add(QuestionBankDto question) throws Exception {
+    public QuestionBankDto add(QuestionBankDto question) throws ElearningException {
         try {
             saveQuestion(question);
             return question;
         } catch (Exception e){
-            throw new Exception("Cannot add new question", e);
+            //TODO
+            throw new ElearningException("Cannot add new question");
         }
     }
 
     @Override
-    public QuestionBankDto edit(QuestionBankDto question) throws Exception {
+    public QuestionBankDto edit(QuestionBankDto question) throws ElearningException {
         QuestionBankDto questionByCode = getOneByKey(question.getQuestionCode());
         if (questionByCode != null) {
             saveQuestion(question);
             return question;
         }
-        // sang controller try catch -> throw http 200 + message
-        throw new Exception("Cannot edit question");
+        //TODO
+        throw new ElearningException("Cannot edit question");
     }
 
     @Override
-    public QuestionBankDto delete(String questionCode) throws Exception {
+    public QuestionBankDto delete(String questionCode) throws ElearningException {
         QuestionBankDto questionByCode = getOneByKey(questionCode);
         if (questionByCode != null) {
             getQuestionRepository().delete(mapper.map(questionByCode, QuestionBank.class));
             return questionByCode;
         }
-        // sang controller try catch -> throw http 200 + message
-        throw new Exception("Cannot delete question");
+        //TODO
+        throw new ElearningException("Cannot delete question");
     }
 
     public Pager<QuestionBankDto> getBySubcategoryCode(String subcategoryCode, int currentPage, int noOfRowInPage) {

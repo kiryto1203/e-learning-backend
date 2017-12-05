@@ -4,6 +4,7 @@ import com.elearningbackend.dto.Pager;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,7 +22,7 @@ public class Paginator<T, R> {
         result.setCurrentPage(currentPage);
         result.setTotalRow(pager.getTotalElements());
         result.setNoOfRowInPage(noOfRowInPage);
-        result.setTotalPage(pager.getTotalElements() / noOfRowInPage);
+        result.setTotalPage(calculateTotalPage(pager.getTotalElements(), noOfRowInPage));
         List<R> resultList = pager.getContent().stream().filter(Objects::nonNull).map(
             a -> mapper.map(a, returnClass)).collect(Collectors.toList()
         );
@@ -29,13 +30,26 @@ public class Paginator<T, R> {
         return result;
     }
 
+    static int calculateTotalPage(long totalElements, long noOfRowInPage){
+        return (int) Math.ceil((double)totalElements/noOfRowInPage);
+    }
+
+    public static PageRequest getValidPageRequest(int currentPage, int noOfRowInPage){
+        return new PageRequest(validateCurrentPage(currentPage), validateNoOfRowInPage(noOfRowInPage));
+    }
+
     private static int validateCurrentPage(int currentPage) {
-        return currentPage <= Constants.ZERO ? currentPage = Constants.CURRENT_PAGE_DEFAULT_VALUE
+        currentPage = convertValidCurrentPage(currentPage);
+        return currentPage < Constants.ZERO ? Constants.CURRENT_PAGE_DEFAULT_VALUE
             : currentPage;
     }
 
     private static int validateNoOfRowInPage(int noOfRowInPage) {
-        return noOfRowInPage <= Constants.ZERO ? noOfRowInPage = Constants.NO_OF_ROWS_DEFAULT_VALUE
+        return noOfRowInPage <= Constants.ZERO ? Constants.NO_OF_ROWS_DEFAULT_VALUE
             : noOfRowInPage;
+    }
+
+    private static int convertValidCurrentPage(int currentPage){
+        return currentPage - 1;
     }
 }

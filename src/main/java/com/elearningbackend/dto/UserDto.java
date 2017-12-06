@@ -21,7 +21,7 @@ public class UserDto {
     @NotBlank(message = "Password cannot be empty!")
     @Length(min = 6, max = 30, message = "Password has to be between 6-30")
     @JsonProperty("password")
-    private String UserCopassword;
+    private String password;
 
     @JsonProperty("activation_digest")
     private String activationDigest;

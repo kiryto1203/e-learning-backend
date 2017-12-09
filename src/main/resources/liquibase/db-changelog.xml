@@ -243,11 +243,5 @@
     <changeSet id="insert-category-subcategory" author="longdh">
         <sqlFile path="./category.sql" relativeToChangelogFile="true"/>
         <sqlFile path="./subcategory.sql" relativeToChangelogFile="true"/>
-=======
-    <changeSet id="insert-sample-user" author="thaidq">
-        <sql>
-            INSERT INTO `user` (`username`, `password_digest`, `activation_digest`, `activated`, `activated_at`, `remember_digest`, `reset_digest`, `reset_sent_at`, `created_at`, `updated_at`, `display_name`, `email`, `phone`, `address`, `avatar`, `role`) VALUES ('root', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', '1234', b'0', '2017-12-02 00:00:00', NULL, NULL, '2017-12-02 00:00:00', '2017-12-02 00:00:00', '2017-12-02 00:00:00', 'Administrator', 'root@gmail.com', '0987654321', 'Ha Noi', NULL, '0');
-        </sql>
->>>>>>> Update JWT connect to database
     </changeSet>
 </databaseChangeLog>

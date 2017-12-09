@@ -1,5 +1,7 @@
 package com.elearningbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -9,10 +11,13 @@ import java.util.Set;
 @Table(name = "subcategory")
 public class Subcategory implements Serializable{
     private String subcategoryCode;
+    private String displayName;
     private String subcategoryIntro;
     private Timestamp creationDate;
     private Timestamp lastUpdateDate;
+
     private Category category;
+
     private Set<QuestionBank> questionBanks;
 
     @Id
@@ -23,6 +28,15 @@ public class Subcategory implements Serializable{
 
     public void setSubcategoryCode(String subcategoryCode) {
         this.subcategoryCode = subcategoryCode;
+    }
+
+    @Column(name = "display_name")
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName){
+        this.displayName = displayName;
     }
 
     @Column(name = "subcategory_intro")
@@ -92,7 +106,7 @@ public class Subcategory implements Serializable{
         this.category = categoryByCategoryCode;
     }
 
-    @OneToMany(mappedBy = "subcategory", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "subcategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Set<QuestionBank> getQuestionBanks() {
         return questionBanks;
     }

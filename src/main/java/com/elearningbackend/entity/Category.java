@@ -1,5 +1,7 @@
 package com.elearningbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -12,7 +14,6 @@ public class Category implements Serializable {
     private String categoryIntro;
     private Timestamp creationDate;
     private Timestamp lastUpdateDate;
-    private Set<Subcategory> subcategories;
 
     @Id
     @Column(name = "category_code")
@@ -79,14 +80,5 @@ public class Category implements Serializable {
         result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
         result = 31 * result + (lastUpdateDate != null ? lastUpdateDate.hashCode() : 0);
         return result;
-    }
-
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    public Set<Subcategory> getSubcategories() {
-        return subcategories;
-    }
-
-    public void setSubcategories(Set<Subcategory> subcategories) {
-        this.subcategories = subcategories;
     }
 }

@@ -1,4 +1,6 @@
 package com.elearningbackend.security;
+import com.elearningbackend.customerrorcode.Errors;
+import com.elearningbackend.customexception.ElearningException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security
@@ -31,20 +33,21 @@ class TokenAuthenticationService {
         }
     }
 
-    static Authentication getAuthentication(HttpServletRequest request) {
+    static Authentication getAuthentication(HttpServletRequest request) throws ElearningException {
         String token = request.getHeader(HEADER_STRING);
-        if (token != null) {
-            // parse the token.
-            String user = Jwts.parser()
-                    .setSigningKey(SECRET)
-                    .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-                    .getBody()
-                    .getSubject();
-
-            return user != null ?
-                    new UsernamePasswordAuthenticationToken(user, null, emptyList()) :
-                    null;
+        if (token == null)
+            throw new ElearningException(Errors.NOT_TOKEN.getId(),Errors.NOT_TOKEN.getMessage());
+        String user;
+        try{ user = Jwts.parser()
+                .setSigningKey(SECRET)
+                .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+                .getBody()
+                .getSubject();
+        }catch (Exception e){
+            throw new ElearningException(Errors.TOKEN_NOT_MATCH.getId(),Errors.TOKEN_NOT_MATCH.getMessage());
         }
-        return null;
+        return user != null ?
+                new UsernamePasswordAuthenticationToken(user, null, emptyList()) :
+                null;
     }
 }

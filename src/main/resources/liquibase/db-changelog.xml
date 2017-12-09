@@ -209,7 +209,6 @@
             <column name="last_updater_username" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-<<<<<<< HEAD
     <changeSet id="create-unique" author="ChipZero">
         <addUniqueConstraint
             catalogName="e_learning"

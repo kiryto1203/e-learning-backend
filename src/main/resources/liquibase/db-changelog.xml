@@ -234,4 +234,13 @@
     <changeSet author="LongDH" id="add_some_sample_user">
         <sqlFile path="./user.sql" relativeToChangelogFile="true"/>
     </changeSet>
+    <changeSet id="add-more-fields-in-subcategory" author="longdh">
+        <addColumn catalogName="e_learning" tableName="subcategory">
+            <column name="display_name" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="insert-category-subcategory" author="longdh">
+        <sqlFile path="./category.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="./subcategory.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 </databaseChangeLog>

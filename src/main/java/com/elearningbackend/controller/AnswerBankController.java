@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
-@RequestMapping("api")
 public class AnswerBankController {
     @Autowired
     @Qualifier("answerBankService")

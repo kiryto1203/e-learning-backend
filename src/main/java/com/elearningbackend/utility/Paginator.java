@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,8 +35,8 @@ public class Paginator<T, R> {
         return (int) Math.ceil((double)totalElements/noOfRowInPage);
     }
 
-    public static PageRequest getValidPageRequest(int currentPage, int noOfRowInPage){
-        return new PageRequest(validateCurrentPage(currentPage), validateNoOfRowInPage(noOfRowInPage));
+    public static PageRequest getValidPageRequest(int currentPage, int noOfRowInPage, Sort sort){
+        return new PageRequest(validateCurrentPage(currentPage), validateNoOfRowInPage(noOfRowInPage), sort);
     }
 
     private static int validateCurrentPage(int currentPage) {

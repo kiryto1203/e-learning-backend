@@ -25,7 +25,7 @@ public class UserService extends AbstractUserService<UserDto, String, User> {
 
     @Override
     public Pager<UserDto> loadAll(int currentPage, int noOfRowInPage) {
-        Page<User> pager = getUserRepository().findAll(Paginator.getValidPageRequest(currentPage, noOfRowInPage));
+        Page<User> pager = getUserRepository().findAll(Paginator.getValidPageRequest(currentPage, noOfRowInPage, null));
         return paginator.paginate(currentPage, pager, noOfRowInPage, mapper);
     }
 
@@ -38,12 +38,6 @@ public class UserService extends AbstractUserService<UserDto, String, User> {
         UserDto userDto = mapUserDto(user);
         return userDto;
 
-    }
-
-    private UserDto mapUserDto(User user) {
-        UserDto userDto = mapper.map(user, UserDto.class);
-        userDto.setPassword(user.getPasswordDigest());
-        return userDto;
     }
 
     private UserDto getOneByEmail(String email) {
@@ -93,6 +87,11 @@ public class UserService extends AbstractUserService<UserDto, String, User> {
         return true;
     }
 
+    private UserDto mapUserDto(User user) {
+        UserDto userDto = mapper.map(user, UserDto.class);
+        userDto.setPassword(user.getPasswordDigest());
+        return userDto;
+    }
 
     void saveUser (UserDto userDto){
         User entity = mapper.map(userDto, User.class);

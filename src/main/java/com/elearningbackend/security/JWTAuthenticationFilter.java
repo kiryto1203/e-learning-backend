@@ -1,5 +1,8 @@
 package com.elearningbackend.security;
 
+import com.elearningbackend.customexception.ElearningException;
+import com.elearningbackend.dto.Result;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.security.core.Authentication;
@@ -17,11 +20,16 @@ public class JWTAuthenticationFilter extends GenericFilterBean {
                          ServletResponse response,
                          FilterChain filterChain)
             throws IOException, ServletException {
-        Authentication authentication = TokenAuthenticationService
-                .getAuthentication((HttpServletRequest)request);
+        try {
+            Authentication authentication = TokenAuthenticationService
+                    .getAuthentication((HttpServletRequest)request);
 
-        SecurityContextHolder.getContext()
-                .setAuthentication(authentication);
-        filterChain.doFilter(request,response);
+            SecurityContextHolder.getContext()
+                    .setAuthentication(authentication);
+            filterChain.doFilter(request,response);
+        }catch (ElearningException e){
+            ObjectMapper mapper = new ObjectMapper();
+            response.getWriter().write(mapper.writeValueAsString(new Result(e.getErrorCode(),e.getMessage(),null)));
+        }
     }
 }

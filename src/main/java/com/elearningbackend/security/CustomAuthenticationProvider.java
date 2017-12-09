@@ -1,9 +1,9 @@
 package com.elearningbackend.security;
 
-import com.elearningbackend.customexception.ElearningException;
+import com.elearningbackend.customerrorcode.Errors;
+import com.elearningbackend.customexception.ElearningAuthException;
 import com.elearningbackend.entity.User;
 import com.elearningbackend.repository.IUserRepository;
-import com.elearningbackend.utility.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,22 +24,20 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String name = authentication.getName();
-        String password = authentication.getCredentials().toString();
+        String name = authentication.getName().trim();
+        String password = authentication.getCredentials().toString().trim();
         User user = userRepository.findOne(name);
-        if(user==null) return null;
-        if(user.getPasswordDigest().equals(Utility.sha256(password))){
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority(user.getRole()));
-            return new UsernamePasswordAuthenticationToken(name,password, authorities);
-        }
-        return null;
+        if(user==null)
+            throw new ElearningAuthException(Errors.USER_NOT_FOUND.getId(),Errors.USER_NOT_FOUND.name());
+        if(!user.getPasswordDigest().equals(password))
+        throw new ElearningAuthException(Errors.USER_PASSWORD_NOT_MATCH.getId(),Errors.USER_PASSWORD_NOT_MATCH.name());
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getRole()));
+        return new UsernamePasswordAuthenticationToken(name,password, authorities);
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
-
-
 }

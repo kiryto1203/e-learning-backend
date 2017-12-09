@@ -15,6 +15,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 public class UserDto {
+
     @NotBlank(message = "Username cannot be empty!")
     private String username;
 
@@ -63,5 +64,10 @@ public class UserDto {
 
     public UserDto(String username) {
         this.username = username;
+    }
+
+    public UserDto(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 }

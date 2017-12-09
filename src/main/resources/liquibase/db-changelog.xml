@@ -34,8 +34,8 @@
             <column name="system_result_question_code" type="VARCHAR(100)">
                 <constraints nullable="false" foreignKeyName="system_result_question_code_fkey" references="question_bank(question_code)"/>
             </column>
-            <column name="system_result_correct_id" type="json"/>
-            <column name="system_result_incorrect_id" type="json"/>
+            <column name="system_result_correct_id" type="text"/>
+            <column name="system_result_incorrect_id" type="text"/>
             <column name="creation_date" type="datetime"/>
             <column name="last_update_date" type="datetime"/>
             <column name="creator_username" type="VARCHAR(255)">
@@ -93,7 +93,7 @@
             <column name="lession_code" type="VARCHAR(100)"/>
             <column name="creation_date" type="datetime"/>
             <column name="last_update_date" type="datetime"/>
-            <column name="user_answer" type="json"/>
+            <column name="user_answer" type="text"/>
         </createTable>
         <createIndex catalogName="e_learning"
                      indexName="idx_lession_code"

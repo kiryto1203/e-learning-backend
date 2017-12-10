@@ -11,6 +11,7 @@ import com.elearningbackend.utility.ServiceUtils;
 import com.elearningbackend.utility.SortingConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,6 +24,7 @@ public class UserController extends BaseController {
     private IAbstractService<UserDto, String> abstractService;
 
     @GetMapping("/users")
+    @PreAuthorize("hasAuthority('1')")
     public Pager<UserDto> loadAll(
             @RequestParam(value = "page", defaultValue = Constants.CURRENT_PAGE_DEFAULT_STRING_VALUE) int page,
             @RequestParam(value = "limit", defaultValue = Constants.NO_OF_ROWS_DEFAULT_STRING_VALUE) int noOfRowInPage,
@@ -32,6 +34,7 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/users/{key}")
+    @PreAuthorize("hasAuthority('0')")
     public Result<UserDto> getByKey(@PathVariable("key") String key){
         try {
             UserDto userDto = abstractService.getOneByKey(key);

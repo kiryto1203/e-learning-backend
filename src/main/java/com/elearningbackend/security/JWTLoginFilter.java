@@ -5,15 +5,10 @@ import com.elearningbackend.customexception.ElearningAuthException;
 import com.elearningbackend.customexception.ElearningException;
 import com.elearningbackend.dto.Result;
 import com.elearningbackend.dto.UserDto;
-import com.elearningbackend.entity.User;
-import com.elearningbackend.repository.IUserRepository;
-import com.elearningbackend.service.IAbstractService;
 import com.elearningbackend.service.UserService;
 import com.elearningbackend.utility.ServiceUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.omg.CORBA.Object;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,8 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 

@@ -1,6 +1,7 @@
 package com.elearningbackend.utility;
 
 import com.elearningbackend.customerrorcode.Errors;
+import com.elearningbackend.dto.UserDto;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -23,5 +24,19 @@ public class ServiceUtils {
         if (!errFields.isEmpty())
             errorsMap.put(Errors.ERROR_FIELD_MISS.getMessage(), errFields);
         return errorsMap;
+    }
+    /**
+     * Method set field for Object if this is empty or null
+     */
+    public static Object convertObject(Object obj,String... fields){
+        for (String field: fields) {
+            Field foundField = ReflectionUtils.findField(obj.getClass(), field);
+            ReflectionUtils.makeAccessible(foundField);
+            Object value = ReflectionUtils.getField(foundField, obj);
+            if (value == null || (value instanceof String && ((String) value).isEmpty())){
+                ReflectionUtils.setField(foundField,obj, "N/A");
+            }
+        }
+        return obj;
     }
 }

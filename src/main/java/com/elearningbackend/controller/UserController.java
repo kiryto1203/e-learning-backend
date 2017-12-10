@@ -11,6 +11,9 @@ import com.elearningbackend.utility.ServiceUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,7 +22,7 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin
-public class UserController {
+public class UserController extends BaseController {
     @Autowired
     @Qualifier("userService")
     private IAbstractService<UserDto, String> abstractService;
@@ -28,6 +31,10 @@ public class UserController {
     public Pager<UserDto> loadAll(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "limit", defaultValue = "10") int noOfRowInPage){
+        UserDto userCurrent = getCurrentUser();
+        System.out.println(authentication.toString());
+        System.out.println(authentication.getAuthorities().toArray()[0]);
+        String currentPrincipalName = authentication.getName();
         return abstractService.loadAll(page, noOfRowInPage);
     }
 
@@ -45,6 +52,7 @@ public class UserController {
 
     @PostMapping("/users")
     public Result<UserDto> add(@Valid @RequestBody UserDto userDto){
+
         try {
             checkUserDataMissing(ServiceUtils.validateRequired(userDto,
                     "username", "password", "email", "phone", "role"));

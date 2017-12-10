@@ -1,6 +1,5 @@
 package com.elearningbackend.controller;
 
-import com.elearningbackend.customerrorcode.Errors;
 import com.elearningbackend.customexception.ElearningException;
 import com.elearningbackend.dto.Pager;
 import com.elearningbackend.dto.Result;
@@ -10,14 +9,11 @@ import com.elearningbackend.utility.Constants;
 import com.elearningbackend.utility.ResultCodes;
 import com.elearningbackend.utility.ServiceUtils;
 import com.elearningbackend.utility.SortingConstants;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -50,8 +46,8 @@ public class UserController {
     @PostMapping("/users")
     public Result<UserDto> add(@Valid @RequestBody UserDto userDto){
         try {
-            checkUserDataMissing(ServiceUtils.validateRequired(userDto,
-                    "username", "password", "email", "phone", "role"));
+            ServiceUtils.checkDataMissing(userDto,
+        "username", "password", "email", "phone", "role");
             abstractService.add(userDto);
             return new Result<>(ResultCodes.OK.getCode(),
                 ResultCodes.OK.getMessage(), userDto);
@@ -67,8 +63,7 @@ public class UserController {
     public Result<UserDto> edit(@PathVariable String key, @RequestBody UserDto userDto){
         userDto.setUsername(key);
         try {
-            checkUserDataMissing(ServiceUtils.validateRequired(userDto,
-                    "username", "password"));
+            ServiceUtils.checkDataMissing(userDto, "username", "password");
             abstractService.edit(userDto);
             return new Result<>(ResultCodes.OK.getCode(),
                 ResultCodes.OK.getMessage(), userDto);
@@ -94,13 +89,5 @@ public class UserController {
             return new Result<>(ResultCodes.FAIL_UNRECOGNIZED_ERROR.getCode(),
                 e.getMessage(), null);
         }
-    }
-
-    private boolean checkUserDataMissing(Map<String, List<String>> errorsMap) throws ElearningException {
-        ObjectMapper mapper = new ObjectMapper();
-        if (!errorsMap.isEmpty()){
-            throw new ElearningException(Errors.ERROR_FIELD_MISS.getId(), errorsMap.toString());
-        }
-        return true;
     }
 }

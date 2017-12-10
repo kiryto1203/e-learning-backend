@@ -35,7 +35,7 @@ public class AnswerBankService extends AbstractCustomService<AnswerBankDto, Stri
     public AnswerBankDto getOneByKey(String key) throws ElearningException {
         AnswerBank answer = getAnswerRepository().findOne(key);
         if (answer == null) {
-            throw new ElearningException(Errors.USER_NOT_FOUND.getId(), Errors.USER_NOT_FOUND.getMessage());
+            throw new ElearningException(Errors.ANSWER_NOT_EXITS.getId(), Errors.ANSWER_NOT_EXITS.getMessage());
         }
         return mapper.map(answer, AnswerBankDto.class);
     }
@@ -49,35 +49,25 @@ public class AnswerBankService extends AbstractCustomService<AnswerBankDto, Stri
 
     @Override
     public AnswerBankDto add(AnswerBankDto answer) throws ElearningException {
-        try {
-            saveAnswer(answer);
-            return answer;
-        } catch (Exception e){
-            //TODO
-            throw new ElearningException("Cannot add new answer");
-        }
+        if (getAnswerRepository().findOne(answer.getAnswerCode()) != null)
+            throw new ElearningException(Errors.ANSWER_EXIST.getId(), Errors.ANSWER_EXIST.getMessage());
+        saveAnswer(answer);
+        return answer;
+
     }
 
     @Override
     public AnswerBankDto edit(AnswerBankDto answer) throws ElearningException {
-        AnswerBankDto answerByCode = getOneByKey(answer.getAnswerCode());
-        if (answerByCode != null) {
-            saveAnswer(answer);
-            return answer;
-        }
-        //TODO
-        throw new ElearningException("Cannot edit answer");
+        getOneByKey(answer.getAnswerCode());
+        saveAnswer(answer);
+        return answer;
     }
 
     @Override
     public AnswerBankDto delete(String key) throws ElearningException {
         AnswerBankDto answerByCode = getOneByKey(key);
-        if (answerByCode != null) {
-            getAnswerRepository().delete(mapper.map(answerByCode, AnswerBank.class));
-            return answerByCode;
-        }
-        //TODO
-        throw new ElearningException("Cannot delete answer");
+        getAnswerRepository().delete(key);
+        return answerByCode;
     }
 
     private IAnswerBankRepository getAnswerRepository() {

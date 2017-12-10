@@ -1,30 +1,46 @@
 package com.elearningbackend.controller;
 
+import com.elearningbackend.customexception.ElearningException;
 import com.elearningbackend.dto.AnswerBankDto;
 import com.elearningbackend.dto.Pager;
-import com.elearningbackend.service.IAbstractService;
+import com.elearningbackend.dto.Result;
+import com.elearningbackend.entity.AnswerBank;
+import com.elearningbackend.service.AbstractCustomService;
+import com.elearningbackend.utility.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+
 
 @RestController
 @CrossOrigin
 public class AnswerBankController {
     @Autowired
     @Qualifier("answerBankService")
-    private IAbstractService<AnswerBankDto, String> abstractService;
+    private AbstractCustomService<AnswerBankDto, String, AnswerBank> abstractService;
 
     @GetMapping("/answers")
     public Pager<AnswerBankDto> loadAll(
-            @RequestParam("currentPage") int currentPage,
-            @RequestParam("noOfRowInPage") int noOfRowInPage
+            @RequestParam(value = "page", defaultValue = Constants.CURRENT_PAGE_DEFAULT_STRING_VALUE) int currentPage,
+            @RequestParam(value = "limit", defaultValue = Constants.NO_OF_ROWS_DEFAULT_STRING_VALUE) int noOfRowInPage,
+            @RequestParam(defaultValue = SortingConstants.SORT_USER_DEFAULT_FIELD) String sortBy,
+            @RequestParam(defaultValue = SortingConstants.ASC) String direction
     ){
-        return null;
+        return abstractService.loadAll(currentPage, noOfRowInPage, sortBy, direction);
     }
 
     @GetMapping("/answers/{key}")
-    public AnswerBankDto getByKey(@PathVariable("key") String key){
-        return null;
+    public Result<AnswerBankDto> getByKey(@PathVariable("key") String key){
+        try {
+            AnswerBankDto answerBankDto = abstractService.getOneByKey(key);
+            return new Result<>(ResultCodes.OK.getCode(),
+                    ResultCodes.OK.getMessage(), answerBankDto);
+        }catch(ElearningException e){
+            e.printStackTrace();
+            return new Result<>(e.getErrorCode(), e.getMessage(), null);
+        }
     }
 
     @GetMapping("/answers/{creatorUsername}/")
@@ -33,21 +49,61 @@ public class AnswerBankController {
             @RequestParam("currentPage") int currentPage,
             @RequestParam("noOfRowInPage") int noOfRowInPage
     ){
+        //TODO
         return null;
     }
 
     @PostMapping("/answers")
-    public AnswerBankDto add(@RequestBody AnswerBankDto answerBankDto){
-        return null;
+    public Result<AnswerBankDto> add(@Valid @RequestBody AnswerBankDto answerBankDto){
+        try {
+            ServiceUtils.checkDataMissing(answerBankDto,
+                    "answerContent", "creationDate", "creatorUsername");
+            answerBankDto.setAnswerCode(CodeGenerator.generateAnswerCode());
+            abstractService.add(answerBankDto);
+            return new Result<>(ResultCodes.OK.getCode(),
+                    ResultCodes.OK.getMessage(), answerBankDto);
+        }catch (ElearningException e){
+            e.printStackTrace();
+            return new Result<>(e.getErrorCode(), e.getMessage(), answerBankDto);
+        }catch (Exception e) {
+            return new Result<>(ResultCodes.FAIL_UNRECOGNIZED_ERROR.getCode(),
+                    e.getMessage(), answerBankDto);
+        }
     }
 
     @PutMapping("/answers/{key}")
-    public AnswerBankDto edit(@PathVariable String key, @RequestBody AnswerBankDto answerBankDto){
-        return null;
+    public Result<AnswerBankDto> edit(
+            @Valid
+            @PathVariable String key,
+            @RequestBody AnswerBankDto answerBankDto){
+      try {
+          ServiceUtils.checkDataMissing(answerBankDto,
+                  "answerContent", "creationDate", "lastUpdateDate", "creatorUsername", "lastUpdaterUsername");
+          answerBankDto.setAnswerCode(key);
+          abstractService.edit(answerBankDto);
+          return new Result<>(ResultCodes.OK.getCode(), ResultCodes.OK.getMessage(), answerBankDto);
+      }catch (ElearningException e ) {
+          e.printStackTrace();
+          return new Result<>(e.getErrorCode(), e.getMessage(), answerBankDto);
+      }catch (Exception ex) {
+          ex.printStackTrace();
+          return new Result<>(ResultCodes.FAIL_UNRECOGNIZED_ERROR.getCode(),
+                  ex.getMessage(), answerBankDto);
+      }
     }
 
     @DeleteMapping("/answers/{key}")
-    public AnswerBankDto delete(@PathVariable("key") String key){
-        return null;
+    public Result<AnswerBankDto> delete(@PathVariable("key") String key){
+        try {
+            abstractService.delete(key);
+            return new Result<>(ResultCodes.OK.getCode(),
+                    ResultCodes.OK.getMessage(), null);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new Result<>(ResultCodes.FAIL_UNRECOGNIZED_ERROR.getCode(),
+                    e.getMessage(), null);
+        }
     }
+
+
 }

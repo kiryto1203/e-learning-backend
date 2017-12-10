@@ -1,6 +1,7 @@
 package com.elearningbackend.utility;
 
 import com.elearningbackend.customerrorcode.Errors;
+import org.springframework.data.domain.Sort;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -23,5 +24,9 @@ public class ServiceUtils {
         if (!errFields.isEmpty())
             errorsMap.put(Errors.ERROR_FIELD_MISS.getMessage(), errFields);
         return errorsMap;
+    }
+
+    public static Sort proceedSort(String sortBy, String direction){
+        return new Sort(direction.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy);
     }
 }

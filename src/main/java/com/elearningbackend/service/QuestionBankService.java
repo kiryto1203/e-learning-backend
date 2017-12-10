@@ -12,6 +12,7 @@ import com.elearningbackend.dto.QuestionBankDto;
 import com.elearningbackend.entity.QuestionBank;
 import com.elearningbackend.repository.IQuestionBankRepository;
 import com.elearningbackend.utility.Paginator;
+import com.elearningbackend.utility.ServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,8 +33,9 @@ public class QuestionBankService extends AbstractCustomService<QuestionBankDto, 
     }
 
     @Override
-    public Pager<QuestionBankDto> loadAll(int currentPage, int noOfRowInPage) {
-        Page<QuestionBank> pager = getQuestionRepository().findAll(new PageRequest(currentPage, noOfRowInPage));
+    public Pager<QuestionBankDto> loadAll(int currentPage, int noOfRowInPage, String sortBy, String direction) {
+        Page<QuestionBank> pager = getQuestionRepository().findAll(Paginator.getValidPageRequest(currentPage, noOfRowInPage,
+                ServiceUtils.proceedSort(sortBy, direction)));
         return paginator.paginate(currentPage, pager, noOfRowInPage, mapper);
     }
 

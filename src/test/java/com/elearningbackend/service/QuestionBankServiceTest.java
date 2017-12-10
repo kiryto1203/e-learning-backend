@@ -56,10 +56,10 @@ public class QuestionBankServiceTest {
             pager.getTotalElements(); result = 30;
             pager.getContent(); result = questionBanks;
         }};
-        assertThat(questionBankService.loadAll(3, 10).getCurrentPage(), is(3));
-        assertThat(questionBankService.loadAll(3, 10).getNoOfRowInPage(), is(10));
-        assertThat(questionBankService.loadAll(3, 10).getTotalPage(), is(3L));
-        assertThat(questionBankService.loadAll(3, 10).getTotalRow(), is(30L));
+        assertThat(questionBankService.loadAll(3, 10, "question_code", "asc").getCurrentPage(), is(3));
+        assertThat(questionBankService.loadAll(3, 10, "question_code", "asc").getNoOfRowInPage(), is(10));
+        assertThat(questionBankService.loadAll(3, 10, "question_code", "asc").getTotalPage(), is(3L));
+        assertThat(questionBankService.loadAll(3, 10, "question_code", "asc").getTotalRow(), is(30L));
     }
 
     @Test
@@ -79,15 +79,15 @@ public class QuestionBankServiceTest {
             pager.getTotalElements(); result = 30;
             pager.getContent(); result = questionBanks;
         }};
-        assertThat(questionBankService.loadAll(3, 10).getCurrentPage(), is(3));
-        assertThat(questionBankService.loadAll(3, 10).getNoOfRowInPage(), is(10));
-        assertThat(questionBankService.loadAll(3, 10).getTotalPage(), is(3L));
-        assertThat(questionBankService.loadAll(3, 10).getTotalRow(), is(30L));
-        assertThat(questionBankService.loadAll(3, 10).getResults().size(), is(0));
+        assertThat(questionBankService.loadAll(3, 10, "question_code", "asc").getCurrentPage(), is(3));
+        assertThat(questionBankService.loadAll(3, 10, "question_code", "asc").getNoOfRowInPage(), is(10));
+        assertThat(questionBankService.loadAll(3, 10, "question_code", "asc").getTotalPage(), is(3L));
+        assertThat(questionBankService.loadAll(3, 10, "question_code", "asc").getTotalRow(), is(30L));
+        assertThat(questionBankService.loadAll(3, 10, "question_code", "asc").getResults().size(), is(0));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void returnDefaultQuestionBankDtoPagerOnPaginateWhenIntParamsAreZero() throws Exception {
-        questionBankService.loadAll(0, 0);
+        questionBankService.loadAll(0, 0, "question_code", "asc");
     }
 }

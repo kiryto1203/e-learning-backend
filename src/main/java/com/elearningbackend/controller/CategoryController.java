@@ -7,6 +7,7 @@ import com.elearningbackend.dto.Result;
 import com.elearningbackend.service.IAbstractService;
 import com.elearningbackend.utility.Constants;
 import com.elearningbackend.utility.ResultCodes;
+import com.elearningbackend.utility.SortingConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +21,11 @@ public class CategoryController {
 
     @GetMapping("/categories")
     public Pager<CategoryDto> loadAll(
-        @RequestParam(value = "page", defaultValue = Constants.CURRENT_PAGE_DEFAULT_STRING_VALUE) int page,
-        @RequestParam(value = "limit", defaultValue = Constants.NO_OF_ROWS_DEFAULT_STRING_VALUE) int noOfRowInPage){
-        return abstractService.loadAll(page, noOfRowInPage);
+            @RequestParam(value = "page", defaultValue = Constants.CURRENT_PAGE_DEFAULT_STRING_VALUE) int page,
+            @RequestParam(value = "limit", defaultValue = Constants.NO_OF_ROWS_DEFAULT_STRING_VALUE) int noOfRowInPage,
+            @RequestParam(defaultValue = SortingConstants.SORT_CATEGORY_SUBCATEGORY_DEFAULT_FIELD) String sortBy,
+            @RequestParam(defaultValue = SortingConstants.ASC) String direction){
+        return abstractService.loadAll(page, noOfRowInPage, sortBy, direction);
     }
 
     @GetMapping("/categories/{key}")

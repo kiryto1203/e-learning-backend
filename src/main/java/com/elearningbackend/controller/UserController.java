@@ -6,8 +6,10 @@ import com.elearningbackend.dto.Pager;
 import com.elearningbackend.dto.Result;
 import com.elearningbackend.dto.UserDto;
 import com.elearningbackend.service.IAbstractService;
+import com.elearningbackend.utility.Constants;
 import com.elearningbackend.utility.ResultCodes;
 import com.elearningbackend.utility.ServiceUtils;
+import com.elearningbackend.utility.SortingConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,9 +28,11 @@ public class UserController {
 
     @GetMapping("/users")
     public Pager<UserDto> loadAll(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "limit", defaultValue = "10") int noOfRowInPage){
-        return abstractService.loadAll(page, noOfRowInPage);
+            @RequestParam(value = "page", defaultValue = Constants.CURRENT_PAGE_DEFAULT_STRING_VALUE) int page,
+            @RequestParam(value = "limit", defaultValue = Constants.NO_OF_ROWS_DEFAULT_STRING_VALUE) int noOfRowInPage,
+            @RequestParam(defaultValue = SortingConstants.SORT_USER_DEFAULT_FIELD) String sortBy,
+            @RequestParam(defaultValue = SortingConstants.ASC) String direction){
+        return abstractService.loadAll(page, noOfRowInPage, sortBy, direction);
     }
 
     @GetMapping("/users/{key}")

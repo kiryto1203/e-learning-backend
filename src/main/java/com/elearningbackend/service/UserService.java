@@ -8,6 +8,7 @@ import com.elearningbackend.entity.User;
 import com.elearningbackend.repository.IUserRepository;
 import com.elearningbackend.utility.Paginator;
 import com.elearningbackend.utility.SecurityUtil;
+import com.elearningbackend.utility.ServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,8 +25,9 @@ public class UserService extends AbstractUserService<UserDto, String, User> {
     }
 
     @Override
-    public Pager<UserDto> loadAll(int currentPage, int noOfRowInPage) {
-        Page<User> pager = getUserRepository().findAll(Paginator.getValidPageRequest(currentPage, noOfRowInPage, null));
+    public Pager<UserDto> loadAll(int currentPage, int noOfRowInPage, String sortBy, String direction) {
+        Page<User> pager = getUserRepository().findAll(
+            Paginator.getValidPageRequest(currentPage, noOfRowInPage, ServiceUtils.proceedSort(sortBy, direction)));
         return paginator.paginate(currentPage, pager, noOfRowInPage, mapper);
     }
 

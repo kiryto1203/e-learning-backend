@@ -2,20 +2,29 @@ package com.elearningbackend.security;
 
 import com.elearningbackend.customerrorcode.Errors;
 import com.elearningbackend.customexception.ElearningAuthException;
+import com.elearningbackend.customexception.ElearningException;
 import com.elearningbackend.dto.Result;
 import com.elearningbackend.dto.UserDto;
 import com.elearningbackend.entity.User;
+import com.elearningbackend.repository.IUserRepository;
+import com.elearningbackend.service.IAbstractService;
+import com.elearningbackend.service.UserService;
 import com.elearningbackend.utility.ServiceUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.omg.CORBA.Object;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +34,9 @@ import java.util.List;
 import java.util.Map;
 
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
+
+    @Autowired
+    private UserService userService;
 
     public JWTLoginFilter(String url, AuthenticationManager authManager) {
         super(new AntPathRequestMatcher(url));
@@ -48,8 +60,21 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
             HttpServletRequest req,
             HttpServletResponse res, FilterChain chain,
             Authentication auth) throws IOException, ServletException {
-        TokenAuthenticationService
-                .addAuthentication(res, auth.getName());
+            System.out.println(userService);
+            if(userService==null){
+                ServletContext servletContext = req.getServletContext();
+                WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+                userService = webApplicationContext.getBean(UserService.class);
+            }
+        UserDto userDto = null;
+        try {
+            userDto = userService.getOneByKey(auth.getName());
+            TokenAuthenticationService
+                    .addAuthentication(res, userDto);
+        } catch (ElearningException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

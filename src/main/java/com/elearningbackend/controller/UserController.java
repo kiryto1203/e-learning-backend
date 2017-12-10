@@ -11,24 +11,37 @@ import com.elearningbackend.utility.ServiceUtils;
 import com.elearningbackend.utility.SortingConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
 @CrossOrigin
-public class UserController {
+public class UserController extends BaseController {
     @Autowired
     @Qualifier("userService")
     private IAbstractService<UserDto, String> abstractService;
 
     @GetMapping("/users")
     public Pager<UserDto> loadAll(
+<<<<<<< HEAD
             @RequestParam(value = "page", defaultValue = Constants.CURRENT_PAGE_DEFAULT_STRING_VALUE) int page,
             @RequestParam(value = "limit", defaultValue = Constants.NO_OF_ROWS_DEFAULT_STRING_VALUE) int noOfRowInPage,
             @RequestParam(defaultValue = SortingConstants.SORT_USER_DEFAULT_FIELD) String sortBy,
             @RequestParam(defaultValue = SortingConstants.ASC) String direction){
         return abstractService.loadAll(page, noOfRowInPage, sortBy, direction);
+=======
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "limit", defaultValue = "10") int noOfRowInPage){
+        UserDto userCurrent = getCurrentUser();
+        System.out.println(authentication.toString());
+        System.out.println(authentication.getAuthorities().toArray()[0]);
+        String currentPrincipalName = authentication.getName();
+        return abstractService.loadAll(page, noOfRowInPage);
+>>>>>>> Config JWT for authentication + add method convert filed null + add base controller to get CurrentUser
     }
 
     @GetMapping("/users/{key}")
@@ -45,6 +58,7 @@ public class UserController {
 
     @PostMapping("/users")
     public Result<UserDto> add(@Valid @RequestBody UserDto userDto){
+
         try {
             ServiceUtils.checkDataMissing(userDto,
         "username", "password", "email", "phone", "role");

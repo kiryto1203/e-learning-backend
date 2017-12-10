@@ -32,9 +32,6 @@ public class UserController extends BaseController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "limit", defaultValue = "10") int noOfRowInPage){
         UserDto userCurrent = getCurrentUser();
-        System.out.println(authentication.toString());
-        System.out.println(authentication.getAuthorities().toArray()[0]);
-        String currentPrincipalName = authentication.getName();
         return abstractService.loadAll(page, noOfRowInPage);
     }
 

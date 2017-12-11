@@ -13,10 +13,14 @@ import java.sql.Timestamp;
  */
 public abstract class CodeGenerator {
     public static String generateQuestionCode(String categoryCode){
-        return String.format("%sQ%s", categoryCode, new Timestamp(System.currentTimeMillis()).getTime());
+        return String.format("%sQ%s", categoryCode, getCodePostFix());
     }
 
-    public static String generateAnswerCode(String answerCode){
-        return String.format("%sA%s",answerCode, new Timestamp(System.currentTimeMillis()).getTime());
+    public static String generateAnswerCode(){
+        return String.format("%sA%s", getCodePostFix());
+    }
+
+    static String getCodePostFix() {
+        return String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(0,6);
     }
 }

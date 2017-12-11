@@ -48,9 +48,12 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
             HttpServletRequest req, HttpServletResponse res)
             throws AuthenticationException, IOException, ServletException {
         UserDto userDto = new UserDto(req.getParameter("username"),req.getParameter("password"));
-        Map<String, List<String>> errorsMap = ServiceUtils.validateRequired(userDto,"username","password");
-        if(errorsMap.size()>0)
+        try {
+            ServiceUtils.checkDataMissing(userDto,"username","password" );
+        } catch (ElearningException e) {
+            e.printStackTrace();
             throw new ElearningAuthException(Errors.USERNAME_AND_PASSWORD_IS_NOT_EMPTY.getId(), Errors.USERNAME_AND_PASSWORD_IS_NOT_EMPTY.name());
+        }
         return getAuthenticationManager().authenticate(
                 new UsernamePasswordAuthenticationToken(userDto.getUsername(),userDto.getPassword(),Collections.emptyList()));
     }

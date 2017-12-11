@@ -27,21 +27,11 @@ public class UserController extends BaseController {
 
     @GetMapping("/users")
     public Pager<UserDto> loadAll(
-<<<<<<< HEAD
             @RequestParam(value = "page", defaultValue = Constants.CURRENT_PAGE_DEFAULT_STRING_VALUE) int page,
             @RequestParam(value = "limit", defaultValue = Constants.NO_OF_ROWS_DEFAULT_STRING_VALUE) int noOfRowInPage,
             @RequestParam(defaultValue = SortingConstants.SORT_USER_DEFAULT_FIELD) String sortBy,
             @RequestParam(defaultValue = SortingConstants.ASC) String direction){
         return abstractService.loadAll(page, noOfRowInPage, sortBy, direction);
-=======
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "limit", defaultValue = "10") int noOfRowInPage){
-        UserDto userCurrent = getCurrentUser();
-        System.out.println(authentication.toString());
-        System.out.println(authentication.getAuthorities().toArray()[0]);
-        String currentPrincipalName = authentication.getName();
-        return abstractService.loadAll(page, noOfRowInPage);
->>>>>>> Config JWT for authentication + add method convert filed null + add base controller to get CurrentUser
     }
 
     @GetMapping("/users/{key}")

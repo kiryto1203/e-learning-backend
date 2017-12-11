@@ -48,9 +48,9 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
             HttpServletRequest req, HttpServletResponse res)
             throws AuthenticationException, IOException, ServletException {
         UserDto userDto = new UserDto(req.getParameter("username"),req.getParameter("password"));
-        Map<String, List<String>> maps = ServiceUtils.validateRequired(userDto,"username","password");
-        if(maps.size()>0)
-            throw new ElearningAuthException(Errors.USERNAME_AND_PASSWORD_IS_NOT_MEPTY.getId(), Errors.USERNAME_AND_PASSWORD_IS_NOT_MEPTY.name());
+        Map<String, List<String>> errorsMap = ServiceUtils.validateRequired(userDto,"username","password");
+        if(errorsMap.size()>0)
+            throw new ElearningAuthException(Errors.USERNAME_AND_PASSWORD_IS_NOT_EMPTY.getId(), Errors.USERNAME_AND_PASSWORD_IS_NOT_EMPTY.name());
         return getAuthenticationManager().authenticate(
                 new UsernamePasswordAuthenticationToken(userDto.getUsername(),userDto.getPassword(),Collections.emptyList()));
     }
@@ -84,12 +84,8 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
             AuthenticationException failed)
             throws IOException, ServletException {
         ObjectMapper mapper = new ObjectMapper();
-        response.getWriter()
-                .write(mapper.writeValueAsString(
-                                new Result(
-                                        Errors.valueOf(failed.getMessage()).getId(),
-                                        failed.getMessage(),
-                                        null))
-                );
+        response.getWriter().write(mapper.writeValueAsString(
+            new Result(Errors.valueOf(failed.getMessage()).getId(),failed.getMessage(),null))
+        );
     }
 }

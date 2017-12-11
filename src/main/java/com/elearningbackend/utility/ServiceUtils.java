@@ -1,16 +1,9 @@
 package com.elearningbackend.utility;
 
 import com.elearningbackend.customerrorcode.Errors;
-<<<<<<< HEAD
 import org.springframework.data.domain.Sort;
-<<<<<<< HEAD
 import com.elearningbackend.customexception.ElearningException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-=======
-=======
-import com.elearningbackend.dto.UserDto;
->>>>>>> Config JWT for authentication + add method convert filed null + add base controller to get CurrentUser
->>>>>>> Config JWT for authentication + add method convert filed null + add base controller to get CurrentUser
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -38,11 +31,10 @@ public class ServiceUtils {
             errorsMap.put(Errors.ERROR_FIELD_MISS.getMessage(), errFields);
         return errorsMap;
     }
-<<<<<<< HEAD
 
-    public static Sort proceedSort(String sortBy, String direction){
+    public static Sort proceedSort(String sortBy, String direction) {
         return new Sort(direction.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy);
-=======
+    }
     /**
      * Method set field for Object if this is empty or null
      */
@@ -56,7 +48,6 @@ public class ServiceUtils {
             }
         }
         return obj;
->>>>>>> Config JWT for authentication + add method convert filed null + add base controller to get CurrentUser
     }
 
     private static boolean checkErrorsMap(Map<String, List<String>> errorsMap) throws ElearningException {

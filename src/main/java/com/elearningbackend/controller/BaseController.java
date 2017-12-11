@@ -3,9 +3,7 @@ package com.elearningbackend.controller;
 import com.elearningbackend.dto.UserDto;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
 public class BaseController {
 
     protected Authentication authentication;

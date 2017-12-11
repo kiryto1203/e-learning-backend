@@ -10,14 +10,18 @@ public enum Errors {
     EMAIL_SAME_WITH_OTHER_USERS("007", "EMAIL SAME WITH OTHER USERS"),
     CATEGORY_NOT_FOUND("008", "CATEGORY NOT FOUND"),
     SUBCATEGORY_NOT_FOUND("009", "SUBCATEGORY NOT FOUND"),
-<<<<<<< HEAD
+<<<<<<< Updated upstream
     ANSWER_EXIST("010", "ANSWER EXIST"),
-    ANSWER_NOT_EXITS("011", "ANSWER NOT EXIST");
-=======
+    ANSWER_NOT_EXITS("011", "ANSWER NOT EXIST"),
     USERNAME_AND_PASSWORD_IS_NOT_MEPTY("010","USERNAME AND PASSWORD IS NOT EMPTY"),
     NOT_TOKEN("011","NOT TOKEN"),
     TOKEN_NOT_MATCH("012","TOKEN NOT MATCH");
->>>>>>> Customize AuthenticationException and complete login function
+=======
+    USERNAME_AND_PASSWORD_IS_NOT_EMPTY("100","USERNAME AND PASSWORD IS NOT EMPTY"),
+    NOT_TOKEN("101","NOT TOKEN"),
+    TOKEN_NOT_MATCH("102","TOKEN NOT MATCH"),
+    ACCESS_DENIED("103","ACCESS DENIED");
+>>>>>>> Stashed changes
 
     private final String id;
     private final String message;

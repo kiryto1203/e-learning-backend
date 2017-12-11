@@ -1,5 +1,10 @@
 package com.elearningbackend.customerrorcode;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
 public enum Errors {
     USER_ERROR("001","User errors"),
     USER_EXISTS("002","USER EXISTS"),
@@ -18,20 +23,21 @@ public enum Errors {
     ACCESS_DENIED("053","ACCESS DENIED"),
     USER_NOT_ACTIVATED("054","USER NOT ACTIVATED"),
     USER_ACTIVATED("056","USER ACTIVATED"),
-    USER_LOCKED("055","USER LOCKED"),
     ERROR_SENT_MAIL("080","ERROR SENT MAIL"),
-    ACTIVATION_CODE_NOT_MATCH("081","ACTIVATION CODE NOT MATCH");
+    ACTIVATION_CODE_NOT_MATCH("081","ACTIVATION CODE NOT MATCH"),
+    USER_LOCKED("055","USER LOCKED"),
+    CANNOT_STORE_FILE("099", "CANNOT COPY FILE"),
+    IMAGE_FILE_NOT_SUPPORTED("90", "IMAGE FILE NOT SUPPORTED"),
+    IMAGE_FILE_EMPTY("95", "IMAGE FILE CANNOT BE EMPTY"),
+    IMAGE_FILE_TOO_LARGE("98", "IMAGE FILE EXCEED 3MB"),
+    CANNOT_CREATE_USER_FOLDER("93", "CANNOT CREATE USER FOLDER"),
+    ERROR_UPDATE_AVATAR("91", "ERROR UPDATE AVATAR"),
+    CANNOT_GET_FILE("92", "CANNOT GET FILE"),
+    CANNOT_DELETE_FILE("111", "CANNOT DELETE FILE"),
+    IMAGE_FILE_CORRUPTED("70", "IMAGE FILE CORRUPTED");
 
     private final String id;
     private final String message;
 
-    Errors(String id, String message) {
-        this.id = id;
-        this.message = message;
-    }
-
-    public String getId() {return id;}
-
-    public String getMessage() {return message;}
-
+    public String getAdditionalMessage(String additionalMessage) {return message+": "+additionalMessage;}
 }

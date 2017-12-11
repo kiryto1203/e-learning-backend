@@ -23,4 +23,6 @@ public abstract class AbstractUserService<D, K extends Serializable, E> extends 
     public abstract UserDto getOneByEmail(String email);
 
     public abstract boolean active(UserDto userDto) throws ElearningException;
+
+    public abstract UserDto updateAvatar(String avatarUrl, String username) throws ElearningException;
 }

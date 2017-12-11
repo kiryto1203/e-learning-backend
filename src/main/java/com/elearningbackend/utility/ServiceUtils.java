@@ -45,7 +45,7 @@ public class ServiceUtils {
             ReflectionUtils.makeAccessible(foundField);
             Object value = ReflectionUtils.getField(foundField, obj);
             if (value == null || (value instanceof String && ((String) value).isEmpty())){
-                ReflectionUtils.setField(foundField,obj, "N/A");
+                ReflectionUtils.setField(foundField,obj, Constants.NA);
             }
         }
         return obj;

@@ -1,11 +1,8 @@
 package com.elearningbackend.controller;
 
 import com.elearningbackend.dto.CurrentUser;
-import com.elearningbackend.dto.UserDto;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.util.Currency;
 
 public class BaseController {
 
@@ -21,6 +18,10 @@ public class BaseController {
     protected CurrentUser getCurrentUser(){
         authentication = SecurityContextHolder.getContext().getAuthentication();
         return (CurrentUser) authentication.getPrincipal();
+    }
+
+    protected boolean checkCurrentUser(CurrentUser currentUser, String username){
+        return currentUser != null && currentUser.getUsername().equals(username);
     }
 
     /**

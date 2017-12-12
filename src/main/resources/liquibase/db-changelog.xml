@@ -34,8 +34,8 @@
             <column name="system_result_question_code" type="VARCHAR(100)">
                 <constraints nullable="false" foreignKeyName="system_result_question_code_fkey" references="question_bank(question_code)"/>
             </column>
-            <column name="system_result_correct_id" type="json"/>
-            <column name="system_result_incorrect_id" type="json"/>
+            <column name="system_result_correct_id" type="text"/>
+            <column name="system_result_incorrect_id" type="text"/>
             <column name="creation_date" type="datetime"/>
             <column name="last_update_date" type="datetime"/>
             <column name="creator_username" type="VARCHAR(255)">
@@ -242,5 +242,29 @@
     <changeSet id="insert-category-subcategory" author="longdh">
         <sqlFile path="./category.sql" relativeToChangelogFile="true"/>
         <sqlFile path="./subcategory.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="edit-answer-system-result" author="LongDH">
+        <dropTable tableName="system_result" schemaName="e_learning"/>
+        <createTable tableName="system_result">
+            <column name="system_result_question_code" type="VARCHAR(100)">
+                <constraints nullable="false" foreignKeyName="system_result_question_code_fkey" references="question_bank(question_code)"/>
+            </column>
+            <column name="system_result_answer_code" type="varchar(100)">
+                <constraints nullable="false" foreignKeyName="system_result_answer_code_fkey" references="answer_bank(answer_code)"/>
+            </column>
+            <column name="system_result_position" type="tinyint" >
+                <constraints nullable="false"/>
+            </column>
+            <column name="system_result_is_correct" type="tinyint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="datetime"/>
+            <column name="last_update_date" type="datetime"/>
+            <column name="last_updater_username" type="VARCHAR(255)"/>
+        </createTable>
+        <addPrimaryKey tableName="system_result" columnNames="system_result_question_code, system_result_answer_code" constraintName="system_result_pkey"/>
+    </changeSet>
+    <changeSet id="change-type-activated" author="LongDh">
+        <modifyDataType tableName="user" columnName="activated" newDataType="tinyint"/>
     </changeSet>
 </databaseChangeLog>

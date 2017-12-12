@@ -18,10 +18,10 @@ public class QuestionBank implements Serializable {
     private Timestamp lastUpdateDate;
     private String creatorUsername;
     private String lastUpdaterUsername;
-    private SystemResult systemResult;
     private Double point;
     private Subcategory subcategory;
     private Set<QuestionLession> questionLessions;
+    private Set<SystemResult> systemResults;
 
     public QuestionBank() {
     }
@@ -103,16 +103,6 @@ public class QuestionBank implements Serializable {
         this.lastUpdaterUsername = lastUpdaterUsername;
     }
 
-    @OneToOne(cascade= CascadeType.ALL)
-    @JoinColumn(name = "question_code")
-    public SystemResult getSystemResult() {
-        return this.systemResult;
-    }
-
-    public void setSystemResult(SystemResult systemResult) {
-        this.systemResult = systemResult;
-    }
-
     @OneToMany(mappedBy = "questionBank", cascade = CascadeType.ALL)
     public Set<QuestionLession> getQuestionLessions() {
         return this.questionLessions;
@@ -153,5 +143,14 @@ public class QuestionBank implements Serializable {
 
     public void setSubcategory(Subcategory subcategory) {
         this.subcategory = subcategory;
+    }
+
+    @OneToMany(mappedBy = "questionBank", cascade = CascadeType.ALL)
+    public Set<SystemResult> getSystemResults(){
+        return this.systemResults;
+    }
+
+    public void setSystemResults(Set<SystemResult> systemResults){
+        this.systemResults = systemResults;
     }
 }

@@ -1,9 +1,8 @@
 package com.elearningbackend.repository;
 
 import com.elearningbackend.entity.SystemResult;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import com.elearningbackend.entity.SystemResultId;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public interface ISystemResultRepository extends CrudRepository<SystemResult, Integer> {
+public interface ISystemResultRepository extends JpaRepository<SystemResult, SystemResultId>{
 }

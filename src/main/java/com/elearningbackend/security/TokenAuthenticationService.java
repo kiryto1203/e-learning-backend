@@ -1,6 +1,7 @@
 package com.elearningbackend.security;
 import com.elearningbackend.customerrorcode.Errors;
 import com.elearningbackend.customexception.ElearningException;
+import com.elearningbackend.dto.CurrentUser;
 import com.elearningbackend.dto.UserDto;
 import com.elearningbackend.utility.Constants;
 import com.elearningbackend.utility.ServiceUtils;
@@ -50,27 +51,25 @@ class TokenAuthenticationService {
         String token = request.getHeader(Constants.HEADER_STRING);
         if (token == null)
             throw new ElearningException(Errors.NOT_TOKEN.getId(),Errors.NOT_TOKEN.getMessage());
-        UserDto userDto = new UserDto();
+        CurrentUser currentUser = new CurrentUser();
         List<GrantedAuthority> authorities = new ArrayList<>();
         try{
             Claims claims = Jwts.parser()
                     .setSigningKey(Constants.SECRET)
                     .parseClaimsJws(token.replace(Constants.TOKEN_PREFIX, ""))
                     .getBody();
-            userDto.setUsername(claims.get("username").toString());
-            userDto.setRole(claims.get("role").toString());
-            userDto.setEmail(claims.get("email").toString());
-            userDto.setAvatar(claims.get("avatar").toString());
-            userDto.setDisplayName(claims.get("display_name").toString());
-            userDto.setAddress(claims.get("address").toString());
-            userDto.setPhone(claims.get("phone").toString());
-            authorities.add(new SimpleGrantedAuthority(userDto.getRole()));
+            currentUser.setUsername(claims.get("username").toString());
+            currentUser.setRole(claims.get("role").toString());
+            currentUser.setEmail(claims.get("email").toString());
+            currentUser.setAvatar(claims.get("avatar").toString());
+            currentUser.setDisplayName(claims.get("display_name").toString());
+            currentUser.setAddress(claims.get("address").toString());
+            currentUser.setPhone(claims.get("phone").toString());
+            authorities.add(new SimpleGrantedAuthority(currentUser.getRole()));
         }catch (Exception e){
             throw new ElearningException(Errors.TOKEN_NOT_MATCH.getId(),Errors.TOKEN_NOT_MATCH.getMessage());
         }
-        return userDto != null ?
-                new UsernamePasswordAuthenticationToken(userDto, null, authorities) :
-                null;
+        return new UsernamePasswordAuthenticationToken(currentUser, null, authorities);
     }
 
 }

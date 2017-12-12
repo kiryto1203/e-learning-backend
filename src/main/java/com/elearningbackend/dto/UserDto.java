@@ -42,7 +42,7 @@ public class UserDto {
     @JsonProperty("display_name")
     private String displayName;
 
-    private Boolean activated;
+    private int activated;
 
     @NotBlank(message = "Email cannot be blank!")
     @Pattern(regexp = RegexUtil.VALID_EMAIL_REGEX, message = "Email format is incorrect")

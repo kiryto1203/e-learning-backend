@@ -1,6 +1,7 @@
 package com.elearningbackend.controller;
 
 import com.elearningbackend.customexception.ElearningException;
+import com.elearningbackend.dto.CurrentUser;
 import com.elearningbackend.dto.Pager;
 import com.elearningbackend.dto.Result;
 import com.elearningbackend.dto.UserDto;
@@ -24,17 +25,18 @@ public class UserController extends BaseController {
     private IAbstractService<UserDto, String> abstractService;
 
     @GetMapping("/users")
-    @PreAuthorize("hasAuthority('1')")
+    @PreAuthorize(Constants.AUTH_ADMINISTRATOR)
     public Pager<UserDto> loadAll(
             @RequestParam(value = "page", defaultValue = Constants.CURRENT_PAGE_DEFAULT_STRING_VALUE) int page,
             @RequestParam(value = "limit", defaultValue = Constants.NO_OF_ROWS_DEFAULT_STRING_VALUE) int noOfRowInPage,
             @RequestParam(defaultValue = SortingConstants.SORT_USER_DEFAULT_FIELD) String sortBy,
             @RequestParam(defaultValue = SortingConstants.ASC) String direction){
+        CurrentUser currentUser = getCurrentUser();
         return abstractService.loadAll(page, noOfRowInPage, sortBy, direction);
     }
 
     @GetMapping("/users/{key}")
-    @PreAuthorize("hasAuthority('0')")
+    @PreAuthorize(Constants.AUTH_MANAGER)
     public Result<UserDto> getByKey(@PathVariable("key") String key){
         try {
             UserDto userDto = abstractService.getOneByKey(key);

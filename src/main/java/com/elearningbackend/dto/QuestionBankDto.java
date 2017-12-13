@@ -7,7 +7,6 @@ package com.elearningbackend.dto;
 
 import com.elearningbackend.entity.QuestionLession;
 import com.elearningbackend.entity.Subcategory;
-import com.elearningbackend.entity.SystemResult;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -30,7 +29,6 @@ public class QuestionBankDto {
     private Timestamp lastUpdateDate;
     private String creatorUsername;
     private String lastUpdaterUsername;
-    private SystemResult systemResult;
     private Double point;
     private Subcategory subcategory;
     private Set<QuestionLession> questionLessions = new HashSet<QuestionLession>(0);
@@ -40,7 +38,7 @@ public class QuestionBankDto {
         this.questionContent = questionContent;
     }
 
-    public QuestionBankDto(String questionCode, int questionType, String questionContent, String questionParentCode, Timestamp creationDate, Timestamp lastUpdateDate, String creatorUsername, String lastUpdaterUsername, SystemResult systemResult, Double point, Subcategory subcategory) {
+    public QuestionBankDto(String questionCode, int questionType, String questionContent, String questionParentCode, Timestamp creationDate, Timestamp lastUpdateDate, String creatorUsername, String lastUpdaterUsername, Double point, Subcategory subcategory) {
         this.questionCode = questionCode;
         this.questionType = questionType;
         this.questionContent = questionContent;
@@ -49,7 +47,6 @@ public class QuestionBankDto {
         this.lastUpdateDate = lastUpdateDate;
         this.creatorUsername = creatorUsername;
         this.lastUpdaterUsername = lastUpdaterUsername;
-        this.systemResult = systemResult;
         this.point = point;
         this.subcategory = subcategory;
     }

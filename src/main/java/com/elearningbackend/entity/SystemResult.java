@@ -2,115 +2,108 @@ package com.elearningbackend.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Date;
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "system_result", catalog = "e_learning")
-public class SystemResult implements java.io.Serializable {
+@Table(name = "system_result", schema = "e_learning", catalog = "")
+public class SystemResult {
+    private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-	private Integer systemResultId;
-	private QuestionBank questionBank;
-	private String systemResultCorrectId;
-	private String systemResultIncorrectId;
-	private Timestamp creationDate;
-	private Timestamp lastUpdateDate;
-	private String creatorUsername;
-	private String lastUpdaterUsername;
+    private SystemResultId systemResultId;
+    private QuestionBank questionBank;
+    private AnswerBank answerBank;
+    private int systemResultPosition;
+    private int systemResultIsCorrect;
+    private Timestamp creationDate;
+    private Timestamp lastUpdateDate;
+    private String lastUpdaterUsername;
 
-	public SystemResult() {
-	}
+    public SystemResult(SystemResultId systemResultId, int systemResultPosition, int systemResultIsCorrect, Timestamp creationDate, Timestamp lastUpdateDate, String lastUpdaterUsername) {
+        this.systemResultId = systemResultId;
+        this.systemResultPosition = systemResultPosition;
+        this.systemResultIsCorrect = systemResultIsCorrect;
+        this.creationDate = creationDate;
+        this.lastUpdateDate = lastUpdateDate;
+        this.lastUpdaterUsername = lastUpdaterUsername;
+    }
 
-	public SystemResult(QuestionBank questionBank, String creatorUsername) {
-		this.questionBank = questionBank;
-		this.creatorUsername = creatorUsername;
-	}
+    public SystemResult() {
+    }
 
-	public SystemResult(QuestionBank questionBank, String systemResultCorrectId, String systemResultIncorrectId,
-			Timestamp creationDate, Timestamp lastUpdateDate, String creatorUsername, String lastUpdaterUsername) {
-		this.questionBank = questionBank;
-		this.systemResultCorrectId = systemResultCorrectId;
-		this.systemResultIncorrectId = systemResultIncorrectId;
-		this.creationDate = creationDate;
-		this.lastUpdateDate = lastUpdateDate;
-		this.creatorUsername = creatorUsername;
-		this.lastUpdaterUsername = lastUpdaterUsername;
-	}
+    @EmbeddedId
+    @AttributeOverrides({
+        @AttributeOverride(name = "systemResultQuestionCode", column = @Column(name = "system_result_question_code", nullable = false, length = 100)),
+        @AttributeOverride(name = "systemResultAnswerCode", column = @Column(name = "system_result_answer_code", nullable = false, length = 100)) })
+    public SystemResultId getSystemResultId() {
+        return systemResultId;
+    }
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "system_result_id", unique = true, nullable = false)
-	public Integer getSystemResultId() {
-		return this.systemResultId;
-	}
+    public void setSystemResultId(SystemResultId systemResultId) {
+        this.systemResultId = systemResultId;
+    }
 
-	public void setSystemResultId(Integer systemResultId) {
-		this.systemResultId = systemResultId;
-	}
+    @Column(name = "system_result_position", nullable = false)
+    public int getSystemResultPosition() {
+        return systemResultPosition;
+    }
 
-	@Column(name = "system_result_correct_id", length = 100)
-	public String getSystemResultCorrectId() {
-		return this.systemResultCorrectId;
-	}
+    public void setSystemResultPosition(int systemResultPosition) {
+        this.systemResultPosition = systemResultPosition;
+    }
 
-	public void setSystemResultCorrectId(String systemResultCorrectId) {
-		this.systemResultCorrectId = systemResultCorrectId;
-	}
+    @Column(name = "system_result_is_correct", nullable = false)
+    public int getSystemResultIsCorrect() {
+        return systemResultIsCorrect;
+    }
 
-	@Column(name = "system_result_incorrect_id", length = 100)
-	public String getSystemResultIncorrectId() {
-		return this.systemResultIncorrectId;
-	}
+    public void setSystemResultIsCorrect(int systemResultIsCorrect) {
+        this.systemResultIsCorrect = systemResultIsCorrect;
+    }
 
-	public void setSystemResultIncorrectId(String systemResultIncorrectId) {
-		this.systemResultIncorrectId = systemResultIncorrectId;
-	}
+    @Column(name = "creation_date", nullable = true)
+    public Timestamp getCreationDate() {
+        return creationDate;
+    }
 
-	@Column(name = "creation_date")
-	public Timestamp getCreationDate() {
-		return this.creationDate;
-	}
+    public void setCreationDate(Timestamp creationDate) {
+        this.creationDate = creationDate;
+    }
 
-	public void setCreationDate(Timestamp creationDate) {
-		this.creationDate = creationDate;
-	}
+    @Column(name = "last_update_date", nullable = true)
+    public Timestamp getLastUpdateDate() {
+        return lastUpdateDate;
+    }
 
-	@Column(name = "last_update_date")
-	public Date getLastUpdateDate() {
-		return this.lastUpdateDate;
-	}
+    public void setLastUpdateDate(Timestamp lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
 
-	public void setLastUpdateDate(Timestamp lastUpdateDate) {
-		this.lastUpdateDate = lastUpdateDate;
-	}
+    @Column(name = "last_updater_username", nullable = true, length = 255)
+    public String getLastUpdaterUsername() {
+        return lastUpdaterUsername;
+    }
 
-	@Column(name = "creator_username", nullable = false)
-	public String getCreatorUsername() {
-		return this.creatorUsername;
-	}
+    public void setLastUpdaterUsername(String lastUpdaterUsername) {
+        this.lastUpdaterUsername = lastUpdaterUsername;
+    }
 
-	public void setCreatorUsername(String creatorUsername) {
-		this.creatorUsername = creatorUsername;
-	}
+    @ManyToOne
+    @JoinColumn(name = "system_result_question_code", nullable = false, insertable = false, updatable = false)
+    public QuestionBank getQuestionBank() {
+        return this.questionBank;
+    }
 
-	@Column(name = "last_updater_username")
-	public String getLastUpdaterUsername() {
-		return this.lastUpdaterUsername;
-	}
+    public void setQuestionBank(QuestionBank questionBank) {
+        this.questionBank = questionBank;
+    }
 
-	public void setLastUpdaterUsername(String lastUpdaterUsername) {
-		this.lastUpdaterUsername = lastUpdaterUsername;
-	}
+    @ManyToOne
+    @JoinColumn(name = "system_result_answer_code", nullable = false, insertable = false, updatable = false)
+    public AnswerBank getAnswerBank() {
+        return this.answerBank;
+    }
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "system_result_question_code", nullable = false)
-	public QuestionBank getQuestionBank() {
-		return this.questionBank;
-	}
+    public void setAnswerBank(AnswerBank answerBank) {
+        this.answerBank = answerBank;
+    }
 
-	public void setQuestionBank(QuestionBank questionBank) {
-		this.questionBank = questionBank;
-	}
 }

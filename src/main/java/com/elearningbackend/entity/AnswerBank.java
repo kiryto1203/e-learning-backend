@@ -2,6 +2,7 @@ package com.elearningbackend.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Entity
 @Table(name = "answer_bank", catalog = "e_learning")
@@ -10,6 +11,7 @@ public class AnswerBank implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private String answerCode;
 	private String answerContent;
+	public Set<SystemResult> systemResults;
 	private Timestamp creationDate;
 	private Timestamp lastUpdateDate;
 	private String creatorUsername;
@@ -39,6 +41,15 @@ public class AnswerBank implements java.io.Serializable {
 
 	public void setAnswerContent(String answerContent) {
 		this.answerContent = answerContent;
+	}
+
+	@OneToMany(mappedBy = "answerBank", cascade = CascadeType.ALL)
+	public Set<SystemResult> getSystemResults() {
+		return systemResults;
+	}
+
+	public void setSystemResults(Set<SystemResult> systemResults) {
+		this.systemResults = systemResults;
 	}
 
 	@Column(name = "creation_date")

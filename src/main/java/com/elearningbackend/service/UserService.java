@@ -6,6 +6,7 @@ import com.elearningbackend.dto.Pager;
 import com.elearningbackend.dto.UserDto;
 import com.elearningbackend.entity.User;
 import com.elearningbackend.repository.IUserRepository;
+import com.elearningbackend.utility.Constants;
 import com.elearningbackend.utility.Paginator;
 import com.elearningbackend.utility.SecurityUtil;
 import com.elearningbackend.utility.ServiceUtils;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 @Service
 @Transactional
@@ -42,7 +45,8 @@ public class UserService extends AbstractUserService<UserDto, String, User> {
 
     }
 
-    private UserDto getOneByEmail(String email) {
+    @Override
+    public UserDto getOneByEmail(String email) {
         User user = getUserRepository().findByEmail(email);
         return user == null ? null : mapUserDto(user);
     }
@@ -53,7 +57,7 @@ public class UserService extends AbstractUserService<UserDto, String, User> {
             throw new ElearningException(Errors.USER_EXISTS.getId(), Errors.USER_EXISTS.getMessage());
         if (getUserRepository().findByEmail(userDto.getEmail()) != null)
             throw new ElearningException(Errors.EMAIL_EXISTS.getId(), Errors.EMAIL_EXISTS.getMessage());
-        saveUser(userDto);
+        saveUser(userDto,true);
         return userDto;
     }
 
@@ -61,7 +65,7 @@ public class UserService extends AbstractUserService<UserDto, String, User> {
     public UserDto edit(UserDto userDto) throws ElearningException {
         UserDto userDtoCheck = getOneByKey(userDto.getUsername());
         if (validateUserDtoForUpdate(userDto, userDtoCheck)) {
-            saveUser(userDto);
+            saveUser(userDto,true);
             return userDto;
         }
         throw new ElearningException(Errors.USER_ERROR.getId(),Errors.USER_ERROR.getMessage());
@@ -73,6 +77,18 @@ public class UserService extends AbstractUserService<UserDto, String, User> {
         if (userDto != null){
             getUserRepository().delete(key);
             return userDto;
+        }
+        throw new ElearningException(Errors.USER_NOT_FOUND.getId(),Errors.USER_NOT_FOUND.getMessage());
+    }
+
+    @Override
+    public boolean active(UserDto userDto) throws ElearningException {
+        UserDto userDtoChange = getOneByEmail(userDto.getEmail());
+        if (userDto != null){
+            userDtoChange.setActivated(Constants.STATUS_ACTIVATED);
+            userDtoChange.setActivatedAt(userDto.getActivatedAt());
+            saveUser(userDtoChange,false);
+            return true;
         }
         throw new ElearningException(Errors.USER_NOT_FOUND.getId(),Errors.USER_NOT_FOUND.getMessage());
     }
@@ -95,9 +111,9 @@ public class UserService extends AbstractUserService<UserDto, String, User> {
         return userDto;
     }
 
-    void saveUser (UserDto userDto){
+    void saveUser (UserDto userDto,boolean encryptPassword){
         User entity = mapper.map(userDto, User.class);
-        entity.setPasswordDigest(SecurityUtil.sha256(userDto.getPassword()));
+        entity.setPasswordDigest(encryptPassword ? SecurityUtil.sha256(userDto.getPassword()) : userDto.getPassword() );
         getUserRepository().save(entity);
     }
 

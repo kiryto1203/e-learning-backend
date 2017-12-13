@@ -6,15 +6,13 @@ import com.elearningbackend.dto.Pager;
 import com.elearningbackend.dto.Result;
 import com.elearningbackend.dto.UserDto;
 import com.elearningbackend.service.IAbstractService;
-import com.elearningbackend.utility.Constants;
-import com.elearningbackend.utility.ResultCodes;
-import com.elearningbackend.utility.ServiceUtils;
-import com.elearningbackend.utility.SortingConstants;
+import com.elearningbackend.utility.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
@@ -66,11 +64,13 @@ public class UserController extends BaseController {
     }
 
     @PutMapping("/users/{key}")
-    public Result<UserDto> edit(@PathVariable String key, @RequestBody UserDto userDto){
+    public Result<UserDto> edit(@PathVariable String key, @RequestBody UserDto userDto, HttpServletResponse response){
         userDto.setUsername(key);
         try {
             ServiceUtils.checkDataMissing(userDto, "username", "password");
             abstractService.edit(userDto);
+            UserDto userDtoToken = abstractService.edit(userDto);
+            SecurityUtil.resetToken(response,userDtoToken);
             return new Result<>(ResultCodes.OK.getCode(),
                 ResultCodes.OK.getMessage(), userDto);
         } catch (ElearningException e){

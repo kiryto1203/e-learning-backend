@@ -11,7 +11,13 @@ public enum Errors {
     CATEGORY_NOT_FOUND("008", "CATEGORY NOT FOUND"),
     SUBCATEGORY_NOT_FOUND("009", "SUBCATEGORY NOT FOUND"),
     ANSWER_EXIST("010", "ANSWER EXIST"),
-    ANSWER_NOT_EXITS("011", "ANSWER NOT EXIST");
+    ANSWER_NOT_EXITS("011", "ANSWER NOT EXIST"),
+    USERNAME_AND_PASSWORD_IS_NOT_EMPTY("050","USERNAME AND PASSWORD IS NOT EMPTY"),
+    NOT_TOKEN("051","NOT TOKEN"),
+    TOKEN_NOT_MATCH("052","TOKEN NOT MATCH"),
+    ACCESS_DENIED("053","ACCESS DENIED"),
+    USER_NOT_ACTIVATED("054","USER NOT ACTIVATED"),
+    USER_LOCKED("055","USER LOCKED");
 
     private final String id;
     private final String message;
@@ -24,4 +30,5 @@ public enum Errors {
     public String getId() {return id;}
 
     public String getMessage() {return message;}
+
 }

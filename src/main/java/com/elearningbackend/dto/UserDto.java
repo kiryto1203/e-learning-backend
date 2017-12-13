@@ -15,6 +15,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 public class UserDto {
+
     @NotBlank(message = "Username cannot be empty!")
     private String username;
 
@@ -41,7 +42,7 @@ public class UserDto {
     @JsonProperty("display_name")
     private String displayName;
 
-    private Boolean activated;
+    private int activated;
 
     @NotBlank(message = "Email cannot be blank!")
     @Pattern(regexp = RegexUtil.VALID_EMAIL_REGEX, message = "Email format is incorrect")
@@ -63,5 +64,20 @@ public class UserDto {
 
     public UserDto(String username) {
         this.username = username;
+    }
+
+    public UserDto(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public UserDto(String username, String displayName, String email, String phone, String address, String avatar, String role) {
+        this.username = username;
+        this.displayName = displayName;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.avatar = avatar;
+        this.role = role;
     }
 }

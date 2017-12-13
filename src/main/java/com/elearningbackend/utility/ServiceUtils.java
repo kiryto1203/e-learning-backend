@@ -4,6 +4,7 @@ import com.elearningbackend.customerrorcode.Errors;
 import org.springframework.data.domain.Sort;
 import com.elearningbackend.customexception.ElearningException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.elearningbackend.dto.UserDto;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -32,8 +33,22 @@ public class ServiceUtils {
         return errorsMap;
     }
 
-    public static Sort proceedSort(String sortBy, String direction){
+    public static Sort proceedSort(String sortBy, String direction) {
         return new Sort(direction.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy);
+    }
+    /**
+     * Method set field for Object if this is empty or null
+     */
+    public static Object convertObject(Object obj,String... fields){
+        for (String field: fields) {
+            Field foundField = ReflectionUtils.findField(obj.getClass(), field);
+            ReflectionUtils.makeAccessible(foundField);
+            Object value = ReflectionUtils.getField(foundField, obj);
+            if (value == null || (value instanceof String && ((String) value).isEmpty())){
+                ReflectionUtils.setField(foundField,obj, "N/A");
+            }
+        }
+        return obj;
     }
 
     private static boolean checkErrorsMap(Map<String, List<String>> errorsMap) throws ElearningException {

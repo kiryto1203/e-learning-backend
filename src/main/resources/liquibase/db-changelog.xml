@@ -93,7 +93,7 @@
             <column name="lession_code" type="VARCHAR(100)"/>
             <column name="creation_date" type="datetime"/>
             <column name="last_update_date" type="datetime"/>
-            <column name="user_answer" type="json"/>
+            <column name="user_answer" type="text"/>
         </createTable>
         <createIndex catalogName="e_learning"
                      indexName="idx_lession_code"

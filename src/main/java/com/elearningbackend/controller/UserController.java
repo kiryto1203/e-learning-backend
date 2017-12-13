@@ -1,6 +1,7 @@
 package com.elearningbackend.controller;
 
 import com.elearningbackend.customexception.ElearningException;
+import com.elearningbackend.dto.CurrentUser;
 import com.elearningbackend.dto.Pager;
 import com.elearningbackend.dto.Result;
 import com.elearningbackend.dto.UserDto;
@@ -11,27 +12,31 @@ import com.elearningbackend.utility.ServiceUtils;
 import com.elearningbackend.utility.SortingConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
 @CrossOrigin
-public class UserController {
+public class UserController extends BaseController {
     @Autowired
     @Qualifier("userService")
     private IAbstractService<UserDto, String> abstractService;
 
     @GetMapping("/users")
+    @PreAuthorize(Constants.AUTH_ADMINISTRATOR)
     public Pager<UserDto> loadAll(
             @RequestParam(value = "page", defaultValue = Constants.CURRENT_PAGE_DEFAULT_STRING_VALUE) int page,
             @RequestParam(value = "limit", defaultValue = Constants.NO_OF_ROWS_DEFAULT_STRING_VALUE) int noOfRowInPage,
             @RequestParam(defaultValue = SortingConstants.SORT_USER_DEFAULT_FIELD) String sortBy,
             @RequestParam(defaultValue = SortingConstants.ASC) String direction){
+        CurrentUser currentUser = getCurrentUser();
         return abstractService.loadAll(page, noOfRowInPage, sortBy, direction);
     }
 
     @GetMapping("/users/{key}")
+    @PreAuthorize(Constants.AUTH_MANAGER)
     public Result<UserDto> getByKey(@PathVariable("key") String key){
         try {
             UserDto userDto = abstractService.getOneByKey(key);
@@ -45,6 +50,7 @@ public class UserController {
 
     @PostMapping("/users")
     public Result<UserDto> add(@Valid @RequestBody UserDto userDto){
+
         try {
             ServiceUtils.checkDataMissing(userDto,
         "username", "password", "email", "phone", "role");

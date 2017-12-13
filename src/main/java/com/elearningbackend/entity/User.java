@@ -14,7 +14,7 @@ public class User implements java.io.Serializable {
 	private String username;
 	private String passwordDigest;
 	private String activationDigest;
-	private Boolean activated;
+	private int activated;
 	private Timestamp activatedAt;
 	private String rememberDigest;
 	private String resetDigest;
@@ -32,6 +32,11 @@ public class User implements java.io.Serializable {
 	public User() {
 	}
 
+	public User(String username, String passwordDigest) {
+		this.username = username;
+		this.passwordDigest = passwordDigest;
+	}
+
 	public User(String username, String passwordDigest, Timestamp createdAt, Timestamp updatedAt, String email) {
 		this.username = username;
 		this.passwordDigest = passwordDigest;
@@ -40,7 +45,7 @@ public class User implements java.io.Serializable {
 		this.email = email;
 	}
 
-	public User(String username, String passwordDigest, String activationDigest, Boolean activated, Timestamp activatedAt,
+	public User(String username, String passwordDigest, String activationDigest, int activated, Timestamp activatedAt,
 			String rememberDigest, String resetDigest, Timestamp resetSentAt, Timestamp createdAt, Timestamp updatedAt,
 			String displayName, String email, String phone, String address, String avatar, String role,
 			Set<Lession> lessions) {
@@ -92,11 +97,11 @@ public class User implements java.io.Serializable {
 	}
 
 	@Column(name = "activated")
-	public Boolean getActivated() {
+	public int getActivated() {
 		return this.activated;
 	}
 
-	public void setActivated(Boolean activated) {
+	public void setActivated(int activated) {
 		this.activated = activated;
 	}
 

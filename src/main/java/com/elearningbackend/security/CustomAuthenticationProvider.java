@@ -8,6 +8,7 @@ import com.elearningbackend.entity.User;
 import com.elearningbackend.repository.IUserRepository;
 import com.elearningbackend.service.IAbstractService;
 import com.elearningbackend.utility.Constants;
+import com.elearningbackend.utility.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -38,7 +39,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         } catch (ElearningException e) {
             throw new ElearningAuthException(Errors.USER_NOT_FOUND.getId(),Errors.USER_NOT_FOUND.name());
         }
-        if(!userDto.getPassword().equals(password))
+        if(!userDto.getPassword().equals(SecurityUtil.sha256(password)))
             throw new ElearningAuthException(Errors.USER_PASSWORD_NOT_MATCH.getId(),Errors.USER_PASSWORD_NOT_MATCH.name());
         if(userDto.getActivated()== Constants.STATUS_NOT_ACTIVATED)
             throw new ElearningAuthException(Errors.USER_NOT_ACTIVATED.getId(),Errors.USER_NOT_ACTIVATED.name());

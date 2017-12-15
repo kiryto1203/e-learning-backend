@@ -5,6 +5,8 @@
  */
 package com.elearningbackend.service;
 
+import com.elearningbackend.customexception.ElearningException;
+import com.elearningbackend.dto.UserDto;
 import com.elearningbackend.utility.Paginator;
 import java.io.Serializable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,4 +19,8 @@ public abstract class AbstractUserService<D, K extends Serializable, E> extends 
     public AbstractUserService(JpaRepository<E, K> repository, Paginator<E, D> paginator) {
         super(repository, paginator);
     }
+
+    public abstract UserDto getOneByEmail(String email);
+
+    public abstract boolean active(UserDto userDto) throws ElearningException;
 }

@@ -1,6 +1,12 @@
 package com.elearningbackend.utility;
 
+import com.elearningbackend.dto.UserDto;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
 import java.security.MessageDigest;
+import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by dohalong on 05/12/2017.
@@ -20,5 +26,24 @@ public abstract class SecurityUtil {
         } catch(Exception ex){
             throw new RuntimeException(ex);
         }
+    }
+
+    public  static String generateToken(UserDto userDto){
+        // convert object UserDTO to retricted error null when get claims
+        userDto = (UserDto) ServiceUtils.convertObject(userDto,"address","phone","avatar","displayName");
+        return Jwts.builder()
+                .setId(UUID.randomUUID().toString()) // set random id
+                .setSubject(userDto.getUsername()) // set username
+                .claim("username",userDto.getUsername())
+                .claim("role",userDto.getRole())
+                .claim("email",userDto.getEmail())
+                .claim("address",userDto.getAddress())
+                .claim("phone",userDto.getPhone())
+                .claim("avatar",userDto.getAvatar())
+                .claim("display_name",userDto.getDisplayName())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + Constants.EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS512, Constants.SECRET)
+                .compact();
     }
 }

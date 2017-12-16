@@ -62,5 +62,5 @@ public interface Constants {
      * List URI allow anonymous
      */
     List<String> URL_ALLOW_ANONYMOUS =
-            new ArrayList(Arrays.asList("/api/v1/signup","/api/v1/verify","/api/v1/test"));
+            new ArrayList(Arrays.asList("/api/v1/signup","/api/v1/verify","/api/v1/test","/api/v1//addquestion"));
 }

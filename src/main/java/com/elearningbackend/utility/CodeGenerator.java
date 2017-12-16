@@ -13,7 +13,7 @@ import java.sql.Timestamp;
  */
 public abstract class CodeGenerator {
     public static String generateQuestionCode(String categoryCode){
-        return String.format("%sQ%s", categoryCode, getCodePostFix());
+        return String.format("%sQ%s", subCate(categoryCode), getCodePostFix());
     }
 
     public static String generateAnswerCode(){
@@ -26,5 +26,10 @@ public abstract class CodeGenerator {
 
     public static String generateFileUrl(String fileName) {
         return String.format("%s%s", String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()), fileName);
+    }
+
+    private static String subCate(String cate){
+        String sub = cate.substring(0,2);
+        return sub;
     }
 }

@@ -40,11 +40,14 @@ public enum Errors {
     CANNOT_DELETE_YOURSELF("888", "CANNOT DELETE YOURSELF"),
     INVALID_USER_DETAILS("777", "INVALID USER DETAILS"),
     CANNOT_CHANGE_ROLE_ADMIN("666", "CANNOT CHANGE ROLE ADMIN"),
-    ROLE_NOT_EXIST("555", "ROLE NOT EXIST");
+    ROLE_NOT_EXIST("555", "ROLE NOT EXIST"),
+    SYSTEM_RESULT_NOT_EXITS("030", "SYSTEM RESULT NOT EXITS" ),
+    ANSWER_OR_QUESTION_NOT_EXITS("031", "QUESTION OR ANSWER CODE NOT EXITS"),
+    SYSTEM_RESULT_ID_EXIST("032", "SYSTEM ID EXITS");
+
 
     private final String id;
     private final String message;
 
     public String getAdditionalMessage(String additionalMessage) {return message+": "+additionalMessage;}
-
 }

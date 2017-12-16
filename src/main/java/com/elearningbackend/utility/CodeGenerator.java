@@ -12,8 +12,8 @@ import java.sql.Timestamp;
  * @author c1508l3694
  */
 public abstract class CodeGenerator {
-    public static String generateQuestionCode(String categoryCode){
-        return String.format("%sQ%s", subCate(categoryCode), getCodePostFix());
+    public static String generateQuestionCode(String subcategoryCode){
+        return String.format("%sQ%s", subCate(subcategoryCode), getCodePostFix());
     }
 
     public static String generateAnswerCode(){
@@ -21,7 +21,7 @@ public abstract class CodeGenerator {
     }
 
     public static String getCodePostFix() {
-        return String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(0,5);
+        return String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(0,6);
     }
 
     public static String generateFileUrl(String fileName) {

@@ -1,5 +1,15 @@
 package com.elearningbackend.service;
 
-public class IAbstractCommonService<D, K> {
-    D add()
+import com.elearningbackend.customexception.ElearningException;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public interface IAbstractCommonService<D, K> {
+    List<D> add(List<D> object,String uesrname) throws ElearningException;
+    D getOneByKey(K key) throws ElearningException;
+    D edit(D object) throws ElearningException;
+    D delete(K key) throws ElearningException;
 }

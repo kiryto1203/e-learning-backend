@@ -1,6 +1,8 @@
 package com.elearningbackend.dto;
 
+import com.elearningbackend.utility.CustomDateAndTimeDeserialize;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;

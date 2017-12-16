@@ -11,6 +11,7 @@ import com.elearningbackend.utility.Paginator;
 import com.elearningbackend.utility.SecurityUtil;
 import com.elearningbackend.utility.ServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ import java.util.Date;
 @Service
 @Transactional
 public class UserService extends AbstractUserService<UserDto, String, User> {
+
+    @Value("${url.user.anonymous_picture}")
+    private String anonymousImageUrl;
 
     @Autowired
     public UserService(JpaRepository<User, String> repository) {
@@ -57,6 +61,7 @@ public class UserService extends AbstractUserService<UserDto, String, User> {
             throw new ElearningException(Errors.USER_EXISTS.getId(), Errors.USER_EXISTS.getMessage());
         if (getUserRepository().findByEmail(userDto.getEmail()) != null)
             throw new ElearningException(Errors.EMAIL_EXISTS.getId(), Errors.EMAIL_EXISTS.getMessage());
+        userDto.setAvatar(anonymousImageUrl);
         saveUser(userDto,true);
         return userDto;
     }
@@ -103,6 +108,13 @@ public class UserService extends AbstractUserService<UserDto, String, User> {
             throw new ElearningException(Errors.EMAIL_SAME_WITH_OTHER_USERS.getId(), Errors.EMAIL_SAME_WITH_OTHER_USERS.getMessage());
         }
         return true;
+    }
+
+    public UserDto updateAvatar(String avatarUrl, String username) throws ElearningException{
+        UserDto userDto = getOneByKey(username);
+        userDto.setAvatar(avatarUrl);
+        saveUser(userDto, false);
+        return userDto;
     }
 
     private UserDto mapUserDto(User user) {

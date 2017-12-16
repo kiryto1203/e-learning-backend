@@ -20,7 +20,11 @@ public abstract class CodeGenerator {
         return String.format("%sA%s", getCodePostFix());
     }
 
-    static String getCodePostFix() {
+    public static String getCodePostFix() {
         return String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(0,6);
+    }
+
+    public static String generateFileUrl(String fileName) {
+        return String.format("%s%s", String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()), fileName);
     }
 }

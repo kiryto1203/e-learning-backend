@@ -27,3 +27,5 @@ hs_err_pid*
 /.settings
 src/main/resources/application.properties
 e-learning-backend.iml
+src/uploads/images/user_profile/*
+!/src/uploads/images/user_profile/user.jpg

@@ -1,16 +1,25 @@
 package com.elearningbackend.utility;
 
+import org.springframework.http.MediaType;
+
+import java.util.List;
+
+import static java.util.Arrays.asList;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public interface Constants {
     int ZERO = 0;
+    String NA = "N/A";
     int NO_OF_ROWS_DEFAULT_VALUE = 10;
     String NO_OF_ROWS_DEFAULT_STRING_VALUE = "10";
     int CURRENT_PAGE_DEFAULT_VALUE = 0;
     String CURRENT_PAGE_DEFAULT_STRING_VALUE = "0";
     int DEFAULT_RANDOM_CHARACTER_LENGTH = 20;
+    List<String> VALID_IMAGE_TYPE = asList(MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, "image/jpg");
+    long AVATAR_MAXIMUM_SIZE = 3145728;
 
     /**
      * Secret Authenticate and authorize
@@ -27,6 +36,8 @@ public interface Constants {
     String PREAUTH_TEACHER = "hasAuthority('2')";
     String PREAUTH_CONTRIBUTER = "hasAuthority('3')";
     String PREAUTH_USER = "hasAuthority('4')";
+    String PRE_AUTHENTICATED = "isAuthenticated()";
+    String PRE_AUTH_ADMIN_USERS = "hasAnyAuthority('0', '1', '2', '3')";
 
     String AUTH_ADMINISTRATOR = "0";
     String AUTH_MANAGER = "1";

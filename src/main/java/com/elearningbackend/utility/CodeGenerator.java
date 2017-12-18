@@ -17,11 +17,11 @@ public abstract class CodeGenerator {
     }
 
     public static String generateAnswerCode(){
-        return String.format("%sA%s", getCodePostFix());
+        return String.format("A%s", getCodePostFix());
     }
 
     public static String getCodePostFix() {
-        return String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(0,6);
+        return String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(6);
     }
 
     public static String generateFileUrl(String fileName) {

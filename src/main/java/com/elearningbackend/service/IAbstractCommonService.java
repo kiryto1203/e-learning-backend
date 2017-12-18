@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public interface IAbstractCommonService<D, K> {
-    List<D> add(List<D> object,String uesrname) throws ElearningException;
+    List<D> add(List<D> object) throws ElearningException;
     D getOneByKey(K key) throws ElearningException;
     D edit(D object) throws ElearningException;
     D delete(K key) throws ElearningException;

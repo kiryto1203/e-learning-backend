@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class AddAnswerDto {
+public class AnswerDto {
     private AnswerBankDto answerBankDto;
     private SystemResultDto systemResultDto;
 }

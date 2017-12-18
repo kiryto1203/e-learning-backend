@@ -5,10 +5,10 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class AddQuestionDto {
+public class QuestionDto {
     /**
      * Class dto for user add question + answer and backend auto add system result
      */
     private QuestionBankDto questionBankDto;
-    private List<AddAnswerDto> answers;
+    private List<AnswerDto> answerDtos;
 }

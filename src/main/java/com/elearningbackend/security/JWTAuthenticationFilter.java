@@ -35,7 +35,7 @@ public class JWTAuthenticationFilter extends GenericFilterBean {
             }
         }catch (ElearningException e){
             ObjectMapper mapper = new ObjectMapper();
-            response.getWriter().write(mapper.writeValueAsString(new Result(e.getErrorCode(),e.getMessage(),null)));
+            response.getWriter().write(mapper.writeValueAsString(new Result<>(e.getErrorCode(),e.getMessage(),null)));
         }
     }
 }

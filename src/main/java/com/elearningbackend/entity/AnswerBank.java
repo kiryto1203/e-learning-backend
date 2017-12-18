@@ -11,7 +11,7 @@ public class AnswerBank implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private String answerCode;
 	private String answerContent;
-	public Set<SystemResult> systemResults;
+	private Set<SystemResult> systemResults;
 	private Timestamp creationDate;
 	private Timestamp lastUpdateDate;
 	private String creatorUsername;
@@ -25,7 +25,7 @@ public class AnswerBank implements java.io.Serializable {
 	}
 
 	@Id
-	@Column(name = "answer_id", unique = true, nullable = false, length = 100)
+	@Column(name = "answer_code", unique = true, nullable = false, length = 100)
 	public String getAnswerCode() {
 		return this.answerCode;
 	}

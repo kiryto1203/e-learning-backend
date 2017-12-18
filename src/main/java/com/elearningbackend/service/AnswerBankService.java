@@ -6,6 +6,7 @@ import com.elearningbackend.dto.AnswerBankDto;
 import com.elearningbackend.dto.Pager;
 import com.elearningbackend.entity.AnswerBank;
 import com.elearningbackend.repository.IAnswerBankRepository;
+import com.elearningbackend.utility.Constants;
 import com.elearningbackend.utility.Paginator;
 import com.elearningbackend.utility.ServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -48,12 +50,25 @@ public class AnswerBankService extends AbstractCustomService<AnswerBankDto, Stri
     }
 
     @Override
+    public AnswerBankDto addOrGetExists(AnswerBankDto answerBankDto) {
+        try {
+            return getOneByKey(answerBankDto.getAnswerCode());
+        } catch (ElearningException e) {
+            if(hasAnswerByContent(answerBankDto.getAnswerContent()))
+                return mapper.map(getAnswerRepository().fetchAnswerByContent(answerBankDto.getAnswerContent()).get(Constants.ZERO)
+                        , AnswerBankDto.class);
+        }
+        saveAnswer(answerBankDto);
+        return answerBankDto;
+    }
+
+    @Override
     public AnswerBankDto add(AnswerBankDto answer) throws ElearningException {
-        if (getAnswerRepository().findOne(answer.getAnswerCode()) != null)
+        if (getAnswerRepository().findOne(answer.getAnswerCode()) != null
+                || hasAnswerByContent(answer.getAnswerContent()))
             throw new ElearningException(Errors.ANSWER_EXIST.getId(), Errors.ANSWER_EXIST.getMessage());
         saveAnswer(answer);
         return answer;
-
     }
 
     @Override
@@ -68,6 +83,10 @@ public class AnswerBankService extends AbstractCustomService<AnswerBankDto, Stri
         AnswerBankDto answerByCode = getOneByKey(key);
         getAnswerRepository().delete(key);
         return answerByCode;
+    }
+
+    private boolean hasAnswerByContent(String content){
+        return getAnswerRepository().fetchAnswerByContent(content).size() >0;
     }
 
     private IAnswerBankRepository getAnswerRepository() {

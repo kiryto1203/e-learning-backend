@@ -18,6 +18,7 @@ public interface Constants {
     int CURRENT_PAGE_DEFAULT_VALUE = 0;
     String CURRENT_PAGE_DEFAULT_STRING_VALUE = "0";
     int DEFAULT_RANDOM_CHARACTER_LENGTH = 20;
+    int LENGTH_ANSWER_DEFAULT = 4;
     List<String> VALID_IMAGE_TYPE = asList(MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, "image/jpg");
     long AVATAR_MAXIMUM_SIZE = 3145728;
 
@@ -70,8 +71,9 @@ public interface Constants {
     int Q_TYPE_CHOOSE_ONE = 1;
     int Q_TYPE_CHOOSE_MULTIPLE = 2;
     int Q_TYPE_PARAGRAPH = 3;
+    int Q_TYPE_ENTER = 4;
 
-    int ANSWER_CORRECT = 1;
-    int ANSWER_INCORRECT = 0;
-    int ANSWER_NOT_GIVEN = 2;
+    int FETCH_ALL_ANSWERS = -1;
+    int FETCH_ANSWER_CORRECT = 1;
+    int FETCH_ANSWER_INCORRECT = 0;
 }

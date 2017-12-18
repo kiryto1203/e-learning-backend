@@ -10,6 +10,7 @@ import com.elearningbackend.entity.AnswerBank;
 import com.elearningbackend.entity.SystemResult;
 import com.elearningbackend.entity.SystemResultId;
 import com.elearningbackend.repository.ISystemResultRepository;
+import com.elearningbackend.utility.Constants;
 import com.elearningbackend.utility.Paginator;
 import com.elearningbackend.utility.ServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
-public class SystemResultService extends AbstractCustomService<SystemResultDto, SystemResultId, SystemResult> {
+public class SystemResultService extends AbstractSystemResultService<SystemResultDto, SystemResultId, SystemResult> {
 
     @Autowired
     public SystemResultService(JpaRepository<SystemResult, SystemResultId> repository) {
@@ -36,10 +41,21 @@ public class SystemResultService extends AbstractCustomService<SystemResultDto, 
     @Qualifier("answerBankService")
     private AbstractCustomService<AnswerBankDto, String, AnswerBank> abstracAnswerBankService;
 
-
     @Override
     public Pager<SystemResultDto> getByCreator(String creatorUsername, int currentPage, int noOfRowInPage) {
         return null;
+    }
+
+    @Override
+    public SystemResultDto addOrGetExists(SystemResultDto object) throws ElearningException {
+        checkQuestionAndAnswerCode(object);
+        SystemResultId systemResultId = getSystemResultId(object);
+        List<SystemResult> systemResults = duplicateSystemResult(systemResultId,object);
+        if (systemResults.size()>0)
+            return mapper.map(systemResults.get(Constants.ZERO),SystemResultDto.class);
+        object.setSystemResultId(systemResultId);
+        saveSystemResult(object);
+        return object;
     }
 
     @Override
@@ -62,7 +78,7 @@ public class SystemResultService extends AbstractCustomService<SystemResultDto, 
     public SystemResultDto add(SystemResultDto object) throws ElearningException {
         checkQuestionAndAnswerCode(object);
         SystemResultId systemResultId = getSystemResultId(object);
-        if (getOneByKey(systemResultId) != null)
+        if (duplicateSystemResult(systemResultId,object).size()>0)
             throw new ElearningException(Errors.SYSTEM_RESULT_ID_EXIST.getId(),
                     Errors.SYSTEM_RESULT_ID_EXIST.getMessage());
         object.setSystemResultId(systemResultId);
@@ -81,11 +97,17 @@ public class SystemResultService extends AbstractCustomService<SystemResultDto, 
 
     @Override
     public SystemResultDto delete(SystemResultId key) throws ElearningException {
-        SystemResultId systemResultId = new SystemResultId(key.getSystemResultQuestionCode(),
-                key.getSystemResultAnswerCode());
-        SystemResultDto systemResultDto = getOneByKey(systemResultId);
+        SystemResultDto systemResultDto = getOneByKey(key);
         getSystemResultRepository().delete(key);
         return systemResultDto;
+    }
+
+    @Override
+    public List<SystemResultDto> getSystemResultByQuestionCode(String questionCode){
+        List<SystemResult> systemResults = getSystemResultRepository().fetchSystemResultByQuestionCode(questionCode);
+        if(systemResults==null)
+            systemResults = new ArrayList();
+        return systemResults.stream().map(e -> mapper.map(e,SystemResultDto.class)).collect(Collectors.toList());
     }
 
     private ISystemResultRepository getSystemResultRepository() {
@@ -97,10 +119,22 @@ public class SystemResultService extends AbstractCustomService<SystemResultDto, 
     }
 
     private void checkQuestionAndAnswerCode(SystemResultDto object) throws ElearningException {
-        if ((abstractQuestionBankSercive.getOneByKey(object.getSystemResultId().getSystemResultQuestionCode()) == null)
-                && (abstracAnswerBankService.getOneByKey(object.getSystemResultId().getSystemResultAnswerCode()) == null))
+        try{
+            /**
+             * getOneByKey method is method throw exception if not exists
+             * => this step only  use try catch and throw exception if child method occurs exception
+             */
+            abstractQuestionBankSercive.getOneByKey(object.getSystemResultId().getSystemResultQuestionCode());
+            abstracAnswerBankService.getOneByKey(object.getSystemResultId().getSystemResultAnswerCode());
+        }catch(ElearningException e){
             throw new ElearningException(Errors.ANSWER_OR_QUESTION_NOT_EXITS.getId(),
                     Errors.ANSWER_OR_QUESTION_NOT_EXITS.getMessage());
+        }
+    }
+
+    private List<SystemResult> duplicateSystemResult(SystemResultId systemResultId,SystemResultDto object){
+        return getSystemResultRepository().uniqueSystemResult(systemResultId.getSystemResultQuestionCode()
+                ,systemResultId.getSystemResultAnswerCode(),object.getSystemResultPosition());
     }
 
     private SystemResultId getSystemResultId(SystemResultDto object) {

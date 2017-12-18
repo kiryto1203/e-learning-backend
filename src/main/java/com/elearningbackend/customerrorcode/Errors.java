@@ -34,10 +34,13 @@ public enum Errors {
     ERROR_UPDATE_AVATAR("91", "ERROR UPDATE AVATAR"),
     CANNOT_GET_FILE("92", "CANNOT GET FILE"),
     CANNOT_DELETE_FILE("111", "CANNOT DELETE FILE"),
-    IMAGE_FILE_CORRUPTED("70", "IMAGE FILE CORRUPTED");
+    IMAGE_FILE_CORRUPTED("70", "IMAGE FILE CORRUPTED"),
+    CHANGE_PASS_ERROR("040", "CHANGEPASS ERRORS"),
+    NEWPASSWORD_EQUALS_OLDPASSWORD("041", "NEWPASSWORD_EQUALS_OLDPASSWORD");
 
     private final String id;
     private final String message;
 
     public String getAdditionalMessage(String additionalMessage) {return message+": "+additionalMessage;}
+
 }

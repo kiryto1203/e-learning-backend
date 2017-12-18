@@ -42,7 +42,6 @@ public class UserDto {
     @JsonProperty("display_name")
     private String displayName;
 
-    @NotBlank(message = "Missing activated!")
     private int activated;
 
     @NotBlank(message = "Email cannot be blank!")
@@ -54,7 +53,6 @@ public class UserDto {
     private String address;
     private String avatar;
 
-    @NotBlank(message = "Missing role!")
     private String role;
 
     @JsonDeserialize(using=CustomDateAndTimeDeserialize.class)

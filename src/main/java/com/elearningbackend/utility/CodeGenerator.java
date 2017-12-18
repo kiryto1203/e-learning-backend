@@ -21,7 +21,7 @@ public abstract class CodeGenerator {
     }
 
     public static String getCodePostFix() {
-        return String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(0,6);
+        return String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(0,5);
     }
 
     public static String generateFileUrl(String fileName) {

@@ -116,6 +116,9 @@ public class UserController extends BaseController {
     @PreAuthorize(Constants.PRE_AUTHENTICATED)
     public Result<UserDto> edit(@PathVariable String key,
             @RequestBody UserDto userDto, HttpServletResponse response){
+        if (userDto.getActivated() != Constants.STATUS_ACTIVATED){
+            return new Result<>(Errors.INVALID_USER_DETAILS.getId(), Errors.INVALID_USER_DETAILS.getMessage(), userDto);
+        }
         userDto.setUsername(key);
         CurrentUser currentUser = getCurrentUser();
         if (!checkCurrentUser(currentUser, key)){
@@ -138,13 +141,39 @@ public class UserController extends BaseController {
     }
 
     @DeleteMapping("/users/{key}")
-    @PreAuthorize(Constants.PRE_AUTH_ADMIN_USERS)
+    @PreAuthorize(Constants.PREAUTH_ADMINISTRATOR)
     public Result<UserDto> delete(@PathVariable("key") String key){
+        CurrentUser currentUser = getCurrentUser();
+        if (currentUser.getUsername().equals(key)){
+            return new Result<>(Errors.CANNOT_DELETE_YOURSELF.getId(),
+                Errors.CANNOT_DELETE_YOURSELF.getMessage(), null);
+        }
         try {
             abstractService.delete(key);
             return new Result<>(ResultCodes.OK.getCode(),
                 ResultCodes.OK.getMessage(), null);
         }catch (ElearningException e){
+            return new Result<>(e.getErrorCode(), e.getMessage(), null);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new Result<>(ResultCodes.FAIL_UNRECOGNIZED_ERROR.getCode(),
+                e.getMessage(), null);
+        }
+    }
+
+    @PutMapping("/users/change-role/{key}")
+    @PreAuthorize(Constants.PREAUTH_ADMINISTRATOR)
+    public Result<UserDto> changeRole(@PathVariable("key") String key,
+        @RequestParam(value = "r") String role){
+        CurrentUser currentUser = getCurrentUser();
+        if (currentUser.getUsername().equals(key)){
+            return new Result<>(Errors.CANNOT_CHANGE_ROLE_ADMIN.getId(),
+                Errors.CANNOT_CHANGE_ROLE_ADMIN.getMessage(), null);
+        }
+        try{
+            return new Result<>(ResultCodes.OK.getCode(), ResultCodes.OK.getMessage(),
+                abstractService.updateRole(key, role));
+        } catch (ElearningException e) {
             return new Result<>(e.getErrorCode(), e.getMessage(), null);
         }catch (Exception e) {
             e.printStackTrace();

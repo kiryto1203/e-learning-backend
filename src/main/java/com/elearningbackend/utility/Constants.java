@@ -44,6 +44,7 @@ public interface Constants {
     String AUTH_TEACHER = "2";
     String AUTH_CONTRIBUTER = "3";
     String AUTH_USER = "4";
+    List<String> ROLES_LIST = asList("0", "1", "2", "3", "4");
     /**
      * list status user
      */

@@ -32,24 +32,24 @@ public class CategoryService extends AbstractService<CategoryDto, String, Catego
     @Override
     public Pager<CategoryDto> loadAll(int currentPage, int noOfRowInPage, String sortBy, String direction) {
         Page<Category> pager = getCategoryRepository().findAll(Paginator.getValidPageRequest(currentPage, noOfRowInPage, null));
-        List<String> subcategoriesByCategory = pager.getContent().stream().map(a -> iSubcategoryRepository.findNameByCategory(a))
-            .findFirst().orElse(null);
         Pager<CategoryDto> paginate = paginator.paginate(currentPage, pager, noOfRowInPage, mapper);
         paginate.setResults(paginate.getResults().stream().map(a -> {
-            a.setSubcategoriesName(subcategoriesByCategory);
-            a.setSubcategoriesCount(subcategoriesByCategory.size());
+            List<String> nameByCategory = iSubcategoryRepository.findNameByCategory(a.getCategoryCode());
+            a.setSubcategoriesName(nameByCategory);
+            a.setSubcategoriesCount(nameByCategory.size());
             return a;
         }).collect(Collectors.toList()));
+
         return paginate;
     }
 
     @Override
     public CategoryDto getOneByKey(String key) throws ElearningException {
         Category category = getCategoryRepository().findOne(key.toUpperCase());
-        List<String> subcategories = iSubcategoryRepository.findNameByCategory(category);
         if (category == null){
             throw new ElearningException(Errors.CATEGORY_NOT_FOUND.getId(), Errors.CATEGORY_NOT_FOUND.getMessage());
         }
+        List<String> subcategories = iSubcategoryRepository.findNameByCategory(category.getCategoryCode());
         CategoryDto categoryDto = mapper.map(category, CategoryDto.class);
         categoryDto.setSubcategoriesName(subcategories);
         categoryDto.setSubcategoriesCount(subcategories.size());

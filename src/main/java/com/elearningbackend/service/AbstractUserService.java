@@ -25,4 +25,6 @@ public abstract class AbstractUserService<D, K extends Serializable, E> extends 
     public abstract boolean active(UserDto userDto) throws ElearningException;
 
     public abstract UserDto updateAvatar(String avatarUrl, String username) throws ElearningException;
+
+    public abstract UserDto updateRole(String key, String role) throws ElearningException;
 }

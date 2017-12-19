@@ -80,7 +80,8 @@ public class UserService extends AbstractUserService<UserDto, String, User> {
     public UserDto delete(String key) throws ElearningException {
         UserDto userDto = getOneByKey(key);
         if (userDto != null){
-            getUserRepository().delete(key);
+            userDto.setActivated(Constants.STATUS_LOCKED);
+            saveUser(userDto, false);
             return userDto;
         }
         throw new ElearningException(Errors.USER_NOT_FOUND.getId(),Errors.USER_NOT_FOUND.getMessage());
@@ -113,6 +114,20 @@ public class UserService extends AbstractUserService<UserDto, String, User> {
     public UserDto updateAvatar(String avatarUrl, String username) throws ElearningException{
         UserDto userDto = getOneByKey(username);
         userDto.setAvatar(avatarUrl);
+        saveUser(userDto, false);
+        return userDto;
+    }
+
+    @Override
+    public UserDto updateRole(String key, String role) throws ElearningException {
+        UserDto userDto = getOneByKey(key);
+        if (userDto.getRole().equals(role)){
+            return userDto;
+        }
+        if(Constants.ROLES_LIST.stream().noneMatch(e -> e.equals(role))) {
+            throw new ElearningException(Errors.ROLE_NOT_EXIST.getId(), Errors.ROLE_NOT_EXIST.getMessage());
+        }
+        userDto.setRole(role);
         saveUser(userDto, false);
         return userDto;
     }

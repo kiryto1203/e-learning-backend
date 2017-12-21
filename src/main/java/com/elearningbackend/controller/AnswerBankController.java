@@ -25,7 +25,7 @@ public class AnswerBankController {
     public Pager<AnswerBankDto> loadAll(
             @RequestParam(value = "page", defaultValue = Constants.CURRENT_PAGE_DEFAULT_STRING_VALUE) int currentPage,
             @RequestParam(value = "limit", defaultValue = Constants.NO_OF_ROWS_DEFAULT_STRING_VALUE) int noOfRowInPage,
-            @RequestParam(defaultValue = SortingConstants.SORT_USER_DEFAULT_FIELD) String sortBy,
+            @RequestParam(defaultValue = SortingConstants.SORT_ANSWER_DEFAULT_FIELD) String sortBy,
             @RequestParam(defaultValue = SortingConstants.ASC) String direction
     ){
         return abstractService.loadAll(currentPage, noOfRowInPage, sortBy, direction);

@@ -10,4 +10,5 @@ public interface SortingConstants {
     String SORT_CATEGORY_SUBCATEGORY_DEFAULT_FIELD = "categoryCode";
     String SORT_QUESTION_DEFAULT_FIELD = "questionCode";
     String SORT_SUBCATEGORY_DEFAULT_FIELD = "subcategoryCode";
+    String SORT_ANSWER_DEFAULT_FIELD = "answerCode";
 }

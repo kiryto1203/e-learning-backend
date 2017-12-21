@@ -76,4 +76,5 @@ public interface Constants {
     int FETCH_ALL_ANSWERS = -1;
     int FETCH_ANSWER_CORRECT = 1;
     int FETCH_ANSWER_INCORRECT = 0;
+    int ANSWER_HIDDEN_RESULT = 999;
 }

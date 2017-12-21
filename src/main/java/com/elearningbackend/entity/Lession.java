@@ -1,20 +1,22 @@
 package com.elearningbackend.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "lession", catalog = "e_learning")
-public class Lession implements java.io.Serializable {
+public class Lession implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private String lessionCode;
     private User user;
     private Timestamp creationDate;
     private Timestamp lastUpdateDate;
-    private Set<QuestionLession> questionLessions = new HashSet<QuestionLession>(0);
+    private Integer isFinish;
+    private Set<LessionReport> mappedLessionReports = new HashSet<>(0);
 
     public Lession() {
     }
@@ -25,12 +27,12 @@ public class Lession implements java.io.Serializable {
     }
 
     public Lession(String lessionCode, User user, Timestamp creationDate, Timestamp lastUpdateDate,
-            Set<QuestionLession> questionLessions) {
+            Set<LessionReport> mappedLessionReports) {
         this.lessionCode = lessionCode;
         this.user = user;
         this.creationDate = creationDate;
         this.lastUpdateDate = lastUpdateDate;
-        this.questionLessions = questionLessions;
+        this.mappedLessionReports = mappedLessionReports;
     }
 
     @Id
@@ -47,6 +49,7 @@ public class Lession implements java.io.Serializable {
     public Timestamp getCreationDate() {
         return creationDate;
     }
+
     public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
@@ -60,15 +63,6 @@ public class Lession implements java.io.Serializable {
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    @OneToMany(mappedBy = "lession", cascade= CascadeType.ALL)
-    public Set<QuestionLession> getQuestionLessions() {
-        return this.questionLessions;
-    }
-
-    public void setQuestionLessions(Set<QuestionLession> questionLessions) {
-        this.questionLessions = questionLessions;
-    }
-
     @ManyToOne
     @JoinColumn(name = "lession_username", nullable = false)
     public User getUser() {
@@ -77,5 +71,23 @@ public class Lession implements java.io.Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Column(name = "is_finish")
+    public Integer getIsFinish() {
+        return isFinish;
+    }
+
+    public void setIsFinish(Integer isFinish) {
+        this.isFinish = isFinish;
+    }
+
+    @OneToMany(mappedBy = "mappedLession")
+    public Set<LessionReport> getMappedLessionReports() {
+        return mappedLessionReports;
+    }
+
+    public void setMappedLessionReports(Set<LessionReport> mappedLessionReports) {
+        this.mappedLessionReports = mappedLessionReports;
     }
 }

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackOn = ElearningException.class)
@@ -26,7 +27,7 @@ public class QuestionService extends AbstractQuestionService<QuestionDto,String>
     @Autowired
     private AbstractCustomService<AnswerBankDto,String,AnswerBank> answerBankService;
     @Autowired
-    private AbstractCustomService<QuestionBankDto,String,QuestionBank> questionBankService;
+    private QuestionBankService questionBankService;
     @Autowired
     private AbstractSystemResultService<SystemResultDto,SystemResultId,SystemResult> systemResultService;
 
@@ -47,9 +48,30 @@ public class QuestionService extends AbstractQuestionService<QuestionDto,String>
     }
 
     @Override
-    public List<AnswerDto> getAnswers(String questionCode,int isCorrect, int length) {
+    public List<AnswerDto> getAnswers(String questionCode,int fetchType, int length) {
         List<SystemResultDto> systemResultDtos = systemResultService.getSystemResultByQuestionCode(questionCode);
-        return addAnswerDtoAndSystemResult(systemResultDtos,isCorrect,length);
+        return addAnswerDtoAndSystemResult(systemResultDtos,fetchType,length);
+    }
+
+    @Override
+    public Pager<QuestionDto> getQuestionsBySubcategoryCode(String subcategoryCode, int currentPage, int noOfRowInPage) {
+        return convertToPagerQuestionDto(questionBankService.getBySubcategoryCode(subcategoryCode, currentPage, noOfRowInPage));
+    }
+
+    private Pager<QuestionDto> convertToPagerQuestionDto(Pager<QuestionBankDto> questionBankDtoPager){
+        Pager<QuestionDto> questionDtoPager = new Pager<>();
+        questionDtoPager.setTotalPage(questionBankDtoPager.getTotalPage());
+        questionDtoPager.setNoOfRowInPage(questionBankDtoPager.getNoOfRowInPage());
+        questionDtoPager.setCurrentPage(questionBankDtoPager.getCurrentPage());
+        questionDtoPager.setTotalRow(questionBankDtoPager.getTotalRow());
+        List<QuestionDto> questionDtos = questionBankDtoPager.getResults().stream().map(e -> {
+            QuestionDto questionDto = new QuestionDto();
+            questionDto.setQuestionBankDto(e);
+            questionDto.setAnswerDtos(getAnswers(e.getQuestionCode(), Constants.FETCH_ALL_ANSWERS, Constants.FETCH_ALL_ANSWERS));
+            return questionDto;
+        }).collect(Collectors.toList());
+        questionDtoPager.setResults(questionDtos);
+        return questionDtoPager;
     }
 
     @Override

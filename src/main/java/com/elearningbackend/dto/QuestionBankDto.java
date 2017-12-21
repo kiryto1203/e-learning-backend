@@ -5,10 +5,7 @@
  */
 package com.elearningbackend.dto;
 
-import com.elearningbackend.entity.QuestionLession;
 import com.elearningbackend.entity.Subcategory;
-import com.elearningbackend.utility.CustomDateAndTimeDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -33,7 +30,6 @@ public class QuestionBankDto {
     private String lastUpdaterUsername;
     private Double point;
     private Subcategory subcategory;
-    private Set<QuestionLession> questionLessions = new HashSet<QuestionLession>(0);
 
     public QuestionBankDto(String questionCode, String questionContent) {
         this.questionCode = questionCode;

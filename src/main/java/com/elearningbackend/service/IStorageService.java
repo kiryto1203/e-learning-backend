@@ -10,7 +10,6 @@ import java.nio.file.Path;
 /**
  * Created by dohalong on 11/12/2017.
  */
-@Service
 public interface IStorageService {
     Path initFolder(String key) throws CustomStorageException;
     FileDto store(MultipartFile file, String username) throws CustomStorageException;

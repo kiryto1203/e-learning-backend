@@ -15,8 +15,11 @@ public interface IQuestionBankRepository extends JpaRepository<QuestionBank, Str
     Page<QuestionBank> fetchQuestionByCreator(String creatorUsername, Pageable pageable);
     @Query("select a from QuestionBank a where a.subcategory.subcategoryCode = ?1")
     Page<QuestionBank> fetchQuestionBySubcategoryCode(String subcategoryCode, Pageable pageable);
+    @Query("select a from QuestionBank a where a.subcategory.subcategoryCode = ?1")
+    List<QuestionBank> fetchAllQuestionsBySubcategoryCode(String subcategoryCode);
     @Query("select a from QuestionBank a where a.questionType = ?1 and a.questionContent like ?2 and a.point = ?3 and a.subcategory.subcategoryCode = ?4 ")
     List<QuestionBank> uniqueQuestion(int type,String content,double point,String subcategoryCode);
     @Query("select a from QuestionBank a where a.questionParentCode = ?1")
     List<QuestionBank> fetchQuestionChild(String questoinPrarentCode);
+    int countAllBySubcategorySubcategoryCode(String subcategoryCode);
 }

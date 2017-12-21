@@ -267,4 +267,45 @@
     <changeSet id="change-type-activated" author="LongDh">
         <modifyDataType tableName="user" columnName="activated" newDataType="tinyint"/>
     </changeSet>
+    <changeSet author="LongDH" id="change-question-lession">
+        <dropTable tableName="question_lession" schemaName="e_learning"/>
+        <createTable tableName="lession_report" schemaName="e_learning">
+            <column name="lession_report_lession_code" type="VARCHAR(100)">
+                <constraints foreignKeyName="lession_report_lession_code_fkey" references="lession(lession_code)"/>
+            </column>
+            <column name="lession_report_question_code" type="VARCHAR(100)"/>
+            <column name="question_content" type="text"/>
+            <column name="question_parent_code" type="VARCHAR(100)"/>
+            <column name="subcategory_code" type="VARCHAR(50)"/>
+            <column name="question_point" type="FLOAT(6,2) UNSIGNED"/>
+            <column name="user_point" type="FLOAT(6,2) UNSIGNED"/>
+            <column name="correct_answer" type="text"/>
+            <column name="user_answer" type="text"/>
+        </createTable>
+        <addPrimaryKey schemaName="e_learning" tableName="lession_report" columnNames="lession_report_lession_code, lession_report_question_code" constraintName="lession_report_pkey"/>
+    </changeSet>
+    <changeSet author="LongDH" id="add-is-finish-column-lession">
+        <addColumn catalogName="e_learning" tableName="lession">
+            <column name="is_finish" type="int" defaultValue="0"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="LongDH" id="add-more-columns-to-lession-report">
+        <addColumn tableName="lession_report" catalogName="e_learning">
+            <column name="incorrectAnswers" type="text"/>
+            <column name="correctAnswers" type="text"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="LongDH" id="modify-columns-to-lession-report">
+        <dropColumn tableName="lession_report" schemaName="e_learning" columnName="correct_answer"/>
+        <renameColumn columnDataType="text"
+            newColumnName="incorrect_answers"
+            oldColumnName="incorrectAnswers"
+            schemaName="e_learning"
+            tableName="lession_report"/>
+        <renameColumn columnDataType="text"
+            newColumnName="correct_answers"
+            oldColumnName="correctAnswers"
+            schemaName="e_learning"
+            tableName="lession_report"/>
+    </changeSet>
 </databaseChangeLog>

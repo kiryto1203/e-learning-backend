@@ -12,19 +12,24 @@ import java.sql.Timestamp;
  * @author c1508l3694
  */
 public abstract class CodeGenerator {
-    public static String generateQuestionCode(String categoryCode){
-        return String.format("%sQ%s", categoryCode, getCodePostFix());
+    public static String generateQuestionCode(String subcategoryCode){
+        return String.format("%sQ%s", subCate(subcategoryCode), getCodePostFix());
     }
 
     public static String generateAnswerCode(){
-        return String.format("%sA%s", getCodePostFix());
+        return String.format("A%s", getCodePostFix());
     }
 
     public static String getCodePostFix() {
-        return String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(0,5);
+        return String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(6);
     }
 
     public static String generateFileUrl(String fileName) {
         return String.format("%s%s", String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()), fileName);
+    }
+
+    private static String subCate(String cate){
+        String sub = cate.substring(0,2);
+        return sub;
     }
 }

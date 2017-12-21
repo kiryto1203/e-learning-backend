@@ -21,25 +21,18 @@ public class UserDto {
 
     @NotBlank(message = "Password cannot be empty!")
     @Length(min = 6, max = 30, message = "Password has to be between 6-30")
-    @JsonProperty("password")
     private String password;
 
-    @JsonProperty("activation_digest")
     private String activationDigest;
 
-    @JsonProperty("activated_at")
     private Date activatedAt;
 
-    @JsonProperty("remember_digest")
     private String rememberDigest;
 
-    @JsonProperty("reset_digest")
     private String resetDigest;
 
-    @JsonProperty("reset_sent_at")
     private Date resetSentAt;
 
-    @JsonProperty("display_name")
     private String displayName;
 
     private int activated;
@@ -56,11 +49,9 @@ public class UserDto {
     private String role;
 
     @JsonDeserialize(using=CustomDateAndTimeDeserialize.class)
-    @JsonProperty("created_at")
     private Date createdAt;
 
     @JsonDeserialize(using=CustomDateAndTimeDeserialize.class)
-    @JsonProperty("updated_at")
     private Date updatedAt;
 
     public UserDto(String username) {

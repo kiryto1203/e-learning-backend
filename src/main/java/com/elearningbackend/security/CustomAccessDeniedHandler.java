@@ -20,6 +20,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
             HttpServletResponse response,
             AccessDeniedException exc) throws IOException, ServletException {
         ObjectMapper mapper = new ObjectMapper();
-        response.getWriter().write(mapper.writeValueAsString(new Result(Errors.ACCESS_DENIED.getId(),Errors.ACCESS_DENIED.getMessage(),null)));
+        response.getWriter().write(mapper.writeValueAsString(new Result<>(Errors.ACCESS_DENIED.getId(),Errors.ACCESS_DENIED.getMessage(),null)));
     }
 }

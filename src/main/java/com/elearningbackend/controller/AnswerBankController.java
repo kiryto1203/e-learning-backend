@@ -21,7 +21,7 @@ public class AnswerBankController {
     @Qualifier("answerBankService")
     private AbstractCustomService<AnswerBankDto, String, AnswerBank> abstractService;
 
-    @GetMapping("/answers")
+    @GetMapping("/answers-bank")
     public Pager<AnswerBankDto> loadAll(
             @RequestParam(value = "page", defaultValue = Constants.CURRENT_PAGE_DEFAULT_STRING_VALUE) int currentPage,
             @RequestParam(value = "limit", defaultValue = Constants.NO_OF_ROWS_DEFAULT_STRING_VALUE) int noOfRowInPage,
@@ -31,7 +31,7 @@ public class AnswerBankController {
         return abstractService.loadAll(currentPage, noOfRowInPage, sortBy, direction);
     }
 
-    @GetMapping("/answers/{key}")
+    @GetMapping("/answers-bank/{key}")
     public Result<AnswerBankDto> getByKey(@PathVariable("key") String key){
         try {
             AnswerBankDto answerBankDto = abstractService.getOneByKey(key);
@@ -43,7 +43,7 @@ public class AnswerBankController {
         }
     }
 
-    @GetMapping("/answers/{creatorUsername}/")
+    @GetMapping("/answers-bank/{creatorUsername}/")
     public Pager<AnswerBankDto> getByCreator(
             @PathVariable("creatorUsername") String creatorUserName,
             @RequestParam("currentPage") int currentPage,
@@ -53,7 +53,7 @@ public class AnswerBankController {
         return null;
     }
 
-    @PostMapping("/answers")
+    @PostMapping("/answers-bank")
     public Result<AnswerBankDto> add(@Valid @RequestBody AnswerBankDto answerBankDto){
         try {
             ServiceUtils.checkDataMissing(answerBankDto,
@@ -71,7 +71,7 @@ public class AnswerBankController {
         }
     }
 
-    @PutMapping("/answers/{key}")
+    @PutMapping("/answers-bank/{key}")
     public Result<AnswerBankDto> edit(
             @Valid
             @PathVariable String key,
@@ -92,7 +92,7 @@ public class AnswerBankController {
       }
     }
 
-    @DeleteMapping("/answers/{key}")
+    @DeleteMapping("/answers-bank/{key}")
     public Result<AnswerBankDto> delete(@PathVariable("key") String key){
         try {
             abstractService.delete(key);
@@ -104,6 +104,4 @@ public class AnswerBankController {
                     e.getMessage(), null);
         }
     }
-
-
 }

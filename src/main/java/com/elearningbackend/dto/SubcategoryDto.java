@@ -14,19 +14,12 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 public class SubcategoryDto {
-    @JsonProperty("subcategory_code")
     private String subcategoryCode;
-    @JsonProperty("display_name")
     private String displayName;
-    @JsonProperty("category_code")
     private String categoryCode;
-    @JsonProperty("subcategory_introduction")
     private String subcategoryIntro;
-    @JsonProperty("creation_date")
     private Timestamp creationDate;
-    @JsonProperty("last_update_date")
     private Timestamp lastUpdateDate;
-    @JsonProperty("questions")
     private Set<QuestionBank> questionBanks;
 
     public SubcategoryDto(String subcategoryCode, Timestamp creationDate, Timestamp lastUpdateDate) {

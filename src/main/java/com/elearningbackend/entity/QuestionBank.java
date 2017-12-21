@@ -1,5 +1,8 @@
 package com.elearningbackend.entity;
 
+import com.elearningbackend.utility.CustomDateAndTimeDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;

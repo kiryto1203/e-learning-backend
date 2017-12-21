@@ -81,7 +81,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
             throws IOException, ServletException {
         ObjectMapper mapper = new ObjectMapper();
         response.getWriter().write(mapper.writeValueAsString(
-            new Result(Errors.valueOf(failed.getMessage()).getId(),failed.getMessage(),null))
+            new Result<>(Errors.valueOf(failed.getMessage()).getId(),failed.getMessage(),null))
         );
     }
 }

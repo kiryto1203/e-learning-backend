@@ -17,7 +17,7 @@ public class QuestionBankController {
     @Qualifier("questionBankService")
     private IAbstractService<QuestionBankDto, String> abstractService;
 
-    @GetMapping("/questions")
+    @GetMapping("/questions-bank")
     public Pager<QuestionBankDto> loadAll(
             @RequestParam(value = "page", defaultValue = Constants.CURRENT_PAGE_DEFAULT_STRING_VALUE) int page,
             @RequestParam(value = "limit", defaultValue = Constants.NO_OF_ROWS_DEFAULT_STRING_VALUE) int noOfRowInPage,
@@ -26,14 +26,12 @@ public class QuestionBankController {
        return abstractService.loadAll(page, noOfRowInPage, sortBy, direction);
     }
 
-    //TODO
-    @GetMapping("/questions/{key}")
+    @GetMapping("/questions-bank/{key}")
     public QuestionBankDto getOne(@PathVariable("key") String key){
         return null;
     }
 
-    //TODO
-    @GetMapping("/questions/{creatorUsername}")
+    @GetMapping("/questions-bank/{creatorUsername}")
     public Pager<QuestionBankDto> getByCreator(
             @PathVariable("creatorUsername") String creatorUsername,
             @RequestParam("page") int page,
@@ -42,20 +40,17 @@ public class QuestionBankController {
         return null;
     }
 
-    //TODO
-    @PostMapping("/questions")
+    @PostMapping("/questions-bank")
     public String add(@RequestBody QuestionBankDto questionBankDto){
         return null;
     }
 
-    //TODO
-    @PutMapping("/questions/{key}")
+    @PutMapping("/questionsbank/{key}")
     public String edit(@PathVariable String key, @RequestBody QuestionBankDto questionBankDto){
         return null;
     }
 
-    //TODO
-    @DeleteMapping("/questions/{key}")
+    @DeleteMapping("/questions-bank/{key}")
     public String delete(@PathVariable String key){
         return null;
     }

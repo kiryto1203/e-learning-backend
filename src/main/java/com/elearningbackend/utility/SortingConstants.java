@@ -9,4 +9,5 @@ public interface SortingConstants {
     String SORT_USER_DEFAULT_FIELD = "username";
     String SORT_CATEGORY_SUBCATEGORY_DEFAULT_FIELD = "categoryCode";
     String SORT_QUESTION_DEFAULT_FIELD = "questionCode";
+    String SORT_SUBCATEGORY_DEFAULT_FIELD = "subcategoryCode";
 }

@@ -11,6 +11,7 @@ import com.elearningbackend.dto.Pager;
 import com.elearningbackend.dto.QuestionBankDto;
 import com.elearningbackend.entity.QuestionBank;
 import com.elearningbackend.repository.IQuestionBankRepository;
+import com.elearningbackend.utility.Constants;
 import com.elearningbackend.utility.Paginator;
 import com.elearningbackend.utility.ServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  *
@@ -43,7 +46,7 @@ public class QuestionBankService extends AbstractCustomService<QuestionBankDto, 
     public QuestionBankDto getOneByKey(String questionCode) throws ElearningException {
         QuestionBank question = getQuestionRepository().findOne(questionCode);
         if (question == null) {
-            throw new ElearningException(Errors.USER_NOT_FOUND.getId(), Errors.USER_NOT_FOUND.getMessage());
+            throw new ElearningException(Errors.QUESTION_NOT_FOUND.getId(), Errors.QUESTION_NOT_FOUND.getMessage());
         }
         return mapper.map(question, QuestionBankDto.class);
     }
@@ -53,6 +56,20 @@ public class QuestionBankService extends AbstractCustomService<QuestionBankDto, 
         Page<QuestionBank> pager = getQuestionRepository().fetchQuestionByCreator(
                 creatorUsername, new PageRequest(currentPage, noOfRowInPage));
         return paginator.paginate(currentPage, pager, noOfRowInPage, mapper);
+    }
+
+    @Override
+    public QuestionBankDto addOrGetExists(QuestionBankDto object) {
+        try {
+            return getOneByKey(object.getQuestionCode());
+        } catch (ElearningException e) {
+            List<QuestionBank> questionBanks = getQuestionRepository().uniqueQuestion(object.getQuestionType(), object.getQuestionContent()
+                    , object.getPoint(), object.getSubcategory().getSubcategoryCode());
+            if (questionBanks.size() > 0)
+                return mapper.map(questionBanks.get(Constants.ZERO), QuestionBankDto.class);
+        }
+        saveQuestion(object);
+        return object;
     }
 
     @Override
@@ -68,13 +85,15 @@ public class QuestionBankService extends AbstractCustomService<QuestionBankDto, 
 
     @Override
     public QuestionBankDto edit(QuestionBankDto question) throws ElearningException {
-        QuestionBankDto questionByCode = getOneByKey(question.getQuestionCode());
-        if (questionByCode != null) {
+        try {
+            getOneByKey(question.getQuestionCode());
             saveQuestion(question);
             return question;
+        } catch (ElearningException e) {
+            throw new ElearningException(e.getErrorCode(), e.getMessage());
+        } catch (Exception e){
+            throw new ElearningException("Cannot edit question");
         }
-        //TODO
-        throw new ElearningException("Cannot edit question");
     }
 
     @Override

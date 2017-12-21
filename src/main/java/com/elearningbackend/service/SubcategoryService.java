@@ -27,7 +27,10 @@ public class SubcategoryService extends AbstractService<SubcategoryDto, String, 
 
     @Override
     public Pager<SubcategoryDto> loadAll(int currentPage, int noOfRowInPage, String sortBy, String direction) {
-        return null;
+        Page<Subcategory> pager = getSubcategoryRepository().findAll(
+                Paginator.getValidPageRequest(currentPage, noOfRowInPage, ServiceUtils.proceedSort(sortBy, direction)));
+        pager.forEach(e->e.setQuestionBanks(null));
+        return paginator.paginate(currentPage, pager, noOfRowInPage, mapper);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.elearningbackend.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashSet;
@@ -8,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "user", catalog = "e_learning")
-public class User implements java.io.Serializable {
+public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String username;

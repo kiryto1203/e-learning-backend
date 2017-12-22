@@ -23,7 +23,6 @@ public class QuestionBank implements Serializable {
     private String lastUpdaterUsername;
     private Double point;
     private Subcategory subcategory;
-    private Set<QuestionLession> questionLessions;
     private Set<SystemResult> systemResults;
 
     public QuestionBank() {
@@ -104,15 +103,6 @@ public class QuestionBank implements Serializable {
 
     public void setLastUpdaterUsername(String lastUpdaterUsername) {
         this.lastUpdaterUsername = lastUpdaterUsername;
-    }
-
-    @OneToMany(mappedBy = "questionBank", cascade = CascadeType.ALL)
-    public Set<QuestionLession> getQuestionLessions() {
-        return this.questionLessions;
-    }
-
-    public void setQuestionLessions(Set<QuestionLession> questionLessions) {
-        this.questionLessions = questionLessions;
     }
 
     @Column(name = "point")

@@ -2,12 +2,10 @@ package com.elearningbackend.utility;
 
 import org.springframework.http.MediaType;
 
-import java.util.List;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public interface Constants {
@@ -18,6 +16,7 @@ public interface Constants {
     int CURRENT_PAGE_DEFAULT_VALUE = 0;
     String CURRENT_PAGE_DEFAULT_STRING_VALUE = "0";
     int DEFAULT_RANDOM_CHARACTER_LENGTH = 20;
+    String DEFAULT_FETCH_TYPE_LESSION = "-1";
     int LENGTH_ANSWER_DEFAULT = 2;
     List<String> VALID_IMAGE_TYPE = asList(MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, "image/jpg");
     long AVATAR_MAXIMUM_SIZE = 3145728;
@@ -76,4 +75,15 @@ public interface Constants {
     int FETCH_ALL_ANSWERS = -1;
     int FETCH_ANSWER_CORRECT = 1;
     int FETCH_ANSWER_INCORRECT = 0;
+    int ANSWER_HIDDEN_RESULT = 999;
+
+    int DEFAULT_IELTS_READING_AMOUNT = 40;
+    int DEFAULT_TOEFL_READING_AMOUNT = 30;
+    int DEFAULT_TOEIC_READING_AMOUNT = 25;
+    String READING_IELTS = "READING-IELTS";
+    String READING_TOEIC = "READING-TOEIC";
+    String READING_TOEFL = "READING-TOEFL";
+
+    int LESSION_FINISH = 0;
+    int LESSION_UNFINISH = 1;
 }

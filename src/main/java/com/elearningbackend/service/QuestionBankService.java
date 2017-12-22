@@ -58,6 +58,7 @@ public class QuestionBankService extends AbstractCustomService<QuestionBankDto, 
         return paginator.paginate(currentPage, pager, noOfRowInPage, mapper);
     }
 
+
     @Override
     public QuestionBankDto addOrGetExists(QuestionBankDto object) {
         try {
@@ -100,7 +101,12 @@ public class QuestionBankService extends AbstractCustomService<QuestionBankDto, 
     public QuestionBankDto delete(String questionCode) throws ElearningException {
         QuestionBankDto questionByCode = getOneByKey(questionCode);
         if (questionByCode != null) {
+            List<QuestionBank> questionBanks = getQuestionRepository().fetchQuestionChild(questionCode);
+            for (QuestionBank questionBank : questionBanks) {
+                getQuestionRepository().delete(mapper.map(questionBank, QuestionBank.class));
+            }
             getQuestionRepository().delete(mapper.map(questionByCode, QuestionBank.class));
+
             return questionByCode;
         }
         //TODO

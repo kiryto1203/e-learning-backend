@@ -23,7 +23,9 @@ public class QuestionBankController {
             @RequestParam(value = "limit", defaultValue = Constants.NO_OF_ROWS_DEFAULT_STRING_VALUE) int noOfRowInPage,
             @RequestParam(defaultValue = SortingConstants.SORT_QUESTION_DEFAULT_FIELD) String sortBy,
             @RequestParam(defaultValue = SortingConstants.ASC) String direction){
-       return abstractService.loadAll(page, noOfRowInPage, sortBy, direction);
+        Pager<QuestionBankDto> questionBankDtoPager = abstractService.loadAll(page, noOfRowInPage, sortBy, direction);
+        questionBankDtoPager.getResults().stream().forEach(e->e.getSubcategory().setQuestionBanks(null));
+       return questionBankDtoPager;
     }
 
     @GetMapping("/questions-bank/{key}")

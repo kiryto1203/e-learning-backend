@@ -7,8 +7,10 @@ import com.elearningbackend.dto.*;
 import com.elearningbackend.entity.*;
 import com.elearningbackend.utility.CodeGenerator;
 import com.elearningbackend.utility.Constants;
+import com.elearningbackend.utility.Paginator;
 import com.elearningbackend.utility.ServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -155,7 +157,7 @@ public class QuestionService extends AbstractQuestionService<QuestionDto,String>
          * => change children's question code by new parent's question code
          * Purpose: don't set parent's question code for each children question
          */
-        if(hasChildQuestion(questionDtos,questionBankDto.getQuestionCode())){
+        if(hasChildQuestion(questionDtos,oldQuestionCode)){
             changeQuestionParentCode(questionDtos,oldQuestionCode
                     , questionDto.getQuestionBankDto().getQuestionCode());
         }
@@ -170,11 +172,11 @@ public class QuestionService extends AbstractQuestionService<QuestionDto,String>
     }
 
     private void changeQuestionParentCode(List<QuestionDto> questionDtos, String oldQuestionCode, String newQuestionCode){
-        questionDtos.stream().map(e -> {
-            if(e.getQuestionBankDto().getQuestionParentCode().equals(oldQuestionCode)){
+        questionDtos.stream().forEach(e -> {
+            if(e.getQuestionBankDto().getQuestionParentCode() != null &&
+            e.getQuestionBankDto().getQuestionParentCode().equals(oldQuestionCode)){
                 e.getQuestionBankDto().setQuestionParentCode(newQuestionCode);
             }
-            return e;
         });
     }
 
@@ -214,6 +216,12 @@ public class QuestionService extends AbstractQuestionService<QuestionDto,String>
                     answerBankDto.setAnswerCode(CodeGenerator.generateAnswerCode());
                     questionDto.getAnswerDtos().get(i)
                             .setAnswerBankDto(answerBankService.addOrGetExists(answerBankDto));
+                    try {
+                        systemResultService.getOneByKey(new SystemResultId(questionDto.getQuestionBankDto().getQuestionCode(),
+                                questionDto.getAnswerDtos().get(i).getAnswerBankDto().getAnswerCode()));
+                        systemResultService.delete(new SystemResultId(questionDto.getQuestionBankDto().getQuestionCode(),
+                                questionDto.getAnswerDtos().get(i).getAnswerBankDto().getAnswerCode()));
+                    }catch(ElearningException e){}
                     SystemResultDto systemResultDto = questionDto.getAnswerDtos().get(i).getSystemResultDto();
                     SystemResultId systemResultId = new SystemResultId(questionDto.getQuestionBankDto().getQuestionCode(),
                             questionDto.getAnswerDtos().get(i).getAnswerBankDto().getAnswerCode());

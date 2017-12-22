@@ -18,7 +18,7 @@ public interface Constants {
     int CURRENT_PAGE_DEFAULT_VALUE = 0;
     String CURRENT_PAGE_DEFAULT_STRING_VALUE = "0";
     int DEFAULT_RANDOM_CHARACTER_LENGTH = 20;
-    int LENGTH_ANSWER_DEFAULT = 4;
+    int LENGTH_ANSWER_DEFAULT = 2;
     List<String> VALID_IMAGE_TYPE = asList(MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, "image/jpg");
     long AVATAR_MAXIMUM_SIZE = 3145728;
 

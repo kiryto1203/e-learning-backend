@@ -39,6 +39,10 @@ public class SubcategoryService extends AbstractService<SubcategoryDto, String, 
         if (subcategory == null) {
             throw new ElearningException(Errors.SUBCATEGORY_NOT_FOUND.getId(), Errors.SUBCATEGORY_NOT_FOUND.getMessage());
         }
+        subcategory.getQuestionBanks().stream().forEach(e-> {
+            e.setSubcategory(null);
+            e.setSystemResults(null);
+        });
         return mapper.map(subcategory, SubcategoryDto.class);
     }
 

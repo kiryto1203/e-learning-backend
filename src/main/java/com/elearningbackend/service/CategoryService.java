@@ -35,7 +35,9 @@ public class CategoryService extends AbstractService<CategoryDto, String, Catego
         Pager<CategoryDto> paginate = paginator.paginate(currentPage, pager, noOfRowInPage, mapper);
         paginate.setResults(paginate.getResults().stream().map(a -> {
             List<String> nameByCategory = iSubcategoryRepository.findNameByCategory(a.getCategoryCode());
+            List<String> codeByCategory = iSubcategoryRepository.findCodeByCategory(a.getCategoryCode());
             a.setSubcategoriesName(nameByCategory);
+            a.setSubcategoriesCode(codeByCategory);
             a.setSubcategoriesCount(nameByCategory.size());
             return a;
         }).collect(Collectors.toList()));
@@ -50,8 +52,10 @@ public class CategoryService extends AbstractService<CategoryDto, String, Catego
             throw new ElearningException(Errors.CATEGORY_NOT_FOUND.getId(), Errors.CATEGORY_NOT_FOUND.getMessage());
         }
         List<String> subcategories = iSubcategoryRepository.findNameByCategory(category.getCategoryCode());
+        List<String> codeByCategory = iSubcategoryRepository.findCodeByCategory(category.getCategoryCode());
         CategoryDto categoryDto = mapper.map(category, CategoryDto.class);
         categoryDto.setSubcategoriesName(subcategories);
+        categoryDto.setSubcategoriesCode(codeByCategory);
         categoryDto.setSubcategoriesCount(subcategories.size());
         return categoryDto;
     }

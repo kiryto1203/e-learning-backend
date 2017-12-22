@@ -17,6 +17,7 @@ public class CategoryDto {
     private String categoryCode;
     private String categoryIntro;
     private List<String> subcategoriesName;
+    private List<String> subcategoriesCode;
     private int subcategoriesCount;
     private Timestamp creationDate;
     private Timestamp lastUpdateDate;

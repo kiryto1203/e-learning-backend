@@ -11,4 +11,6 @@ import java.util.List;
 public interface ISubcategoryRepository extends JpaRepository<Subcategory, String>{
     @Query("select a.displayName from Subcategory a where a.category.categoryCode = ?1")
     List<String> findNameByCategory(String categoryCode);
+    @Query("select a.subcategoryCode from Subcategory a where a.category.categoryCode = ?1")
+    List<String> findCodeByCategory(String categoryCode);
 }

@@ -1,3 +1,6 @@
+-- Admin
+insert into user values ('admin','15e2b0d3c33891ebb0f1ef609ec419420c20e320ce94c65fbc8c3312448eb225','s7XhTIVwHmECCQuHObiD',1,NULL,NULL,NULL,NULL,'2017-12-19 19:58:20','2017-12-19 19:58:20',NULL,'admin@gmail.com',NULL,NULL,'user_profile/user.jpg','0');
+
 insert into user (username, password_digest, display_name, created_at, updated_at, email, phone, address, role) values ('jcorben0', 'l2nX84R1x5l', 'Jany Corben', '2017-08-24 12:41:53', '2017-04-19 22:24:25', 'jcorben0@goo.ne.jp', '6436135356', '2074 Petterle Trail', 1);
 insert into user (username, password_digest, display_name, created_at, updated_at, email, phone, address, role) values ('gnorley1', '68hnSg', 'Godard Norley', '2017-08-13 11:14:47', '2017-07-09 21:13:41', 'gnorley1@msu.edu', '4535235659', '34 La Follette Terrace', 1);
 insert into user (username, password_digest, display_name, created_at, updated_at, email, phone, address, role) values ('agraybeal2', 'FHpZQcI', 'Andreas Graybeal', '2017-08-14 15:23:46', '2017-10-02 07:15:32', 'agraybeal2@themeforest.net', '2792720048', '8995 Ramsey Alley', 1);

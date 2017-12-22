@@ -267,4 +267,16 @@
     <changeSet id="change-type-activated" author="LongDh">
         <modifyDataType tableName="user" columnName="activated" newDataType="tinyint"/>
     </changeSet>
+
+    <changeSet id="change-type-position" author="hiennt">
+        <modifyDataType tableName="system_result" columnName="system_result_position" newDataType="int"/>
+    </changeSet>
+
+    <changeSet id="insert-question-answer-systemresult" author="hiennt">
+        <sqlFile path="./question.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="./answer.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="./systemresult.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+
 </databaseChangeLog>

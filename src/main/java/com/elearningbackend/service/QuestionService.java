@@ -68,13 +68,15 @@ public class QuestionService extends AbstractQuestionService<QuestionDto,String>
         ServiceUtils.checkDataMissing(object.getQuestionBankDto(),"questionCode","questionContent","questionType",
                 "subcategory","point");
         QuestionBankDto questionBankDto = questionBankService.edit(object.getQuestionBankDto());
+        List<SystemResultDto> systemResultByQuestionCode = systemResultService.getSystemResultByQuestionCode(object.getQuestionBankDto().getQuestionCode());
+        for (SystemResultDto systemResultDto : systemResultByQuestionCode) {
+            systemResultService.delete(systemResultDto.getSystemResultId());
+        }
         for (AnswerDto answerDto: object.getAnswerDtos()) {
             ServiceUtils.checkDataMissing(answerDto.getAnswerBankDto(),"answerContent");
             ServiceUtils.checkDataMissing(answerDto.getSystemResultDto(),"systemResultPosition","systemResultIsCorrect");
             if(answerDto.getAnswerBankDto().getAnswerCode()!=null){
                 answerBankService.edit(answerDto.getAnswerBankDto());
-                systemResultService.delete(new SystemResultId(questionBankDto.getQuestionCode(),
-                        answerDto.getAnswerBankDto().getAnswerCode()));
             }
         }
         editSystemResullt(object);

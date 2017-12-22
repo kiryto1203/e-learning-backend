@@ -69,7 +69,7 @@ sleep. Consuming a modest snack should be entirely sufficient.',
   'admin',
   'admin',
   'READING-IELTS',
-  10.0
+  null
   );
 
   insert into question_bank values (
@@ -82,7 +82,7 @@ sleep. Consuming a modest snack should be entirely sufficient.',
   'admin',
   'admin',
   'READING-IELTS',
-  1.0
+  null
   );
 
   insert into question_bank values (
@@ -186,7 +186,7 @@ sleep. Consuming a modest snack should be entirely sufficient.',
   'admin',
   'admin',
   'READING-IELTS',
-  0.12
+  null
   );
 
   insert into question_bank values (
@@ -269,9 +269,9 @@ sleep. Consuming a modest snack should be entirely sufficient.',
 
 -- Question2
 
-insert into question_bank values('Q00017',3,'The first of our three brains to evolve is what scientists call the reptilian cortex. This brain\nsustains the elementary activities of animal survival such as respiration, adequate rest\nand a beating heart. We are not required to consciously “think” about these activities.\nThe reptilian cortex also houses the “startle centre”, a mechanism that facilitates swift\nreactions to unexpected occurrences in our surroundings. That panicked lurch you\nexperience when a door slams shut somewhere in the house, or the heightened\nawareness you feel when a twig cracks in a nearby bush while out on an evening stroll\nare both examples of the reptilian cortex at work. When it comes to our interaction with\nothers, the reptilian brain offers up only the most basic impulses: aggression, mating,\nand territorial defence. There is no great difference, in this sense, between a crocodile\ndefending its spot along the river and a turf war between two urban gangs.\nAlthough the lizard may stake a claim to its habitat, it exerts total indifference toward the\nwell-being of its young. Listen to the anguished squeal of a dolphin separated from its\npod or witness the sight of elephants mourning their dead, however, and it is clear that a\nnew development is at play. Scientists have identified this as the limbic cortex. Unique to\nmammals, the limbic cortex impels creatures to nurture their offspring by delivering\nfeelings of tenderness and warmth to the parent when children are nearby. These same\nsensations also cause mammals to develop various types of social relations and kinship\nnetworks. When we are with others of “our kind” – be it at soccer practice, church,\nschool or a nightclub – we experience positive sensations of togetherness, solidarity and\ncomfort. If we spend too long away from these networks, then loneliness sets in and\nencourages us to seek companionship.\nOnly human capabilities extend far beyond the scope of these two cortexes. Humans\neat, sleep and play, but we also speak, plot, rationalise and debate finer points of\nmorality. Our unique abilities are the result of an expansive third brain – the neocortex –which engages with logic, reason and ideas. The power of the neocortex comes from its\nability to think beyond the present, concrete moment. While other mammals are mainly\nrestricted to impulsive actions (although some, such as apes, can learn and remember\nsimple lessons), humans can think about the “big picture”. We can string together simple\nlessons (for example, an apple drops downwards from a tree; hurting others causes\nunhappiness) to develop complex theories of physical or social phenomena (such as the\nlaws of gravity and a concern for human rights).\nThe neocortex is also responsible for the process by which we decide on and commit to\nparticular courses of action. Strung together over time, these choices can accumulate\ninto feats of progress unknown to other animals. Anticipating a better grade on the\nfollowing morning’s exam, a student can ignore the limbic urge to socialise and go to\nsleep early instead. Over three years, this ongoing sacrifice translates into a first class\ndegree and a scholarship to graduate school; over a lifetime, it can mean ground-\nbreaking contributions to human knowledge and development. The ability to sacrifice our\ndrive for immediate satisfaction in order to benefit later is a product of the neocortex.\nUnderstanding the triune brain can help us appreciate the different natures of brain\ndamage and psychological disorders. The most devastating form of brain damage, for\nexample, is a condition in which someone is understood to be brain dead. In this state a\nperson appears merely unconscious – sleeping, perhaps – but this is illusory. Here, the\nreptilian brain is functioning on autopilot despite the permanent loss of other cortexes.\nDisturbances to the limbic cortex are registered in a different manner. Pups with limbic\ndamage can move around and feed themselves well enough but do not register the\npresence of their littermates. Scientists have observed how, after a limbic lobotomy 2 ,\n“one impaired monkey stepped on his outraged peers as if treading on a log or a rock”.\nIn our own species, limbic damage is closely related to sociopathic behaviour.\nSociopaths in possession of fully-functioning neocortexes are often shrewd and\nemotionally intelligent people but lack any ability to relate to, empathise with or express\nconcern for others.\nOne of the neurological wonders of history occurred when a railway worker named\nPhineas Gage survived an incident during which a metal rod skewered his skull, taking a\nconsiderable amount of his neocortex with it. Though Gage continued to live and work\nas before, his fellow employees observed a shift in the equilibrium of his personality.\nGage’s animal propensities were now sharply pronounced while his intellectual abilities\nsuffered; garrulous or obscene jokes replaced his once quick wit. New findings suggest,\nhowever, that Gage managed to soften these abrupt changes over time and rediscover\nan appropriate social manner. This would indicate that reparative therapy has the\npotential to help patients with advanced brain trauma to gain an improved quality of life.',null,'2017-12-19 19:58:20','2017-12-19 19:58:20','admin','admin','READING-IELTS',10.00);
+insert into question_bank values('Q00017',3,'The first of our three brains to evolve is what scientists call the reptilian cortex. This brain\nsustains the elementary activities of animal survival such as respiration, adequate rest\nand a beating heart. We are not required to consciously “think” about these activities.\nThe reptilian cortex also houses the “startle centre”, a mechanism that facilitates swift\nreactions to unexpected occurrences in our surroundings. That panicked lurch you\nexperience when a door slams shut somewhere in the house, or the heightened\nawareness you feel when a twig cracks in a nearby bush while out on an evening stroll\nare both examples of the reptilian cortex at work. When it comes to our interaction with\nothers, the reptilian brain offers up only the most basic impulses: aggression, mating,\nand territorial defence. There is no great difference, in this sense, between a crocodile\ndefending its spot along the river and a turf war between two urban gangs.\nAlthough the lizard may stake a claim to its habitat, it exerts total indifference toward the\nwell-being of its young. Listen to the anguished squeal of a dolphin separated from its\npod or witness the sight of elephants mourning their dead, however, and it is clear that a\nnew development is at play. Scientists have identified this as the limbic cortex. Unique to\nmammals, the limbic cortex impels creatures to nurture their offspring by delivering\nfeelings of tenderness and warmth to the parent when children are nearby. These same\nsensations also cause mammals to develop various types of social relations and kinship\nnetworks. When we are with others of “our kind” – be it at soccer practice, church,\nschool or a nightclub – we experience positive sensations of togetherness, solidarity and\ncomfort. If we spend too long away from these networks, then loneliness sets in and\nencourages us to seek companionship.\nOnly human capabilities extend far beyond the scope of these two cortexes. Humans\neat, sleep and play, but we also speak, plot, rationalise and debate finer points of\nmorality. Our unique abilities are the result of an expansive third brain – the neocortex –which engages with logic, reason and ideas. The power of the neocortex comes from its\nability to think beyond the present, concrete moment. While other mammals are mainly\nrestricted to impulsive actions (although some, such as apes, can learn and remember\nsimple lessons), humans can think about the “big picture”. We can string together simple\nlessons (for example, an apple drops downwards from a tree; hurting others causes\nunhappiness) to develop complex theories of physical or social phenomena (such as the\nlaws of gravity and a concern for human rights).\nThe neocortex is also responsible for the process by which we decide on and commit to\nparticular courses of action. Strung together over time, these choices can accumulate\ninto feats of progress unknown to other animals. Anticipating a better grade on the\nfollowing morning’s exam, a student can ignore the limbic urge to socialise and go to\nsleep early instead. Over three years, this ongoing sacrifice translates into a first class\ndegree and a scholarship to graduate school; over a lifetime, it can mean ground-\nbreaking contributions to human knowledge and development. The ability to sacrifice our\ndrive for immediate satisfaction in order to benefit later is a product of the neocortex.\nUnderstanding the triune brain can help us appreciate the different natures of brain\ndamage and psychological disorders. The most devastating form of brain damage, for\nexample, is a condition in which someone is understood to be brain dead. In this state a\nperson appears merely unconscious – sleeping, perhaps – but this is illusory. Here, the\nreptilian brain is functioning on autopilot despite the permanent loss of other cortexes.\nDisturbances to the limbic cortex are registered in a different manner. Pups with limbic\ndamage can move around and feed themselves well enough but do not register the\npresence of their littermates. Scientists have observed how, after a limbic lobotomy 2 ,\n“one impaired monkey stepped on his outraged peers as if treading on a log or a rock”.\nIn our own species, limbic damage is closely related to sociopathic behaviour.\nSociopaths in possession of fully-functioning neocortexes are often shrewd and\nemotionally intelligent people but lack any ability to relate to, empathise with or express\nconcern for others.\nOne of the neurological wonders of history occurred when a railway worker named\nPhineas Gage survived an incident during which a metal rod skewered his skull, taking a\nconsiderable amount of his neocortex with it. Though Gage continued to live and work\nas before, his fellow employees observed a shift in the equilibrium of his personality.\nGage’s animal propensities were now sharply pronounced while his intellectual abilities\nsuffered; garrulous or obscene jokes replaced his once quick wit. New findings suggest,\nhowever, that Gage managed to soften these abrupt changes over time and rediscover\nan appropriate social manner. This would indicate that reparative therapy has the\npotential to help patients with advanced brain trauma to gain an improved quality of life.',null,'2017-12-19 19:58:20','2017-12-19 19:58:20','admin','admin','READING-IELTS',null);
 
-insert into question_bank values('Q00018',1,'Classify the following as typical of','Q00017','2017-12-19 19:58:20','2017-12-19 19:58:20','admin','admin','READING-IELTS',0.12);
+insert into question_bank values('Q00018',1,'Classify the following as typical of','Q00017','2017-12-19 19:58:20','2017-12-19 19:58:20','admin','admin','READING-IELTS',null);
 
 insert into question_bank values('Q00019',1,'giving up short-term happiness for future gains','Q00018','2017-12-19 19:58:20','2017-12-19 19:58:20','admin','admin','READING-IELTS',0.12);
 
@@ -367,7 +367,7 @@ insert into question_bank values (
   'admin',
   'admin',
   'READING-IELTS',
-  0.12
+  null
   );
 
     insert into question_bank values (
@@ -500,7 +500,7 @@ research into alternatives to helium must begin in earnest.',
   'admin',
   'admin',
   'READING-IELTS',
-  10.0
+  null
   );
 
     insert into question_bank values (
@@ -513,7 +513,7 @@ research into alternatives to helium must begin in earnest.',
   'admin',
   'admin',
   'READING-IELTS',
-  0.12
+  null
   );
 
     insert into question_bank values (

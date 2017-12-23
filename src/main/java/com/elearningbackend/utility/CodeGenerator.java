@@ -20,6 +20,10 @@ public abstract class CodeGenerator {
         return String.format("A%s", getCodePostFix());
     }
 
+    public static String generateLessionCode(){
+        return String.format("L%s", getCodePostFix());
+    }
+
     public static String getCodePostFix() {
         return String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(6);
     }

@@ -2,18 +2,16 @@ package com.elearningbackend.controller;
 
 import com.elearningbackend.customexception.ElearningException;
 import com.elearningbackend.customexception.ElearningMapException;
-import com.elearningbackend.dto.*;
-import com.elearningbackend.entity.QuestionBank;
+import com.elearningbackend.dto.CurrentUser;
+import com.elearningbackend.dto.QuestionDto;
+import com.elearningbackend.dto.Result;
 import com.elearningbackend.service.AbstractQuestionService;
-import com.elearningbackend.utility.Constants;
 import com.elearningbackend.utility.ResultCodes;
-import com.elearningbackend.utility.SortingConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class QuestionController extends BaseController{

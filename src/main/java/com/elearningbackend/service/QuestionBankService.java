@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -113,10 +114,24 @@ public class QuestionBankService extends AbstractCustomService<QuestionBankDto, 
         throw new ElearningException("Cannot delete question");
     }
 
-    public Pager<QuestionBankDto> getBySubcategoryCode(String subcategoryCode, int currentPage, int noOfRowInPage) {
+    Pager<QuestionBankDto> getBySubcategoryCode(String subcategoryCode, int currentPage, int noOfRowInPage) {
         Page<QuestionBank> pager = getQuestionRepository().fetchQuestionBySubcategoryCode(
             subcategoryCode, new PageRequest(currentPage, noOfRowInPage));
         return paginator.paginate(currentPage, pager, noOfRowInPage, mapper);
+    }
+
+    List<QuestionBankDto> getParentAndSiblings(String questionParentCode) {
+        List<QuestionBank> questionBanks = getQuestionRepository().fetchParentAndSiblings(questionParentCode);
+        return questionBanks.stream().map(e -> mapper.map(e, QuestionBankDto.class)).collect(Collectors.toList());
+    }
+
+    boolean hasChildren(String questionCode){
+        return getQuestionRepository().countAllByQuestionParentCode(questionCode) > 0;
+    }
+
+    List<QuestionBankDto> getChildren(String questionCode){
+        return hasChildren(questionCode) ? getQuestionRepository().fetchQuestionChild(questionCode).stream()
+            .map(e -> mapper.map(e, QuestionBankDto.class)).collect(Collectors.toList()) : null;
     }
 
     private void saveQuestion(QuestionBankDto question) {

@@ -1,4 +1,4 @@
-# e-learning-backend
+# e-learning-backends
 Có những rule sau cần ae nhớ:<br>
 **1.** Nhánh config cần có tiền tố config. Chẳng hạn:
 git checkout -b config/add-skeleton-app<br>

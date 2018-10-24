@@ -10,10 +10,8 @@ import com.elearningbackend.service.AbstractUserService;
 import com.elearningbackend.service.UserService;
 import com.elearningbackend.utility.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Date;
@@ -24,30 +22,36 @@ public class SignUpController {
     @Autowired
     private AbstractUserService<UserDto,String,User> abstractUserService;
 
-    @PostMapping("/signup")
-    public Result<UserDto> signup(@Valid UserDto userDto){
+    @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result<UserDto> signup(@Valid @RequestBody UserDto userDto){
         try {
             ServiceUtils.checkDataMissing(userDto,
                     "username", "password", "email");
-            userDto.setRole(Constants.AUTH_USER);
-            userDto.setActivationDigest(RandomGenerator.random(Constants.DEFAULT_RANDOM_CHARACTER_LENGTH));
+            setUserInitData(userDto);
             String content =
                     String.format("Chào %s,<br/> Bạn vừa đăng ký tài khoản tại E Learning. Mã xác nhận của bạn là: %s"
                             ,userDto.getUsername(), userDto.getActivationDigest());
             abstractUserService.add(userDto);
             MailService.send(userDto.getEmail(),"Mã xác nhận E Learning",content);
             return new Result<>(ResultCodes.OK.getCode(),
-                    ResultCodes.OK.getMessage(), userDto);
+                    ResultCodes.OK.getMessage(), null);
         } catch (ElearningException e){
-            return new Result<>(e.getErrorCode(), e.getMessage(), userDto);
+            return new Result<>(e.getErrorCode(), e.getMessage(), null);
         } catch (Exception e) {
             return new Result<>(ResultCodes.FAIL_UNRECOGNIZED_ERROR.getCode(),
-                    e.getMessage(), userDto);
+                    e.getMessage(), null);
         }
     }
 
-    @PostMapping("/verify")
-    public  Result<UserDto> verify(@Valid VerificationDto verificationDto){
+    private void setUserInitData(UserDto userDto) {
+        userDto.setRole(Constants.AUTH_USER);
+        userDto.setActivationDigest(RandomGenerator.random(Constants.DEFAULT_RANDOM_CHARACTER_LENGTH));
+        userDto.setCreatedAt(new Date());
+        userDto.setUpdatedAt(new Date());
+    }
+
+    @PostMapping(value = "/verify", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public  Result<UserDto> verify(@Valid @RequestBody VerificationDto verificationDto){
         UserDto userDto = abstractUserService.getOneByEmail(verificationDto.getEmail());
         if(userDto==null)
             return new Result<>(Errors.USER_NOT_FOUND.getId(),
@@ -65,12 +69,12 @@ public class SignUpController {
             userDto.setActivatedAt(verificationDto.getActivatedAt());
             abstractUserService.active(userDto);
             return new Result<>(ResultCodes.OK.getCode(),
-                    ResultCodes.OK.getMessage(), userDto);
+                    ResultCodes.OK.getMessage(), null);
         } catch (ElearningException e) {
-            return new Result<>(e.getErrorCode(), e.getMessage(), userDto);
+            return new Result<>(e.getErrorCode(), e.getMessage(), null);
         }catch (Exception e) {
             return new Result<>(ResultCodes.FAIL_UNRECOGNIZED_ERROR.getCode(),
-                    e.getMessage(), userDto);
+                    e.getMessage(), null);
         }
     }
 }

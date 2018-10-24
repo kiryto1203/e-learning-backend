@@ -16,10 +16,8 @@ public class VerificationDto {
     private String email;
 
     @NotBlank(message = "Activation Digest cannot be empty!")
-    @JsonProperty("activation_digest")
     private String activationDigest;
 
     @JsonDeserialize(using=CustomDateAndTimeDeserialize.class)
-    @JsonProperty("activated_at")
     private Date activatedAt;
 }

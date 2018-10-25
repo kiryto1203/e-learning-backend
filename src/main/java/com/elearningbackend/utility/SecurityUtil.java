@@ -31,7 +31,7 @@ public abstract class SecurityUtil {
 
     public static String generateToken(UserDto userDto){
         // convert object UserDTO to retricted error null when get claims
-        userDto = (UserDto) ServiceUtils.convertObject(userDto,"address","phone","avatar","displayName");
+        ServiceUtils.convertObject(userDto, "address", "phone", "avatar", "displayName");
         return Jwts.builder()
                .setId(UUID.randomUUID().toString())
                .setSubject(userDto.getUsername())

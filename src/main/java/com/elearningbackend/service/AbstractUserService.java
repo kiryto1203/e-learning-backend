@@ -6,6 +6,7 @@
 package com.elearningbackend.service;
 
 import com.elearningbackend.customexception.ElearningException;
+import com.elearningbackend.dto.LoginDto;
 import com.elearningbackend.dto.UserDto;
 import com.elearningbackend.utility.Paginator;
 import java.io.Serializable;
@@ -27,4 +28,6 @@ public abstract class AbstractUserService<D, K extends Serializable, E> extends 
     public abstract UserDto updateAvatar(String avatarUrl, String username) throws ElearningException;
 
     public abstract UserDto updateRole(String key, String role) throws ElearningException;
+
+    public abstract String login(LoginDto loginDto) throws ElearningException;
 }

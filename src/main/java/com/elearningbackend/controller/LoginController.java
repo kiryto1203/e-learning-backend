@@ -35,7 +35,7 @@ public class LoginController {
             return new Result<>(ResultCodes.OK.getCode(), ResultCodes.OK.getMessage(), token);
         } catch (ElearningException e) {
             e.printStackTrace();
-            return new Result<>(ResultCodes.LOGIN_FAIL.getCode(), e.getMessage(),null);
+            return new Result<>(e.getErrorCode(), e.getMessage(),null);
         }
     }
 }

@@ -181,4 +181,10 @@ public class UserController extends BaseController {
                 e.getMessage(), null);
         }
     }
+
+    @GetMapping(value = "/user/current", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PreAuthorize(Constants.PRE_AUTHENTICATED)
+    public Result<CurrentUser> currentUser() {
+        return new Result<>(ResultCodes.OK.getCode(), ResultCodes.OK.getMessage(),getCurrentUser());
+    }
 }

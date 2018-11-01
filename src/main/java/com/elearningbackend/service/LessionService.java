@@ -44,16 +44,12 @@ public class LessionService implements ILessionService {
     @Override
     public LessionDto startLession(UserDto userDto, String subcategoryCode) throws ElearningException {
         LessionDto lessionDto = new LessionDto();
-        String lessionCode = CodeGenerator.generateLessionCode();
-        Set<LessionReportDto> lessionReportDtos = convertToLessionReportDto(questionService.getRandomQuestionDtos(subcategoryCode), lessionCode);
-        if (lessionReportDtos == null || lessionReportDtos.size() <= 0) {
-            throw new ElearningException(Errors.SUBCATEGORY_NOT_FOUND.getMessage(), Errors.SUBCATEGORY_NOT_FOUND.getId());
-        }
-        lessionDto.setLessionCode(lessionCode);
+        Lession lessionUnFinishTop = iLessionRepository.findTopByIsFinishOrderByCreationDateDesc(Constants.LESSION_UNFINISH);
         lessionDto.setUserDto(userDto);
         lessionDto.setIsFinish(Constants.LESSION_UNFINISH);
-        lessionDto.setCreationDate(new Timestamp(System.currentTimeMillis()));
-        iLessionRepository.save(mapper.map(lessionDto, Lession.class));
+        Set<LessionReportDto> lessionReportDtos = lessionUnFinishTop != null
+                ? setLessionDtoFromLessionDB(lessionDto, lessionUnFinishTop)
+                : generateLessionDto(subcategoryCode, lessionDto);
         lessionDto.setMappedLessionReports(lessionReportDtos);
         lessionReportDtos.forEach(e -> {
             LessionReport lessionReport = mapper.map(e, LessionReport.class);
@@ -66,6 +62,28 @@ public class LessionService implements ILessionService {
             iLessionReportRepository.save(lessionReport);
         });
         return lessionDto;
+    }
+
+    private Set<LessionReportDto> generateLessionDto(String subcategoryCode, LessionDto lessionDto) throws ElearningException {
+        Set<LessionReportDto> lessionReportDtos;
+        String lessionCode = CodeGenerator.generateLessionCode();
+        lessionDto.setLessionCode(lessionCode);
+        lessionReportDtos = convertToLessionReportDto(questionService.getRandomQuestionDtos(subcategoryCode), lessionCode);
+        if (lessionReportDtos == null || lessionReportDtos.size() <= 0) {
+            throw new ElearningException(Errors.SUBCATEGORY_NOT_FOUND.getId(), Errors.SUBCATEGORY_NOT_FOUND.getMessage());
+        }
+        lessionDto.setCreationDate(new Timestamp(System.currentTimeMillis()));
+        iLessionRepository.save(mapper.map(lessionDto, Lession.class));
+        return lessionReportDtos;
+    }
+
+    private Set<LessionReportDto> setLessionDtoFromLessionDB(LessionDto lessionDto, Lession lessionUnFinishTop) {
+        Set<LessionReportDto> lessionReportDtos;
+        lessionDto.setLessionCode(lessionUnFinishTop.getLessionCode());
+        lessionDto.setCreationDate(lessionUnFinishTop.getCreationDate());
+        lessionReportDtos = lessionUnFinishTop.getMappedLessionReports().parallelStream()
+                .map(w -> mapper.map(w, LessionReportDto.class)).collect(Collectors.toSet());
+        return lessionReportDtos;
     }
 
     @Override
@@ -174,7 +192,6 @@ public class LessionService implements ILessionService {
                 if (e.getLessionReportId().getLessionReportQuestionCode().equals(w.getLessionReportId().getLessionReportQuestionCode())
                         && e.getLessionReportId().getLessionReportLessionCode().equals(w.getLessionReportId().getLessionReportLessionCode())){
                     try {
-                        System.out.println("abc");
                         List<AnswerDto> correctAnswerDto = ServiceUtils.convertAnswerDtoJsonToList(w.getCorrectAnswers());
                         List<AnswerDto> incorrectAnswerDto = ServiceUtils.convertAnswerDtoJsonToList(w.getIncorrectAnswers());
                         e.setCorrectAnswers(correctAnswerDto);

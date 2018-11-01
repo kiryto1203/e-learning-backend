@@ -1,8 +1,10 @@
 package com.elearningbackend.security;
 
 import com.elearningbackend.customerrorcode.Errors;
+import com.elearningbackend.customexception.ElearningAuthException;
 import com.elearningbackend.customexception.ElearningException;
 import com.elearningbackend.dto.CurrentUser;
+import com.elearningbackend.dto.LoginDto;
 import com.elearningbackend.dto.UserDto;
 import com.elearningbackend.service.IAbstractService;
 import com.elearningbackend.service.UserService;
@@ -17,29 +19,20 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-class TokenAuthenticationService {
+public class TokenAuthenticationService {
 
     @Autowired
     @Qualifier("userService")
-    private static IAbstractService<UserDto, String> iAbstractService;
-
-    static void addAuthentication(HttpServletResponse res, UserDto userDto) {
-        try {
-            res.getWriter().write(Constants.TOKEN_PREFIX+ " " + SecurityUtil.generateToken(userDto)); // write content to body response in filter
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-    }
+    private static IAbstractService<UserDto, String> userServcie;
 
     static Authentication getAuthentication(HttpServletRequest request) throws ElearningException {
         String requestToken = request.getHeader(Constants.HEADER_AUTHORIZATION);
@@ -48,12 +41,12 @@ class TokenAuthenticationService {
         CurrentUser currentUser = new CurrentUser();
         List<GrantedAuthority> authorities = new ArrayList<>();
         getClaimsFromToken(requestToken, currentUser, authorities);
-        if(iAbstractService==null){
+        if(userServcie==null){
             ServletContext servletContext = request.getServletContext();
             WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
-            iAbstractService = webApplicationContext.getBean(UserService.class);
+            userServcie = webApplicationContext.getBean(UserService.class);
         }
-        UserDto userDto = iAbstractService.getOneByKey(currentUser.getUsername());
+        UserDto userDto = userServcie.getOneByKey(currentUser.getUsername());
         recheckCurrentUser(currentUser, userDto);
         return new UsernamePasswordAuthenticationToken(currentUser, null, authorities);
     }
@@ -77,7 +70,7 @@ class TokenAuthenticationService {
         }
     }
 
-    private static boolean recheckCurrentUser(CurrentUser currentUser, UserDto userDto) throws ElearningException{
+    private static void recheckCurrentUser(CurrentUser currentUser, UserDto userDto) throws ElearningException{
         UserDto convertObject = (UserDto) ServiceUtils.convertObject(
             userDto, "displayName", "avatar", "address", "email", "phone", "role");
         if(!currentUser.getDisplayName().equals(convertObject.getDisplayName()) ||
@@ -88,6 +81,5 @@ class TokenAuthenticationService {
            !currentUser.getRole().equals(convertObject.getRole())) {
             throw new ElearningException(Errors.TOKEN_NOT_MATCH.getId(),Errors.TOKEN_NOT_MATCH.getMessage());
         }
-        return true;
     }
 }

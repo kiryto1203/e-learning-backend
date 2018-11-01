@@ -5,6 +5,7 @@ import com.elearningbackend.customexception.ElearningException;
 import com.elearningbackend.customexception.ElearningMapException;
 import com.elearningbackend.dto.*;
 import com.elearningbackend.entity.AnswerBank;
+import com.elearningbackend.entity.QuestionBank;
 import com.elearningbackend.entity.SystemResult;
 import com.elearningbackend.entity.SystemResultId;
 import com.elearningbackend.repository.IQuestionBankRepository;
@@ -16,10 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -123,14 +121,14 @@ public class QuestionService extends AbstractQuestionService<QuestionDto,String>
     }
 
     @Override
-    public List<QuestionDto> getRandomQuestionDtos(String subcategoryCode) {
+    public List<QuestionDto> getRandomQuestionDtos(String subcategoryCode) throws ElearningException {
         int totalQuestionsBySubcateCode = iQuestionBankRepository.countAllBySubcategorySubcategoryCode(subcategoryCode);
         List<QuestionDto> randomResults = new ArrayList<>();
         proceedRandomQuestionDtos(subcategoryCode, totalQuestionsBySubcateCode, randomResults);
         return randomResults;
     }
 
-    private void proceedRandomQuestionDtos(String subcategoryCode, int totalQuestionsBySubcateCode, List<QuestionDto> randomResults) {
+    private void proceedRandomQuestionDtos(String subcategoryCode, int totalQuestionsBySubcateCode, List<QuestionDto> randomResults) throws ElearningException {
         switch (subcategoryCode.toUpperCase()) {
             case Constants.READING_IELTS:
                 randomQuestionDtosBySubcate(subcategoryCode, totalQuestionsBySubcateCode, randomResults, Constants.DEFAULT_IELTS_READING_AMOUNT);
@@ -144,22 +142,22 @@ public class QuestionService extends AbstractQuestionService<QuestionDto,String>
         }
     }
 
-    private void randomQuestionDtosBySubcate(String subcategoryCode, int totalQuestionsBySubcateCode, List<QuestionDto> randomResults, int amount) {
+    private void randomQuestionDtosBySubcate(String subcategoryCode, int totalQuestionsBySubcateCode, List<QuestionDto> randomResults, int amount) throws ElearningException {
         int idx;
         int count = 0;
         while (count < amount) {
             if (count >= totalQuestionsBySubcateCode){
                 break;
             }
-            idx = (int) (Math.random() * totalQuestionsBySubcateCode);
-            QuestionDto questionDto = getQuestionsBySubcategoryCode(subcategoryCode, idx, 1).getResults().get(0);
+            QuestionDto questionDto = getRandomQuestionDtoNotTypeParagraphBySubCategory(subcategoryCode);
             if (randomResults.stream()
                 .anyMatch(e -> e.getQuestionBankDto().getQuestionCode().equals(questionDto.getQuestionBankDto().getQuestionCode()))) {
                 continue;
             }
             String questionParentCode = questionDto.getQuestionBankDto().getQuestionParentCode();
             if (questionParentCode != null) {
-                randomResults.addAll(getParentAndSiblingQuestions(questionParentCode));
+                setParentOfParentQuestion(questionParentCode,randomResults);
+                setParentAndSiblingQuestions(questionParentCode,randomResults);
                 count += iQuestionBankRepository.countChildrenQuestionInNestedParent(questionParentCode);
             } else {
                 randomResults.add(questionDto);
@@ -167,6 +165,23 @@ public class QuestionService extends AbstractQuestionService<QuestionDto,String>
             }
         }
     }
+
+    private QuestionDto getRandomQuestionDtoNotTypeParagraphBySubCategory(String subCategoryCode) {
+        QuestionBankDto questionBankDto = mapper.map(iQuestionBankRepository.
+                fetchOneRandomQuestionBySubCategoryCodeAndNotQuestionType(subCategoryCode,Constants.Q_TYPE_PARAGRAPH),
+                QuestionBankDto.class);
+        return setQuestionAndAnswers(Collections.singletonList(questionBankDto)).get(0);
+    }
+
+    private void setParentOfParentQuestion(String questionParentCode, List<QuestionDto> randomResults) throws ElearningException {
+        QuestionBank questionBankParent = iQuestionBankRepository.getOne(questionParentCode);
+        if(questionBankParent == null) throw new ElearningException(Errors.QUESTION_BANK_PRARENT_NOT_EXISTS.getId(),
+                Errors.QUESTION_BANK_PRARENT_NOT_EXISTS.getMessage());
+        randomResults.addAll(setQuestionAndAnswers(Collections.singletonList(mapper.map(questionBankParent, QuestionBankDto.class))));
+        if(questionBankParent.getQuestionParentCode() != null)
+            setParentOfParentQuestion(questionBankParent.getQuestionParentCode(), randomResults);
+    }
+
 
     private QuestionDto addOneQuestionDto(List<QuestionDto> questionDtos, QuestionDto questionDto) throws ElearningException {
         /**
@@ -238,8 +253,8 @@ public class QuestionService extends AbstractQuestionService<QuestionDto,String>
         }
     }
 
-    private List<QuestionDto> getParentAndSiblingQuestions(String questionParentCode) {
-        List<QuestionBankDto> parentAndSiblings = questionBankService.getParentAndSiblings(questionParentCode);
+    private void setParentAndSiblingQuestions(String questionParentCode, List<QuestionDto> randomResults) {
+        List<QuestionBankDto> parentAndSiblings = questionBankService.getSiblings(questionParentCode);
         for (int i = 0, size = parentAndSiblings.size(); i < size; i++) {
             String questionCode = parentAndSiblings.get(i).getQuestionCode();
             if (questionBankService.hasChildren(questionCode) && StringUtils.isEmpty(parentAndSiblings.get(i).getQuestionParentCode())) {
@@ -247,7 +262,7 @@ public class QuestionService extends AbstractQuestionService<QuestionDto,String>
                 parentAndSiblings.remove(parentAndSiblings.get(i));
             }
         }
-        return setQuestionAndAnswers(parentAndSiblings);
+        randomResults.addAll(setQuestionAndAnswers(parentAndSiblings));
     }
 
     private boolean hasCorrectAnswer(List<AnswerDto> answerDtos){

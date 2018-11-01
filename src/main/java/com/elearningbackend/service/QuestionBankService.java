@@ -120,8 +120,8 @@ public class QuestionBankService extends AbstractCustomService<QuestionBankDto, 
         return paginator.paginate(currentPage, pager, noOfRowInPage, mapper);
     }
 
-    List<QuestionBankDto> getParentAndSiblings(String questionParentCode) {
-        List<QuestionBank> questionBanks = getQuestionRepository().fetchParentAndSiblings(questionParentCode);
+    List<QuestionBankDto> getSiblings(String questionParentCode) {
+        List<QuestionBank> questionBanks = getQuestionRepository().fetchSiblings(questionParentCode);
         return questionBanks.stream().map(e -> mapper.map(e, QuestionBankDto.class)).collect(Collectors.toList());
     }
 

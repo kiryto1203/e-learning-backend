@@ -5,6 +5,7 @@ package com.elearningbackend.utility;
  */
 public enum ResultCodes {
     OK("200", "OK"),
+    LOGIN_FAIL("401","LOGIN FAIL"),
     FAIL_UNRECOGNIZED_ERROR("999","UNRECOGNIZED ERROR");
 
     private final String code;

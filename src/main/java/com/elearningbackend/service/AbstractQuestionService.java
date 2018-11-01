@@ -1,5 +1,6 @@
 package com.elearningbackend.service;
 
+import com.elearningbackend.customexception.ElearningException;
 import com.elearningbackend.dto.AnswerDto;
 import com.elearningbackend.dto.QuestionDto;
 import lombok.Getter;
@@ -18,5 +19,5 @@ public abstract class AbstractQuestionService<D,K> implements IAbstractCommonSer
 
     public abstract List<AnswerDto> getAnswers(String questionCode,int fetchType,int length);
 
-    public abstract List<QuestionDto> getRandomQuestionDtos(String subcategoryCode);
+    public abstract List<QuestionDto> getRandomQuestionDtos(String subcategoryCode) throws ElearningException;
 }

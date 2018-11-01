@@ -2,6 +2,7 @@ package com.elearningbackend.service;
 
 import com.elearningbackend.customerrorcode.Errors;
 import com.elearningbackend.customexception.ElearningException;
+import com.elearningbackend.dto.LoginDto;
 import com.elearningbackend.dto.Pager;
 import com.elearningbackend.dto.UserDto;
 import com.elearningbackend.entity.User;
@@ -44,9 +45,7 @@ public class UserService extends AbstractUserService<UserDto, String, User> {
         if (user == null) {
             throw new ElearningException(Errors.USER_NOT_FOUND.getId(), Errors.USER_NOT_FOUND.getMessage());
         }
-        UserDto userDto = mapUserDto(user);
-        return userDto;
-
+        return mapUserDto(user);
     }
 
     @Override
@@ -142,6 +141,18 @@ public class UserService extends AbstractUserService<UserDto, String, User> {
         User entity = mapper.map(userDto, User.class);
         entity.setPasswordDigest(encryptPassword ? SecurityUtil.sha256(userDto.getPassword()) : userDto.getPassword() );
         getUserRepository().save(entity);
+    }
+
+    @Override
+    public String login(LoginDto loginDto) throws ElearningException {
+        UserDto userDto = getOneByKey(loginDto.getUsername());
+        if(!userDto.getPassword().equals(SecurityUtil.sha256(loginDto.getPassword())))
+            throw new ElearningException(Errors.USER_PASSWORD_NOT_MATCH.getId(),Errors.USER_PASSWORD_NOT_MATCH.name());
+        if(userDto.getActivated()== Constants.STATUS_NOT_ACTIVATED)
+            throw new ElearningException(Errors.USER_NOT_ACTIVATED.getId(),Errors.USER_NOT_ACTIVATED.name());
+        if(userDto.getActivated() == Constants.STATUS_LOCKED)
+            throw new ElearningException(Errors.USER_LOCKED.getId(),Errors.USER_LOCKED.name());
+        return SecurityUtil.generateToken(userDto);
     }
 
     IUserRepository getUserRepository() {

@@ -22,12 +22,12 @@ public class CategoryController extends BaseController {
 
     @GetMapping("/categories")
     @PreAuthorize(Constants.PRE_AUTHENTICATED)
-    public Pager<CategoryDto> loadAll(
+    public Result<Pager<CategoryDto>> loadAll(
             @RequestParam(value = "page", defaultValue = Constants.CURRENT_PAGE_DEFAULT_STRING_VALUE) int page,
             @RequestParam(value = "limit", defaultValue = Constants.NO_OF_ROWS_DEFAULT_STRING_VALUE) int noOfRowInPage,
             @RequestParam(defaultValue = SortingConstants.SORT_CATEGORY_SUBCATEGORY_DEFAULT_FIELD) String sortBy,
             @RequestParam(defaultValue = SortingConstants.ASC) String direction){
-        return abstractService.loadAll(page, noOfRowInPage, sortBy, direction);
+        return new Result<>(ResultCodes.OK.getCode(),ResultCodes.OK.getMessage(),abstractService.loadAll(page, noOfRowInPage, sortBy, direction));
     }
 
     @GetMapping("/categories/{key}")

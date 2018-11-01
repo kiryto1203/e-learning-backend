@@ -2,7 +2,6 @@ package com.elearningbackend.dto;
 
 import com.elearningbackend.utility.CustomDateAndTimeDeserialize;
 import com.elearningbackend.utility.RegexUtil;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;

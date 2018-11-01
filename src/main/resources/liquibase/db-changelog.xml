@@ -323,4 +323,7 @@
             <column afterColumn="question_content" name="quesion_type" type="tinyint" />
         </addColumn>
     </changeSet>
+    <changeSet id="add-last-question" author="thaiDq">
+        <sqlFile path="./add-last-question.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 </databaseChangeLog>

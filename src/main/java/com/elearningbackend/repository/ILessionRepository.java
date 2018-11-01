@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface ILessionRepository extends JpaRepository<Lession, String> {
     @Query("select a from Lession a where a.isFinish = ?1")
     Page<Lession> findAllByIsFinish(int isFinish, Pageable pageable);
+    Lession findTopByIsFinishOrderByCreationDateDesc(int isFinish);
 }

@@ -3,11 +3,11 @@ package com.elearningbackend.entity;
 import javax.persistence.*;
 
 @Entity 
-@Table(name = "lession_report", schema = "e_learning", catalog = "")
-public class LessionReport {
+@Table(name = "lesson_report", schema = "e_learning", catalog = "")
+public class LessonReport {
 
     private static final long serialVersionUID = 1L;
-    private LessionReportId lessionReportId;
+    private LessonReportId lessonReportId;
     private String questionContent;
     private int questionType;
     private String questionParentCode;
@@ -15,38 +15,38 @@ public class LessionReport {
     private Double questionPoint;
     private Double userPoint;
     private String userAnswer;
-    private Lession mappedLession;
+    private Lesson mappedLesson;
     private String incorrectAnswers;
     private String correctAnswers;
 
-    public LessionReport(LessionReportId lessionReportId, String questionContent, String questionParentCode, String subcategoryCode,
-            Double questionPoint, Double userPoint, String userAnswer, Lession mappedLession, String incorrectAnswers,
+    public LessonReport(LessonReportId lessonReportId, String questionContent, String questionParentCode, String subcategoryCode,
+            Double questionPoint, Double userPoint, String userAnswer, Lesson mappedLesson, String incorrectAnswers,
             String correctAnswers) {
-        this.lessionReportId = lessionReportId;
+        this.lessonReportId = lessonReportId;
         this.questionContent = questionContent;
         this.questionParentCode = questionParentCode;
         this.subcategoryCode = subcategoryCode;
         this.questionPoint = questionPoint;
         this.userPoint = userPoint;
         this.userAnswer = userAnswer;
-        this.mappedLession = mappedLession;
+        this.mappedLesson = mappedLesson;
         this.incorrectAnswers = incorrectAnswers;
         this.correctAnswers = correctAnswers;
     }
 
-    public LessionReport() {
+    public LessonReport() {
     }
 
     @EmbeddedId
     @AttributeOverrides({
-        @AttributeOverride(name = "lessionReportLessionCode", column = @Column(name = "lession_report_lession_code", nullable = false, length = 100)),
-        @AttributeOverride(name = "lessionReportQuestionCode", column = @Column(name = "lession_report_question_code", nullable = false, length = 100)) })
-    public LessionReportId getLessionReportId() {
-        return lessionReportId;
+        @AttributeOverride(name = "lessonReportLessonCode", column = @Column(name = "lesson_report_lesson_code", nullable = false, length = 100)),
+        @AttributeOverride(name = "lessonReportQuestionCode", column = @Column(name = "lesson_report_question_code", nullable = false, length = 100)) })
+    public LessonReportId getLessonReportId() {
+        return lessonReportId;
     }
 
-    public void setLessionReportId(LessionReportId lessionReportId) {
-        this.lessionReportId = lessionReportId;
+    public void setLessonReportId(LessonReportId lessonReportId) {
+        this.lessonReportId = lessonReportId;
     }
     
     @Column(name = "question_content")
@@ -131,12 +131,12 @@ public class LessionReport {
     }
 
     @ManyToOne
-    @JoinColumn(name = "lession_report_lession_code", referencedColumnName = "lession_code", nullable = false, insertable = false, updatable = false)
-    public Lession getMappedLession() {
-        return mappedLession;
+    @JoinColumn(name = "lesson_report_lesson_code", referencedColumnName = "lesson_code", nullable = false, insertable = false, updatable = false)
+    public Lesson getMappedLesson() {
+        return mappedLesson;
     }
 
-    public void setMappedLession(Lession lessionByLessionReportLessionCode) {
-        this.mappedLession = lessionByLessionReportLessionCode;
+    public void setMappedLesson(Lesson lessonByLessonReportLessonCode) {
+        this.mappedLesson = lessonByLessonReportLessonCode;
     }
 }

@@ -11,14 +11,14 @@ import java.util.TreeSet;
 
 @Data
 @NoArgsConstructor
-public class LessionDto {
-    private String lessionCode;
+public class LessonDto {
+    private String lessonCode;
     @JsonIgnore
     private UserDto userDto;
     private Timestamp creationDate;
     private Timestamp lastUpdateDate;
     private Integer isFinish;
-    private Set<LessionReportDto> mappedLessionReports;
-    private Set<LessionReportDtoFinish> mappedLessionReportsFinish;
+    private Set<LessonReportDto> mappedLessonReports;
+    private Set<LessonReportDtoFinish> mappedLessonReportsFinish;
     private Double totalPercent;
 }

@@ -28,7 +28,7 @@ public class User implements Serializable {
 	private String address;
 	private String avatar;
 	private String role;
-	private Set<Lession> lessions = new HashSet<Lession>(0);
+	private Set<Lesson> lessons = new HashSet<Lesson>(0);
 
 	public User() {
 	}
@@ -49,7 +49,7 @@ public class User implements Serializable {
 	public User(String username, String passwordDigest, String activationDigest, int activated, Timestamp activatedAt,
 			String rememberDigest, String resetDigest, Timestamp resetSentAt, Timestamp createdAt, Timestamp updatedAt,
 			String displayName, String email, String phone, String address, String avatar, String role,
-			Set<Lession> lessions) {
+			Set<Lesson> lessons) {
 		this.username = username;
 		this.passwordDigest = passwordDigest;
 		this.activationDigest = activationDigest;
@@ -66,7 +66,7 @@ public class User implements Serializable {
 		this.address = address;
 		this.avatar = avatar;
 		this.role = role;
-		this.lessions = lessions;
+		this.lessons = lessons;
 	}
 
 	@Id
@@ -215,11 +215,11 @@ public class User implements Serializable {
 	}
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	public Set<Lession> getLessions() {
-		return this.lessions;
+	public Set<Lesson> getLessons() {
+		return this.lessons;
 	}
 
-	public void setLessions(Set<Lession> lessions) {
-		this.lessions = lessions;
+	public void setLessons(Set<Lesson> lessons) {
+		this.lessons = lessons;
 	}
 }

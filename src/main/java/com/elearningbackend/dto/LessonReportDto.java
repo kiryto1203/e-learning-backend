@@ -1,6 +1,6 @@
 package com.elearningbackend.dto;
 
-import com.elearningbackend.entity.LessionReportId;
+import com.elearningbackend.entity.LessonReportId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,8 +10,8 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class LessionReportDto implements Comparable<LessionReportDto> {
-    private LessionReportId lessionReportId;
+public class LessonReportDto implements Comparable<LessonReportDto> {
+    private LessonReportId lessonReportId;
     private String questionContent;
     private int questionType;
     private String questionParentCode;
@@ -20,7 +20,7 @@ public class LessionReportDto implements Comparable<LessionReportDto> {
     private List<AnswerDto> answers;
     private List<AnswerDto> userAnswers;
     @JsonIgnore
-    private LessionDto mappedLessionDto;
+    private LessonDto mappedLessonDto;
     private Double userPoint;
 
     @JsonIgnore
@@ -29,7 +29,7 @@ public class LessionReportDto implements Comparable<LessionReportDto> {
     private List<AnswerDto> incorrectAnswers;
 
     @Override
-    public int compareTo(LessionReportDto o) {
-        return this.getLessionReportId().getLessionReportQuestionCode().compareTo(o.getLessionReportId().getLessionReportQuestionCode());
+    public int compareTo(LessonReportDto o) {
+        return this.getLessonReportId().getLessonReportQuestionCode().compareTo(o.getLessonReportId().getLessonReportQuestionCode());
     }
 }

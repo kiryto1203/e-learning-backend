@@ -80,33 +80,33 @@
                      tableName="user">
             <column name="username" type="VARCHAR(100)"/>
         </createIndex>
-        <createTable tableName="lession">
-            <column autoIncrement="true" name="lession_id" type="int">
-                <constraints primaryKey="true" primaryKeyName="lession_pkey"/>
+        <createTable tableName="lesson">
+            <column autoIncrement="true" name="lesson_id" type="int">
+                <constraints primaryKey="true" primaryKeyName="lesson_pkey"/>
             </column>
-            <column name="lession_question_code" type="VARCHAR(100)">
-                <constraints nullable="false" foreignKeyName="lession_question_fkey" references="question_bank(question_code)"/>
+            <column name="lesson_question_code" type="VARCHAR(100)">
+                <constraints nullable="false" foreignKeyName="lesson_question_fkey" references="question_bank(question_code)"/>
             </column>
-            <column name="lession_username" type="VARCHAR(50)">
-                <constraints nullable="false" foreignKeyName="lession_user_fkey" references="user(username)"/>
+            <column name="lesson_username" type="VARCHAR(50)">
+                <constraints nullable="false" foreignKeyName="lesson_user_fkey" references="user(username)"/>
             </column>
-            <column name="lession_code" type="VARCHAR(100)"/>
+            <column name="lesson_code" type="VARCHAR(100)"/>
             <column name="creation_date" type="datetime"/>
             <column name="last_update_date" type="datetime"/>
             <column name="user_answer" type="text"/>
         </createTable>
         <createIndex catalogName="e_learning"
-                     indexName="idx_lession_code"
+                     indexName="idx_lesson_code"
                      schemaName="e_learning"
-                     tableName="lession">
-            <column name="lession_code" type="VARCHAR(100)"/>
+                     tableName="lesson">
+            <column name="lesson_code" type="VARCHAR(100)"/>
         </createIndex>
         <createTable tableName="user_result">
             <column autoIncrement="true" name="user_result_id" type="int">
                 <constraints primaryKey="true" primaryKeyName="user_result_id_pkey"/>
             </column>
-            <column name="lession_code" type="VARCHAR(100)">
-                <constraints nullable="false" foreignKeyName="lessioncode_fkey" references="lession(lession_code)"/>
+            <column name="lesson_code" type="VARCHAR(100)">
+                <constraints nullable="false" foreignKeyName="lessoncode_fkey" references="lesson(lesson_code)"/>
             </column>
             <column name="user_result_username" type="VARCHAR(50)">
                 <constraints nullable="false" foreignKeyName="user_resultusername_fkey" references="user(username)"/>
@@ -132,37 +132,37 @@
             columnName="user_answer"
             newDataType="nvarchar(100)"
             schemaName="e_learning"
-            tableName="lession"/>
+            tableName="lesson"/>
     </changeSet>
     <changeSet id="update_data_type_json_user_pk" author="longdh">
         <dropColumn tableName="user" schemaName="e_learning" columnName="user_id"/>
         <addPrimaryKey tableName="user" columnNames="username" schemaName="e_learning" constraintName="user_pkey"/>
     </changeSet>
-    <changeSet id="add_table_lession_question" author="longdh">
+    <changeSet id="add_table_lesson_question" author="longdh">
         <dropTable tableName="user_result" schemaName="e_learning"/>
-        <dropTable tableName="lession" schemaName="e_learning"/>
-        <createTable tableName="lession" schemaName="e_learning">
-            <column name="lession_code" type="VARCHAR(100)">
-                <constraints primaryKey="true" primaryKeyName="lession_pkey"/>
+        <dropTable tableName="lesson" schemaName="e_learning"/>
+        <createTable tableName="lesson" schemaName="e_learning">
+            <column name="lesson_code" type="VARCHAR(100)">
+                <constraints primaryKey="true" primaryKeyName="lesson_pkey"/>
             </column>
-            <column name="lession_username" type="VARCHAR(50)">
-                <constraints nullable="false" foreignKeyName="lession_user_fkey" references="user(username)"/>
+            <column name="lesson_username" type="VARCHAR(50)">
+                <constraints nullable="false" foreignKeyName="lesson_user_fkey" references="user(username)"/>
             </column>
             <column name="creation_date" type="datetime"/>
             <column name="last_update_date" type="datetime"/>
         </createTable>
-        <createTable tableName="question_lession" schemaName="e_learning">
-            <column name="question_lession_lession_code" type="VARCHAR(100)">
-                <constraints foreignKeyName="question_lession_lession_code_fkey" references="lession(lession_code)"/>
+        <createTable tableName="question_lesson" schemaName="e_learning">
+            <column name="question_lesson_lesson_code" type="VARCHAR(100)">
+                <constraints foreignKeyName="question_lesson_lesson_code_fkey" references="lesson(lesson_code)"/>
             </column>
-            <column name="question_lession_question_code" type="VARCHAR(100)">
-                <constraints foreignKeyName="question_lession_question_code_fkey" references="question_bank(question_code)"/>
+            <column name="question_lesson_question_code" type="VARCHAR(100)">
+                <constraints foreignKeyName="question_lesson_question_code_fkey" references="question_bank(question_code)"/>
             </column>
             <column name="user_answer" type="text"/>
             <column name="point" type="FLOAT(6,2) UNSIGNED"/>
         </createTable>
-        <addPrimaryKey columnNames="question_lession_lession_code, question_lession_question_code"
-            tableName="question_lession" constraintName="question_lession_pkey"/>
+        <addPrimaryKey columnNames="question_lesson_lesson_code, question_lesson_question_code"
+            tableName="question_lesson" constraintName="question_lesson_pkey"/>
     </changeSet>
     <changeSet id="add_category_and_subcategory modify_question_bank" author="thaidq">
         <createTable tableName="category">
@@ -277,13 +277,13 @@
         <sqlFile path="./answer.sql" relativeToChangelogFile="true"/>
         <sqlFile path="./systemresult.sql" relativeToChangelogFile="true"/>
     </changeSet>
-    <changeSet author="LongDH" id="change-question-lession">
-        <dropTable tableName="question_lession" schemaName="e_learning"/>
-        <createTable tableName="lession_report" schemaName="e_learning">
-            <column name="lession_report_lession_code" type="VARCHAR(100)">
-                <constraints foreignKeyName="lession_report_lession_code_fkey" references="lession(lession_code)"/>
+    <changeSet author="LongDH" id="change-question-lesson">
+        <dropTable tableName="question_lesson" schemaName="e_learning"/>
+        <createTable tableName="lesson_report" schemaName="e_learning">
+            <column name="lesson_report_lesson_code" type="VARCHAR(100)">
+                <constraints foreignKeyName="lesson_report_lesson_code_fkey" references="lesson(lesson_code)"/>
             </column>
-            <column name="lession_report_question_code" type="VARCHAR(100)"/>
+            <column name="lesson_report_question_code" type="VARCHAR(100)"/>
             <column name="question_content" type="text"/>
             <column name="question_parent_code" type="VARCHAR(100)"/>
             <column name="subcategory_code" type="VARCHAR(50)"/>
@@ -292,34 +292,34 @@
             <column name="correct_answer" type="text"/>
             <column name="user_answer" type="text"/>
         </createTable>
-        <addPrimaryKey schemaName="e_learning" tableName="lession_report" columnNames="lession_report_lession_code, lession_report_question_code" constraintName="lession_report_pkey"/>
+        <addPrimaryKey schemaName="e_learning" tableName="lesson_report" columnNames="lesson_report_lesson_code, lesson_report_question_code" constraintName="lesson_report_pkey"/>
     </changeSet>
-    <changeSet author="LongDH" id="add-is-finish-column-lession">
-        <addColumn catalogName="e_learning" tableName="lession">
+    <changeSet author="LongDH" id="add-is-finish-column-lesson">
+        <addColumn catalogName="e_learning" tableName="lesson">
             <column name="is_finish" type="int" defaultValue="0"/>
         </addColumn>
     </changeSet>
-    <changeSet author="LongDH" id="add-more-columns-to-lession-report">
-        <addColumn tableName="lession_report" catalogName="e_learning">
+    <changeSet author="LongDH" id="add-more-columns-to-lesson-report">
+        <addColumn tableName="lesson_report" catalogName="e_learning">
             <column name="incorrectAnswers" type="text"/>
             <column name="correctAnswers" type="text"/>
         </addColumn>
     </changeSet>
-    <changeSet author="LongDH" id="modify-columns-to-lession-report">
-        <dropColumn tableName="lession_report" schemaName="e_learning" columnName="correct_answer"/>
+    <changeSet author="LongDH" id="modify-columns-to-lesson-report">
+        <dropColumn tableName="lesson_report" schemaName="e_learning" columnName="correct_answer"/>
         <renameColumn columnDataType="text"
             newColumnName="incorrect_answers"
             oldColumnName="incorrectAnswers"
             schemaName="e_learning"
-            tableName="lession_report"/>
+            tableName="lesson_report"/>
         <renameColumn columnDataType="text"
             newColumnName="correct_answers"
             oldColumnName="correctAnswers"
             schemaName="e_learning"
-            tableName="lession_report"/>
+            tableName="lesson_report"/>
     </changeSet>
-    <changeSet id="add-question-type-lession-report" author="LongDh">
-        <addColumn tableName="lession_report">
+    <changeSet id="add-question-type-lesson-report" author="LongDh">
+        <addColumn tableName="lesson_report">
             <column afterColumn="question_content" name="quesion_type" type="tinyint" />
         </addColumn>
     </changeSet>

@@ -20,7 +20,7 @@ public abstract class CodeGenerator {
         return String.format("A%s", getCodePostFix());
     }
 
-    public static String generateLessionCode(){
+    public static String generateLessonCode(){
         return String.format("L%s", getCodePostFix());
     }
 

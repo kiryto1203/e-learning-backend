@@ -8,42 +8,42 @@ import java.util.Set;
 import java.util.TreeSet;
 
 @Entity
-@Table(name = "lession", catalog = "e_learning")
-public class Lession implements Serializable {
+@Table(name = "lesson", catalog = "e_learning")
+public class Lesson implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private String lessionCode;
+    private String lessonCode;
     private User user;
     private Timestamp creationDate;
     private Timestamp lastUpdateDate;
     private Integer isFinish;
-    private Set<LessionReport> mappedLessionReports = new TreeSet<>();
+    private Set<LessonReport> mappedLessonReports = new TreeSet<>();
 
-    public Lession() {
+    public Lesson() {
     }
 
-    public Lession(String lessionCode, User user) {
-        this.lessionCode = lessionCode;
+    public Lesson(String lessonCode, User user) {
+        this.lessonCode = lessonCode;
         this.user = user;
     }
 
-    public Lession(String lessionCode, User user, Timestamp creationDate, Timestamp lastUpdateDate,
-            Set<LessionReport> mappedLessionReports) {
-        this.lessionCode = lessionCode;
+    public Lesson(String lessonCode, User user, Timestamp creationDate, Timestamp lastUpdateDate,
+            Set<LessonReport> mappedLessonReports) {
+        this.lessonCode = lessonCode;
         this.user = user;
         this.creationDate = creationDate;
         this.lastUpdateDate = lastUpdateDate;
-        this.mappedLessionReports = mappedLessionReports;
+        this.mappedLessonReports = mappedLessonReports;
     }
 
     @Id
-    @Column(name = "lession_code", unique = true, nullable = false, length = 100)
-    public String getLessionCode() {
-        return this.lessionCode;
+    @Column(name = "lesson_code", unique = true, nullable = false, length = 100)
+    public String getLessonCode() {
+        return this.lessonCode;
     }
 
-    public void setLessionCode(String lessionCode) {
-        this.lessionCode = lessionCode;
+    public void setLessonCode(String lessonCode) {
+        this.lessonCode = lessonCode;
     }
 
     @Column(name = "creation_date")
@@ -65,7 +65,7 @@ public class Lession implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "lession_username", nullable = false)
+    @JoinColumn(name = "lesson_username", nullable = false)
     public User getUser() {
         return this.user;
     }
@@ -83,12 +83,12 @@ public class Lession implements Serializable {
         this.isFinish = isFinish;
     }
 
-    @OneToMany(mappedBy = "mappedLession")
-    public Set<LessionReport> getMappedLessionReports() {
-        return mappedLessionReports;
+    @OneToMany(mappedBy = "mappedLesson")
+    public Set<LessonReport> getMappedLessonReports() {
+        return mappedLessonReports;
     }
 
-    public void setMappedLessionReports(Set<LessionReport> mappedLessionReports) {
-        this.mappedLessionReports = mappedLessionReports;
+    public void setMappedLessonReports(Set<LessonReport> mappedLessonReports) {
+        this.mappedLessonReports = mappedLessonReports;
     }
 }
